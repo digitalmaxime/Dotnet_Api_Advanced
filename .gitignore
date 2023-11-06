@@ -1,0 +1,11 @@
+*.dll
+bin/
+obj/
+Debug/
+.idea/
+Migrations/
+.vscode/
+
+Containerized_Api_K8s/Containerized_Api_K8s/out/Containerized_Api_K8s.pdb
+
+*.pdb

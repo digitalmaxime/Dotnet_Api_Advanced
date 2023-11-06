@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Containerized_Api_K8s", "Containerized_Api_K8s\Containerized_Api_K8s.csproj", "{7C79EE71-3D5E-4EC3-BD2B-809EF5FDC16E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7C79EE71-3D5E-4EC3-BD2B-809EF5FDC16E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C79EE71-3D5E-4EC3-BD2B-809EF5FDC16E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C79EE71-3D5E-4EC3-BD2B-809EF5FDC16E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C79EE71-3D5E-4EC3-BD2B-809EF5FDC16E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
