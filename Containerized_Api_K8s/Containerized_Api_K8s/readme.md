@@ -10,6 +10,9 @@ docker build -t web-api .
 docker images
 ```
 
+The docker build command is used to build a Docker image from a Docker file.
+This command creates a Docker image that uses the Dockerfile in the current directory (.) and marks it as web-api.
+
 ```
 docker run -d -p 5001:80 — name web-api-container web-api
 docker ps
