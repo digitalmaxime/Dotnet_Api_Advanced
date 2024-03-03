@@ -1,0 +1,25 @@
+version: '3.4'
+
+services:
+#  frontend:
+#    environment:
+#      - ASPNETCORE_ENVIRONMENT=Development
+#      - ASPNETCORE_URLS=https://+:443;http://+80
+#      - APICONFIGS__CONCERTCATALOG__URI=http://catalog
+#      - APICONFIGS__ORDERING__URI=http://ordering
+#    ports:
+#      - "80"
+#      - "443"
+  
+  catalog:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - DefaultConnection="Server=mysql;Port=3306;Database=mydatabase;Uid=myuser;Pwd=mypassword"
+    ports:
+      - "8080"
+  
+#  ordering:
+#    environment:
+#      - ASPNETCORE_ENVIRONMENT=Development
+#    ports:
+#      - "80"

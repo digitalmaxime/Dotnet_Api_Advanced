@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Configuration.AddEnvironmentVariables(); // <--
+
 // Add services to the container.
 builder.Services.AddHttpClient();
 builder.Services.AddControllers();
@@ -16,9 +18,11 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddApplicationInsightsTelemetry();
 // add DB context here
 
+
 builder.Services.AddDbContext<EventCatalogDbContext>(options =>
           options.UseMySQL(builder.Configuration.GetConnectionString("DefaultConnection")));
           // options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 
 builder.Services.AddScoped<IConcertRepository, ConcertRepository>();
 
@@ -35,6 +39,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.MapGet("/", () =>  Results.Redirect("/swagger"));
 
 app.UseAuthorization();
 app.MapControllers();

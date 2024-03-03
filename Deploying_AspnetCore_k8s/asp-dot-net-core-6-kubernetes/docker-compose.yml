@@ -1,0 +1,37 @@
+version: '3.4'
+
+services:
+#  frontend:
+#    image: ${DOCKER_REGISTRY-}frontend
+#    build:
+#      context: .
+#      dockerfile: frontend/Dockerfile
+  
+  catalog:
+    image: ${DOCKER_REGISTRY-}catalog
+    build:
+      context: .
+      dockerfile: catalog/Dockerfile
+    depends_on: [mysql]
+    ports: 
+      - "1234:8080"
+  #  ordering:
+#    image: ${DOCKER_REGISTRY-}order
+#    build:
+#      context: .
+#      dockerfile: ordering/Dockerfile
+
+  mysql:
+    container_name: mysql-k8s-test-container
+    image: mysql:latest
+    environment:
+      MYSQL_DATABASE: mydatabase
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_USER: myuser
+      MYSQL_PASSWORD: mypassword
+      ACCEPT_EULA: true
+    #    volumes:
+    #      - mysql-data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    restart: always
