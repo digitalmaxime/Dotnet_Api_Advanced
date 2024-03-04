@@ -10,5 +10,5 @@ public class EventDetailDto
     public string Description { get; set; } = string.Empty;
     public string ImageUrl { get; set; } = string.Empty;
     public Guid CategoryId { get; set; }
-    public CategoryDto Category { get; set; } = default!;
+    public EventDetailCategoryDto EventDetailCategory { get; set; } = default!;
 }

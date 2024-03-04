@@ -5,12 +5,12 @@ using MediatR;
 
 namespace Application.Features.Categories.Queries.GetCategoriesList;
 
-public class GetCategoriesList: IRequestHandler<GetCategoriesListQuery, List<CategoryDto>>
+public class GetCategoriesListQueryHandler: IRequestHandler<GetCategoriesListQuery, List<CategoryDto>>
 {
     private readonly IAsyncRepository<Category> _categoryRepository;
     private readonly IMapper _mapper;
 
-    public GetCategoriesList(IAsyncRepository<Category> categoryRepository, IMapper mapper)
+    public GetCategoriesListQueryHandler(IAsyncRepository<Category> categoryRepository, IMapper mapper)
     {
         _categoryRepository = categoryRepository;
         _mapper = mapper;
