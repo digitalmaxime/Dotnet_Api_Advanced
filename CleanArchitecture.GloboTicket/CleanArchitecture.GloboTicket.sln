@@ -18,6 +18,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApplicationTests", "ApplicationTests\ApplicationTests.csproj", "{0FC1BEA4-2F12-4725-AEF7-134DA4459F05}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence", "Persistence\Persistence.csproj", "{619530C2-EA98-4888-B176-46415B269CF8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +33,7 @@ Global
 		{43434C37-5AB5-414B-8EA8-1A933729AEFE} = {D572FB1F-D9ED-4068-8823-5067B5BB3368}
 		{B032C587-A371-483A-AD7D-EE181EBED329} = {D572FB1F-D9ED-4068-8823-5067B5BB3368}
 		{0FC1BEA4-2F12-4725-AEF7-134DA4459F05} = {98ACAE39-9D9E-4C86-8AEF-81714B950C86}
+		{619530C2-EA98-4888-B176-46415B269CF8} = {CC647F20-B6CA-4FB1-A7EC-742D89B07A78}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{43434C37-5AB5-414B-8EA8-1A933729AEFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -45,5 +48,9 @@ Global
 		{0FC1BEA4-2F12-4725-AEF7-134DA4459F05}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0FC1BEA4-2F12-4725-AEF7-134DA4459F05}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0FC1BEA4-2F12-4725-AEF7-134DA4459F05}.Release|Any CPU.Build.0 = Release|Any CPU
+		{619530C2-EA98-4888-B176-46415B269CF8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{619530C2-EA98-4888-B176-46415B269CF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{619530C2-EA98-4888-B176-46415B269CF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{619530C2-EA98-4888-B176-46415B269CF8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

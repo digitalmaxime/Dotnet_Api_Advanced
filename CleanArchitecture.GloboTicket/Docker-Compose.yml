@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  mysql:
+    container_name: mysql-clean-architecture
+    image: mysql:latest
+    environment:
+      MYSQL_DATABASE: clean-architecture-db
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_USER: myuser
+      MYSQL_PASSWORD: mypassword
+      ACCEPT_EULA: true
+    #    volumes:
+    #      - mysql-data:/var/lib/mysql
+    ports:
+      - "3307:3306"
+    restart: always
