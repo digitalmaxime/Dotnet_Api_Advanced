@@ -1,4 +1,6 @@
+using Application.Contracts.Infrastructure;
 using Application.Contracts.Persistence;
+using Application.Models.Mail;
 using AutoMapper;
 using Domain.Entities;
 using MediatR;
@@ -10,11 +12,13 @@ public class CreateEventCommandHandler : IRequestHandler<CreateEventCommand, Gui
 {
     private readonly IEventRepository _eventRepository;
     private readonly IMapper _mapper;
+    private readonly IEmailService _emailService;
 
-    public CreateEventCommandHandler(IEventRepository eventRepository, IMapper mapper)
+    public CreateEventCommandHandler(IEventRepository eventRepository, IMapper mapper, IEmailService emailService)
     {
         _eventRepository = eventRepository;
         _mapper = mapper;
+        _emailService = emailService;
     }
 
     public async Task<Guid> Handle(CreateEventCommand request, CancellationToken cancellationToken)
@@ -27,7 +31,19 @@ public class CreateEventCommandHandler : IRequestHandler<CreateEventCommand, Gui
         {
             throw new ValidationException(validationResult.Errors.ToString());
         }
+
+        var eventId = (await _eventRepository.AddAsync(@event)).EventId;
         
-        return (await _eventRepository.AddAsync(@event)).EventId;
+        var email = new Email() { To = "asdf@email", Body = $"A new event was created: {request}" };
+        try
+        {
+            await _emailService.SendEmail(email);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+
+        return eventId;
     }
 }

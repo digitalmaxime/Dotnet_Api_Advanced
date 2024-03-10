@@ -2,11 +2,20 @@
 
 ## SrcNugets
 
+# WebApi
+
+
+# Application
 - AutoMapper (Core project)
 - MediatR (Core project)
 - FluentValidation (Core project)
 
-## TestsNugets
+# Infrastructure
+- Microsoft.EntityFrameworkCore.Design
+- MySql.EntityFrameworkCore
+- Microsoft.Extensions.Options.ConfigurationExtensions ??
+
+# Tests
 
 Using the xUnit framework
 

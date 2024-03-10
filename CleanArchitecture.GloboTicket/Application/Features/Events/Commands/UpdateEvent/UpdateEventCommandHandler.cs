@@ -20,9 +20,11 @@ public class UpdateEventCommandHandler : IRequestHandler<UpdateEventCommand>
     {
         var eventToUpdate = await _eventRepository.GetByIdAsync(request.EventId);
 
-        _mapper.Map<UpdateEventCommand, Event>(request, eventToUpdate);
-        
-        await _eventRepository.UpdateAsync(eventToUpdate);
-        
+        if (eventToUpdate != null)
+        {
+            _mapper.Map<UpdateEventCommand, Event>(request, eventToUpdate);
+
+            await _eventRepository.UpdateAsync(eventToUpdate);
+        }
     }
 }

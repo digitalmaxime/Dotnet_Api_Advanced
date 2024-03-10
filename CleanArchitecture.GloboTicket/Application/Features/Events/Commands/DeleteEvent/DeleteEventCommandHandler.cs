@@ -1,4 +1,5 @@
 using Application.Contracts.Persistence;
+using Domain.Entities;
 using MediatR;
 
 namespace Application.Features.Events.Commands.DeleteEvent;
@@ -15,6 +16,6 @@ public class DeleteEventCommandHandler : IRequestHandler<DeleteEventCommand>
     public async Task Handle(DeleteEventCommand request, CancellationToken cancellationToken)
     {
         var @event = await _eventRepository.GetByIdAsync(request.EventId);
-        await _eventRepository.DeleteAsync(@event);
+        if (@event != null) await _eventRepository.DeleteAsync(@event);
     }
 }
