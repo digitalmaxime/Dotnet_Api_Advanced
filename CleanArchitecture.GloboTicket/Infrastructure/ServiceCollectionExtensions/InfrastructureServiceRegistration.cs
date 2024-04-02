@@ -8,9 +8,9 @@ namespace Infrastructure.ServiceCollectionExtensions;
 
 public static class InfrastructureServiceRegistration
 {
-    public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection RegisterInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
-        services.Configure<EmailSettings>(configuration.GetSection("EmailSettings"));
+        services.Configure<EmailSettings>(configuration.GetSection(EmailSettings.Name));
         services.AddTransient<IEmailService, EmailService>();
         return services;
     }

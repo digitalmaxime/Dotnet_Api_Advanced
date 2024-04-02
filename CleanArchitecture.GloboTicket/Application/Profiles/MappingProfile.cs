@@ -23,9 +23,9 @@ public class MappingProfile: Profile
         CreateMap<Category, CategoryDto>().ReverseMap();
         CreateMap<Category, CreateCategoryDto>().ReverseMap();
 
-        CreateMap<Event, CreateEventCommand>().ReverseMap();
-        CreateMap<Event, UpdateEventCommand>().ReverseMap();
-        CreateMap<Event, CategoryEventDto>().ReverseMap();
+        // CreateMap<Event, CreateEventCommand>().ReverseMap();
+        // CreateMap<Event, UpdateEventCommand>().ReverseMap();
+        // CreateMap<Event, CategoryEventDto>().ReverseMap();
         // ----
     }
 }

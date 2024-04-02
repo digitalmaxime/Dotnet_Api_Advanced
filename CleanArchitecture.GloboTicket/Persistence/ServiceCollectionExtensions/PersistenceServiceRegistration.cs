@@ -9,7 +9,7 @@ namespace Persistence.ServiceCollectionExtensions;
 
 public static class PersistenceServiceRegistration
 {
-    public static IServiceCollection AddPersistenceServices(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection RegisterPersistenceServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDbContext<GloboTickerDbContext>(options =>
             options.UseMySQL(configuration.GetConnectionString("defaultConnectionString") ?? string.Empty));
