@@ -1,6 +1,4 @@
-using System.Reflection.Metadata;
-using Application.Models.Mail;
-using Application.Profiles;
+using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Application;
@@ -11,7 +9,7 @@ public static class ApplicationServiceRegistration
     {
         serviceCollection.AddAutoMapper(typeof(ApplicationLibrary).Assembly);
         serviceCollection.AddMediatR(cfg =>
-            cfg.RegisterServicesFromAssemblies(typeof(ApplicationLibrary).Assembly));
+            cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
 
         return serviceCollection;
     }

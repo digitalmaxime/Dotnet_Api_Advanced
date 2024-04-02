@@ -1,5 +1,6 @@
 using Application.Contracts.Persistence;
 using AutoMapper;
+using Domain.Entities;
 using MediatR;
 
 namespace Application.Features.Categories.Queries.GetCategoriesListWithEvents;

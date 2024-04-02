@@ -7,10 +7,12 @@ namespace Application.Features.Categories.Queries.GetCategoriesList;
 
 public class GetCategoriesListQueryHandler: IRequestHandler<GetCategoriesListQuery, List<CategoryDto>>
 {
-    private readonly IAsyncRepository<Category> _categoryRepository;
+    private readonly ICategoryRepository _categoryRepository;
     private readonly IMapper _mapper;
 
-    public GetCategoriesListQueryHandler(IAsyncRepository<Category> categoryRepository, IMapper mapper)
+    public GetCategoriesListQueryHandler(
+        ICategoryRepository categoryRepository, 
+        IMapper mapper)
     {
         _categoryRepository = categoryRepository;
         _mapper = mapper;

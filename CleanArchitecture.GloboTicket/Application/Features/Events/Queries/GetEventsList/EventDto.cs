@@ -1,6 +1,6 @@
 namespace Application.Features.Events.Queries.GetEventsList;
 
-public record EventDto
+public class EventDto
 {
     public Guid EventId { get; set; }
     public string Name { get; set; } = string.Empty;

@@ -9,8 +9,8 @@ public static class StartupExtensions
     public static WebApplication ConfigureServices(this WebApplicationBuilder builder)
     {
         builder.Services.RegisterApplicationServices();
-        builder.Services.RegisterPersistenceServices(builder.Configuration);
         builder.Services.RegisterInfrastructureServices(builder.Configuration);
+        builder.Services.RegisterPersistenceServices(builder.Configuration);
         builder.Services.AddControllers();
 
         builder.Services.AddCors(

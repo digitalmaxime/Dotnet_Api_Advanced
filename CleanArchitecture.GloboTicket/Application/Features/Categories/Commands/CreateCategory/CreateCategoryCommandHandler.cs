@@ -10,7 +10,9 @@ public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryComman
     private readonly ICategoryRepository _categoryRepository;
     private readonly IMapper _mapper;
 
-    public CreateCategoryCommandHandler(ICategoryRepository categoryRepository, IMapper mapper)
+    public CreateCategoryCommandHandler(
+        ICategoryRepository categoryRepository, 
+        IMapper mapper)
     {
         _categoryRepository = categoryRepository;
         _mapper = mapper;

@@ -7,13 +7,13 @@ namespace Application.Features.Events.Queries.GetEventDetail;
 
 public class GetEventDetailQueryHandler : IRequestHandler<GetEventDetailQuery, EventDetailDto>
 {
-    private readonly IAsyncRepository<Event> _eventRepository;
-    private readonly IAsyncRepository<Category> _categoryRepository;
+    private readonly IEventRepository _eventRepository;
+    private readonly ICategoryRepository _categoryRepository;
     private readonly IMapper _mapper;
 
     public GetEventDetailQueryHandler(
-        IAsyncRepository<Event> eventRepository, 
-        IAsyncRepository<Category> categoryRepository, 
+        IEventRepository eventRepository, 
+        ICategoryRepository categoryRepository, 
         IMapper mapper)
     {
         _eventRepository = eventRepository;

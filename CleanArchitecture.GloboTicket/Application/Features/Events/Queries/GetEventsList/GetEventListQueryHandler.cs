@@ -7,10 +7,10 @@ namespace Application.Features.Events.Queries.GetEventsList;
 
 public class GetEventListQueryHandler: IRequestHandler<GetEventsListQuery, ICollection<EventDto>>
 {
-    private readonly IAsyncRepository<Event> _eventRepository;
+    private readonly IEventRepository _eventRepository;
     private readonly IMapper _mapper;
 
-    public GetEventListQueryHandler(IAsyncRepository<Event> eventRepository, IMapper mapper)
+    public GetEventListQueryHandler(IEventRepository eventRepository, IMapper mapper)
     {
         _eventRepository = eventRepository;
         _mapper = mapper;
