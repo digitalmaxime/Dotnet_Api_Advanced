@@ -1,12 +1,14 @@
 using Infrastructure.ServiceCollectionExtensions;
 using Persistence.ServiceCollectionExtensions;
 using Application;
+using Microsoft.EntityFrameworkCore;
+using Persistence.Contexts;
 
 namespace API;
 
 public static class StartupExtensions
 {
-    public static WebApplication ConfigureServices(this WebApplicationBuilder builder)
+    public static WebApplicationBuilder ConfigureServices(this WebApplicationBuilder builder)
     {
         builder.Services.RegisterApplicationServices();
         builder.Services.RegisterInfrastructureServices(builder.Configuration);
@@ -27,7 +29,7 @@ public static class StartupExtensions
                             .AllowCredentials()
                 ));
 
-        return builder.Build();
+        return builder;
     }
 
     public static WebApplication ConfigurePipeline(this WebApplication app)
@@ -37,5 +39,38 @@ public static class StartupExtensions
         app.MapControllers();
 
         return app;
+    }
+    
+    // public static WebApplication ConfigureSwagger(this WebApplication app)
+    // {
+    //     app.UseSwagger();
+    //     app.UseSwaggerUI(c =>
+    //     {
+    //         c.SwaggerEndpoint("/swagger/v1/swagger.json", "GloboTicket API V1");
+    //         c.RoutePrefix = string.Empty;
+    //     });
+    //
+    //     return app;
+    // }
+
+    public static async Task ResetDatabaseAsync(this WebApplication app)
+    {
+        using var scope = app.Services.CreateScope();
+        try
+        {
+            var services = scope.ServiceProvider;
+            var context = services.GetRequiredService<GloboTickerDbContext>();
+            if (context != null)
+            {
+                await context.Database.EnsureDeletedAsync();
+                await context.Database.MigrateAsync();
+            }
+
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 }

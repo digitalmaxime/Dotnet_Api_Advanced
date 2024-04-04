@@ -10,8 +10,9 @@ services:
       MYSQL_USER: myuser
       MYSQL_PASSWORD: mypassword
       ACCEPT_EULA: true
+      MYSQL_TCP_PORT: 3309
     #    volumes:
     #      - mysql-data:/var/lib/mysql
     ports:
-      - "3309:3306"
+      - "3309:3309"
     restart: always
