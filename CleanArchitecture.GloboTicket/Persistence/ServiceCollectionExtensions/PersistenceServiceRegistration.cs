@@ -12,7 +12,7 @@ public static class PersistenceServiceRegistration
 {
     public static IServiceCollection RegisterPersistenceServices(this IServiceCollection services, IConfiguration configuration)
     {
-        var connectionString = configuration.GetConnectionString("defaultConnectionString") ?? string.Empty;
+        var connectionString = configuration.GetConnectionString("DefaultConnection") ?? string.Empty;
         services.AddDbContext<GloboTickerDbContext>(options =>
             options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 

@@ -3,7 +3,7 @@ version: '3.8'
 services:
   mysql:
     container_name: mysql-clean-architecture
-    image: mysql:latest
+    image: nxrm.corp.bdc.ca:4445/library/mysql:8.0 # mysql:latest
     environment:
       MYSQL_DATABASE: clean-architecture-db
       MYSQL_ROOT_PASSWORD: rootpassword
@@ -13,5 +13,5 @@ services:
     #    volumes:
     #      - mysql-data:/var/lib/mysql
     ports:
-      - "3307:3306"
+      - "3309:3306"
     restart: always
