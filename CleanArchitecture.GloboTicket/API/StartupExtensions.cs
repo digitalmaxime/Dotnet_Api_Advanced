@@ -1,6 +1,8 @@
+using System.Reflection;
 using Infrastructure.ServiceCollectionExtensions;
 using Persistence.ServiceCollectionExtensions;
 using Application;
+using Domain;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Contexts;
 
@@ -40,7 +42,7 @@ public static class StartupExtensions
 
         return app;
     }
-    
+
     // public static WebApplication ConfigureSwagger(this WebApplication app)
     // {
     //     app.UseSwagger();
@@ -58,14 +60,13 @@ public static class StartupExtensions
         using var scope = app.Services.CreateScope();
         try
         {
-            var services = scope.ServiceProvider;
-            var context = services.GetRequiredService<GloboTickerDbContext>();
+            var serviceProvider = scope.ServiceProvider;
+            var context = serviceProvider.GetRequiredService<GloboTickerDbContext>();
             if (context != null)
             {
                 await context.Database.EnsureDeletedAsync();
                 await context.Database.MigrateAsync();
             }
-
         }
         catch (Exception e)
         {

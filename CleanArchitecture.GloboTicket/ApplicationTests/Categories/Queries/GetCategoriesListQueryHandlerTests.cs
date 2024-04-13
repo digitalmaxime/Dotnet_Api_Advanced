@@ -42,11 +42,11 @@ public class GetCategoriesListQueryHandlerTests
     private class GetCategoriesListQueryHandlerDriver
     {
         private readonly IMapper _mapper;
-        private readonly Mock<IAsyncRepository<Category>> _mockCategoryRepository;
+        private readonly Mock<ICategoryRepository> _mockCategoryRepository;
     
         public GetCategoriesListQueryHandlerDriver()
         {
-            _mockCategoryRepository = new Mock<IAsyncRepository<Category>>();
+            _mockCategoryRepository = new Mock<ICategoryRepository>();
     
             var configProvider = new MapperConfiguration(cfg => cfg.AddProfile<MappingProfile>());
             _mapper = configProvider.CreateMapper();

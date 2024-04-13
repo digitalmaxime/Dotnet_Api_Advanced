@@ -1,6 +1,6 @@
 namespace Application;
 
-public class ApplicationLibrary
+public sealed class ApplicationLibrary
 {
     
 }

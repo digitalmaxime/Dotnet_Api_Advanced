@@ -3,7 +3,9 @@
 ## SrcNugets
 
 # WebApi
-
+- Swagger
+  - `dotnet add package Swashbuckle.AspNetCore.Swagger`
+  - 
 
 # Application
 - AutoMapper (Core project)
