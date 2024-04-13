@@ -1,4 +1,4 @@
-using API;
+using API.ServiceCollectionExtensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,3 +20,6 @@ app.MapGet("/", context =>
 });
 
 app.Run();
+
+// Make the implicit Program class public so test projects can access it
+public partial class Program { }

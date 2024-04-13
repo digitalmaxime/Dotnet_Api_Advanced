@@ -6,9 +6,9 @@ namespace Persistence.Repositories;
 
 public class BaseRepository<T> : IAsyncRepository<T> where T : class
 {
-    protected readonly GloboTickerDbContext DbContext;
+    protected readonly GloboTicketDbContext DbContext;
 
-    protected BaseRepository(GloboTickerDbContext dbContext)
+    protected BaseRepository(GloboTicketDbContext dbContext)
     {
         DbContext = dbContext;
     }

@@ -1,12 +1,12 @@
-using System.Reflection;
-using Infrastructure.ServiceCollectionExtensions;
-using Persistence.ServiceCollectionExtensions;
+using API.Services;
 using Application;
-using Domain;
+using Application.Contracts.Api;
+using Infrastructure.ServiceCollectionExtensions;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Contexts;
+using Persistence.ServiceCollectionExtensions;
 
-namespace API;
+namespace API.ServiceCollectionExtensions;
 
 public static class StartupExtensions
 {
@@ -15,7 +15,10 @@ public static class StartupExtensions
         builder.Services.RegisterApplicationServices();
         builder.Services.RegisterInfrastructureServices(builder.Configuration);
         builder.Services.RegisterPersistenceServices(builder.Configuration);
+        builder.Services.AddHttpContextAccessor();
+        builder.Services.AddScoped<ILoggedInUserService, LoggedInUserService>();
         builder.Services.AddControllers();
+        builder.Services.AddSwaggerGen();
 
         builder.Services.AddCors(
             options =>
@@ -39,21 +42,25 @@ public static class StartupExtensions
         app.UseCors("open");
         app.UseHttpsRedirection();
         app.MapControllers();
+        if (app.Environment.IsDevelopment())
+        {
+            ConfigureSwagger(app);
+        }
 
         return app;
     }
 
-    // public static WebApplication ConfigureSwagger(this WebApplication app)
-    // {
-    //     app.UseSwagger();
-    //     app.UseSwaggerUI(c =>
-    //     {
-    //         c.SwaggerEndpoint("/swagger/v1/swagger.json", "GloboTicket API V1");
-    //         c.RoutePrefix = string.Empty;
-    //     });
-    //
-    //     return app;
-    // }
+    private static WebApplication ConfigureSwagger(this WebApplication app)
+    {
+        app.UseSwagger();
+        app.UseSwaggerUI(c =>
+        {
+            c.SwaggerEndpoint("/swagger/v1/swagger.json", "GloboTicket API V1");
+            c.RoutePrefix = string.Empty;
+        });
+    
+        return app;
+    }
 
     public static async Task ResetDatabaseAsync(this WebApplication app)
     {
@@ -61,7 +68,7 @@ public static class StartupExtensions
         try
         {
             var serviceProvider = scope.ServiceProvider;
-            var context = serviceProvider.GetRequiredService<GloboTickerDbContext>();
+            var context = serviceProvider.GetRequiredService<GloboTicketDbContext>();
             if (context != null)
             {
                 await context.Database.EnsureDeletedAsync();

@@ -7,7 +7,7 @@ namespace Persistence.Repositories;
 
 public class CategoryRepository: BaseRepository<Category>, ICategoryRepository
 {
-    public CategoryRepository(GloboTickerDbContext dbContext) : base(dbContext)
+    public CategoryRepository(GloboTicketDbContext dbContext) : base(dbContext)
     {
     }
 

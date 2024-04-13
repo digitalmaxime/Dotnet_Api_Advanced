@@ -1,6 +1,6 @@
 namespace API;
 
-public class ApiLibrary
+public sealed class ApiLibrary
 {
     
 }

@@ -4,8 +4,8 @@
 
 # WebApi
 - Swagger
+  - `dotnet add package Swashbuckle.AspNetCore`
   - `dotnet add package Swashbuckle.AspNetCore.Swagger`
-  - 
 
 # Application
 - AutoMapper (Core project)
@@ -23,3 +23,4 @@ Using the xUnit framework
 
 - Moq
 - Shouldly
+- Microsoft.AspNetCore.Mvc.Testing for Api Integration Tests (in order to spin up a test server and make requests to it)

@@ -1,3 +1,4 @@
+using API.Utility;
 using Application.Features.Events.Commands.CreateEvent;
 using Application.Features.Events.Commands.DeleteEvent;
 using Application.Features.Events.Commands.UpdateEvent;
@@ -82,6 +83,7 @@ public class EventsController : ControllerBase
     }
 
     [HttpGet("export", Name = "ExportEvents")]
+    [FileResultContentType("text/csv")]
     public async Task<ActionResult<FileResult>> ExportEvents()
     {
         var fileDto = await _mediator.Send(new GetEventsExportQuery());

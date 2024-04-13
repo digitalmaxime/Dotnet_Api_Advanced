@@ -16,13 +16,17 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{B032C587-A371-483A-AD7D-EE181EBED329}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApplicationTests", "ApplicationTests\ApplicationTests.csproj", "{0FC1BEA4-2F12-4725-AEF7-134DA4459F05}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Tests", "Application.Tests\Application.Tests.csproj", "{0FC1BEA4-2F12-4725-AEF7-134DA4459F05}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence", "Persistence\Persistence.csproj", "{619530C2-EA98-4888-B176-46415B269CF8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{D3EAB21D-1E66-421B-A9EC-36B69943F347}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API", "API\API.csproj", "{2600B91C-5F44-465E-A652-C199CFDCF6DC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence.IntegrationTests", "Persistence.IntegrationTests\Persistence.IntegrationTests.csproj", "{194666C2-D4A3-432C-995D-01349B96BD3F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api.IntegrationTests", "Api.IntegrationTests\Api.IntegrationTests.csproj", "{DE0F39B3-99D2-49E2-A5D0-418D9429F1AF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -40,6 +44,8 @@ Global
 		{619530C2-EA98-4888-B176-46415B269CF8} = {CC647F20-B6CA-4FB1-A7EC-742D89B07A78}
 		{D3EAB21D-1E66-421B-A9EC-36B69943F347} = {CC647F20-B6CA-4FB1-A7EC-742D89B07A78}
 		{2600B91C-5F44-465E-A652-C199CFDCF6DC} = {4FAEBFE0-0641-473E-B76F-5483D4CD0B0E}
+		{194666C2-D4A3-432C-995D-01349B96BD3F} = {98ACAE39-9D9E-4C86-8AEF-81714B950C86}
+		{DE0F39B3-99D2-49E2-A5D0-418D9429F1AF} = {98ACAE39-9D9E-4C86-8AEF-81714B950C86}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{43434C37-5AB5-414B-8EA8-1A933729AEFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -66,5 +72,13 @@ Global
 		{2600B91C-5F44-465E-A652-C199CFDCF6DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2600B91C-5F44-465E-A652-C199CFDCF6DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2600B91C-5F44-465E-A652-C199CFDCF6DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{194666C2-D4A3-432C-995D-01349B96BD3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{194666C2-D4A3-432C-995D-01349B96BD3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{194666C2-D4A3-432C-995D-01349B96BD3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{194666C2-D4A3-432C-995D-01349B96BD3F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE0F39B3-99D2-49E2-A5D0-418D9429F1AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE0F39B3-99D2-49E2-A5D0-418D9429F1AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE0F39B3-99D2-49E2-A5D0-418D9429F1AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE0F39B3-99D2-49E2-A5D0-418D9429F1AF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

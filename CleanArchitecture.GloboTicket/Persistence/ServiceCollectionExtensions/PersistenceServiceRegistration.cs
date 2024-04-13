@@ -1,5 +1,4 @@
 using Application.Contracts.Persistence;
-using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,7 +12,7 @@ public static class PersistenceServiceRegistration
     public static IServiceCollection RegisterPersistenceServices(this IServiceCollection services, IConfiguration configuration)
     {
         var connectionString = configuration.GetConnectionString("DefaultConnection") ?? string.Empty;
-        services.AddDbContext<GloboTickerDbContext>(options =>
+        services.AddDbContext<GloboTicketDbContext>(options =>
             options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
         services.AddScoped(typeof(IAsyncRepository<>), typeof(BaseRepository<>));

@@ -6,7 +6,7 @@ namespace Persistence.Repositories;
 
 public class EventRepository : BaseRepository<Event>, IEventRepository
 {
-    public EventRepository(GloboTickerDbContext dbContext) : base(dbContext)
+    public EventRepository(GloboTicketDbContext dbContext) : base(dbContext)
     {
     }
 
