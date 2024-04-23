@@ -24,3 +24,16 @@ Using the xUnit framework
 - Moq
 - Shouldly
 - Microsoft.AspNetCore.Mvc.Testing for Api Integration Tests (in order to spin up a test server and make requests to it)
+
+# Create Client with NSwag
+MVC Project
+
+`dotnet add package NSwag.AspNetCore`
+
+`builder.Services.AddOpenApiDocument();`
+
+Create an “nswag.json” file with 
+`nswag new` or pasting a file..
+
+`nswag run nswag.json`
+This will generate cs client under ./Generated/Client

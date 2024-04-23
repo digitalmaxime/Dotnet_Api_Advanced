@@ -17,6 +17,9 @@ public static class StartupExtensions
         builder.Services.RegisterPersistenceServices(builder.Configuration);
         builder.Services.AddHttpContextAccessor();
         builder.Services.AddScoped<ILoggedInUserService, LoggedInUserService>();
+        builder.Services.AddOpenApiDocument();
+        // builder.Services.AddEndpointsApiExplorer();
+
         builder.Services.AddControllers();
         builder.Services.AddSwaggerGen();
 
