@@ -14,6 +14,7 @@ public static class InfrastructureServiceRegistration
         services.Configure<EmailSettings>(configuration.GetSection(EmailSettings.Name));
         services.AddTransient<IEmailService, EmailService>();
         services.AddTransient<ICsvExporter, CsvExporter>();
+        
         return services;
     }
 }

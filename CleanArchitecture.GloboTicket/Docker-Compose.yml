@@ -16,3 +16,18 @@ services:
     ports:
       - "3309:3309"
     restart: always
+  mysql2:
+    container_name: mysql-identity
+    image: nxrm.corp.bdc.ca:4445/library/mysql:8.0 # mysql:latest
+    environment:
+      MYSQL_DATABASE: clean-architecture-identity-db
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_USER: myuser
+      MYSQL_PASSWORD: mypassword
+      ACCEPT_EULA: true
+      MYSQL_TCP_PORT: 3310
+    #    volumes:
+    #      - mysql-data:/var/lib/mysql
+    ports:
+      - "3310:3310"
+    restart: always

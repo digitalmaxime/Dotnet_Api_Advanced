@@ -1,9 +1,7 @@
-using System.Collections.ObjectModel;
 using Application.Features.Categories.Commands.CreateCategory;
 using Application.Features.Categories.Queries.GetCategoriesList;
 using Application.Features.Categories.Queries.GetCategoriesListWithEvents;
 using Application.Features.Events.Commands.CreateEvent;
-using Application.Features.Events.Commands.UpdateEvent;
 using Application.Features.Events.Queries.GetEventDetail;
 using Application.Features.Events.Queries.GetEventsList;
 using AutoMapper;
@@ -23,7 +21,7 @@ public class MappingProfile: Profile
         CreateMap<Category, CategoryDto>().ReverseMap();
         CreateMap<Category, CreateCategoryDto>().ReverseMap();
 
-        // CreateMap<Event, CreateEventCommand>().ReverseMap();
+        CreateMap<Event, CreateEventCommand>().ReverseMap();
         // CreateMap<Event, UpdateEventCommand>().ReverseMap();
         // CreateMap<Event, CategoryEventDto>().ReverseMap();
         // ----
