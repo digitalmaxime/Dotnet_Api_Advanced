@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 25.0.1706.9
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StatelessWithUI", "StatelessWithUI\StatelessWithUI.csproj", "{0A8823C5-9CCC-4D7D-8435-235E58D4C4CE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0A8823C5-9CCC-4D7D-8435-235E58D4C4CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A8823C5-9CCC-4D7D-8435-235E58D4C4CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A8823C5-9CCC-4D7D-8435-235E58D4C4CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A8823C5-9CCC-4D7D-8435-235E58D4C4CE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {867CFC1C-7754-43C2-844F-FCAF5B2002F1}
+	EndGlobalSection
+EndGlobal
