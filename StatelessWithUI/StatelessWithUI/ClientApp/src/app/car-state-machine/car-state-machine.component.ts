@@ -27,9 +27,7 @@ export class CarStateMachineComponent {
 
 
   public GoToNextState(): void {
-    let body = {id: this.car.id}
-
-    this.http.post<Car>(`https://localhost:7276/api/VehicleStateMachine/vehicle`, body).subscribe(result => {
+    this.http.post<Car>(`https://localhost:7276/api/CarStateMachine/car/goto-nextstate/${this.car.id}`, {}).subscribe(result => {
       console.log(result)
     }, error => console.error(error));
   }

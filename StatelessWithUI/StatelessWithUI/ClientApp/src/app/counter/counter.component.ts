@@ -33,7 +33,7 @@ export class CounterComponent {
   }
 
   public getCarById(): void {
-    this.http.get<Car>(`https://localhost:7276/api/VehicleStateMachine/vehicle/${this.carId || "Id2"}`).subscribe(result => {
+    this.http.get<Car>(`https://localhost:7276/api/CarStateMachine/car/${this.carId || "Id2"}`).subscribe(result => {
       this.car = result;
     }, error => console.error(error));
   }
@@ -41,7 +41,7 @@ export class CounterComponent {
   public CreateCar(): void {
     let body = {id: this.carId, speed: 0, state: CarState.Stopped}
 
-    this.http.post<Car>(`https://localhost:7276/api/VehicleStateMachine/vehicle`, body).subscribe(result => {
+    this.http.post<Car>(`https://localhost:7276/api/CarStateMachine/car`, body).subscribe(result => {
       console.log(result)
     }, error => console.error(error));
   }
