@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using StatelessWithUI.Persistence.Constants;
 using StatelessWithUI.Persistence.Contracts;
 using StatelessWithUI.Persistence.Domain;
 
@@ -13,7 +14,7 @@ public class EntityWithIdRepository<T> : IEntityWithIdRepository<T> where T : En
         _dbContext = dbContext;
     }
 
-    public async Task Save(T entity)
+    public async Task<bool> Save(T entity)
     {
         var id = entity.Id;
         var vehicleEntity =
@@ -28,11 +29,17 @@ public class EntityWithIdRepository<T> : IEntityWithIdRepository<T> where T : En
             _dbContext.Set<T>().Update(entity);
         }
 
-        await _dbContext.SaveChangesAsync();
+        var n = await _dbContext.SaveChangesAsync();
+        return n > 0;
     }
 
     public async Task<T?> GetById(string id)
     {
         return await _dbContext.Set<T>().AsNoTracking().FirstOrDefaultAsync(c => c.Id == id);
+    }
+
+    public async Task<List<T>> GetAll()
+    {
+        return await _dbContext.Set<T>().AsNoTracking().ToListAsync();
     }
 }

@@ -38,5 +38,22 @@ export class CounterComponent {
     }, error => console.error(error));
   }
 
+  public CreateCar(): void {
+    let body =
+      // JSON.stringify(
+      {
+      id: this.carId,
+      speed: 0,
+      state: CarState.Stopped
+    }
+    // )
+    ;
+
+    console.log(body);
+    this.http.post<Car>(`https://localhost:7276/api/VehicleStateMachine/vehicle`, body).subscribe(result => {
+      console.log(result)
+    }, error => console.error(error));
+  }
+
 }
 
