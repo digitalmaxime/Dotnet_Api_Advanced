@@ -5,5 +5,5 @@ namespace StatelessWithUI.VehicleStateMachineFactory;
 
 public interface IVehicleFactory
 {
-    IVehicleStateMachine CreateVehicleStateMachine(VehicleType type, string vehicleId);
+    IVehicleStateMachine GetOrAddVehicleStateMachine(VehicleType type, string vehicleId);
 }

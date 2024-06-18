@@ -1,5 +1,6 @@
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
+using StatelessWithUI.Application.Services;
 using StatelessWithUI.Persistence;
 using StatelessWithUI.Persistence.Contracts;
 using StatelessWithUI.Persistence.Repositories;
@@ -21,17 +22,14 @@ public static class StartupExtensions
         // });
         
         SetupDatabase(builder.Services);
+        builder.Services.AddScoped<ICarService, CarService>();
         builder.Services.AddScoped<ICarStateRepository, CarStateRepository>();
         builder.Services.AddScoped<IPlaneStateRepository, PlaneStateRepository>();
         builder.Services.AddSingleton<IVehicleFactory, VehicleFactory>();
         builder.Services.AddMediatR(cfg =>
             cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
-
         builder.Services.AddHttpContextAccessor();
-        // builder.Services.AddOpenApiDocument();
-
         builder.Services.AddControllers();
-
         builder.Services.AddCors(
             options =>
                 options.AddPolicy(
@@ -40,7 +38,6 @@ public static class StartupExtensions
                         policy.WithOrigins(builder.Configuration["ApiUrl"] ?? "https://localhost:4200")
                             .AllowAnyMethod()
                             .AllowAnyHeader()
-                            // .AllowAnyOrigin()
                             .SetIsOriginAllowed(p => true)
                             .AllowCredentials()
                 ));
@@ -92,27 +89,14 @@ public static class StartupExtensions
     
         return app;
     }
-    
-    public static void SetupDatabase(IServiceCollection services)
+
+    private static void SetupDatabase(IServiceCollection services)
     {
         services.AddDbContext<VehicleDbContext>();
         var serviceProvider =  services.BuildServiceProvider();
-        using (var scope = serviceProvider.CreateScope())
-        {
-            var scopedServices = scope.ServiceProvider;
-            var dbContext = scopedServices.GetRequiredService<VehicleDbContext>();
-            dbContext.Database.EnsureCreated();
-
-            // try
-            // {
-            //     Utilities.InitializeDbForTests(dbContext);
-            // }
-            // catch (Exception e)
-            // {
-            //     Console.WriteLine(e.Message);
-            //     throw;
-            // }
-                    
-        }
+        using var scope = serviceProvider.CreateScope();
+        var scopedServices = scope.ServiceProvider;
+        var dbContext = scopedServices.GetRequiredService<VehicleDbContext>();
+        dbContext.Database.EnsureCreated();
     }
 }

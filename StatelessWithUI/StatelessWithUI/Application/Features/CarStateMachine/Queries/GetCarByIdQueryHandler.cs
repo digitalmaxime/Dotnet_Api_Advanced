@@ -1,6 +1,5 @@
 using MediatR;
-using StatelessWithUI.Controllers;
-using StatelessWithUI.Persistence.Contracts;
+using StatelessWithUI.Application.Services;
 using StatelessWithUI.Persistence.Domain;
 
 namespace StatelessWithUI.Application.Features.CarStateMachine.Queries;
@@ -8,15 +7,15 @@ namespace StatelessWithUI.Application.Features.CarStateMachine.Queries;
 
 public class GetCarByIdQueryHandler : IRequestHandler<GetCarByIdQuery, CarEntity?>
 {
-    private readonly ICarStateRepository _carStateRepository;
+    private readonly ICarService _carService;
 
-    public GetCarByIdQueryHandler(ICarStateRepository carStateRepository)
+    public GetCarByIdQueryHandler(ICarService carService)
     {
-        _carStateRepository = carStateRepository;
+        _carService = carService;
     }
 
     public async Task<CarEntity?> Handle(GetCarByIdQuery request, CancellationToken cancellationToken)
     {
-        return await _carStateRepository.GetById(request.Id);
+        return await _carService.GetCarEntity(request.Id);
     }
 }

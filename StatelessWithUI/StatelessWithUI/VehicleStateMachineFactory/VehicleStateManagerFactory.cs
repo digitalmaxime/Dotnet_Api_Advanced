@@ -38,7 +38,7 @@ public class VehicleFactory : IVehicleFactory
         return stateMachine!;
     }
 
-    public IVehicleStateMachine CreateVehicleStateMachine(VehicleType type, string vehicleId)
+    public IVehicleStateMachine GetOrAddVehicleStateMachine(VehicleType type, string vehicleId)
     {
         return type switch
         {
