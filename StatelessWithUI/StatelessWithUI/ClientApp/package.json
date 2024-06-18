@@ -2,7 +2,7 @@
   "name": "statelesswithui",
   "version": "0.0.0",
   "scripts": {
-    "gc": "ng g c CarStateMachine --module app",
+    "gc": "ng g c PlaneStateMachine --module app",
     "ng": "ng",
     "prestart": "node aspnetcore-https",
     "start": "\"ng serve --port 4200",

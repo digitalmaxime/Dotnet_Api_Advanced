@@ -105,21 +105,22 @@ public class PlaneStateMachine : IVehicleStateMachine
         _stateMachine.Configure(PlaneState.Running)
             .OnEntryFrom(_accelerateWithParam, (speed, _) =>
             {
-                CurrentSpeed = speed;
+                CurrentSpeed += 35;
                 SaveState();
                 Console.WriteLine($"\tSpeed is {CurrentSpeed}");
             })
             .PermitIf(PlaneAction.Stop, PlaneState.Stopped, () => CurrentSpeed == 0)
             .PermitIf(PlaneAction.Fly, PlaneState.Flying, () => CurrentSpeed > 100)
-            .InternalTransition<int>(_accelerateWithParam, (speed, _) =>
+            .InternalTransition(PlaneAction.Accelerate, () =>
             {
-                CurrentSpeed = speed;
+                CurrentSpeed += 35;
                 SaveState();
                 Console.WriteLine($"\tSpeed is {CurrentSpeed}");
             })
             .InternalTransitionIf<int>(_decelerateWithParam, _ => CurrentSpeed > 0, (speed, _) =>
             {
                 CurrentSpeed = speed;
+                SaveState();
                 Console.WriteLine($"\tSpeed is {CurrentSpeed}");
             });
 
@@ -137,6 +138,12 @@ public class PlaneStateMachine : IVehicleStateMachine
         };
         
         planeStateRepository.Save(plane);
+    }
+    
+    public void GoToNextState()
+    {
+        var nextAvailableAction = _stateMachine.GetPermittedTriggers().OrderDescending().FirstOrDefault();
+        _stateMachine.Fire(nextAvailableAction);
     }
 
     public void TakeAction(string actionString)

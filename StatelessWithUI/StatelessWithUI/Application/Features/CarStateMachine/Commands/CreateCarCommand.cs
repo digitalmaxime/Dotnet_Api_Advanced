@@ -1,6 +1,6 @@
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
+using StatelessWithUI.Persistence.Domain;
 
 namespace StatelessWithUI.Application.Features.CarStateMachine.Commands;
 
-public record CreateCarCommand(string Id, int Speed, VehicleStateMachines.CarStateMachine.CarState State) : IRequest<bool>;
+public record CreateCarCommand(string Id): IRequest<CarEntity?>;

@@ -1,6 +1,11 @@
-.car-form {
+.state-machine {
+  min-height: 300px;
+}
+
+.form {
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
   align-items: center;
-  justify-items: center;}
+  justify-items: center;
+}

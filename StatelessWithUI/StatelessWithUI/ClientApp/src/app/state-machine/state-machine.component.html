@@ -1,0 +1,35 @@
+<h1>State Machine</h1>
+
+<div class="state-machine">
+  <div class="form">
+    <h4 aria-live="polite">car state-machine</h4>
+    <form [formGroup]="carForm">
+      <input name="first" formControlName="id" placeholder="Id1" [(ngModel)]="carId"/>
+    </form>
+    <br>
+    <button class="btn btn-primary" (click)="getCarById()">search</button>
+    <button class="btn btn-primary" (click)="CreateCar()">create</button>
+  </div>
+  <hr>
+  <div *ngIf="car && car?.id">
+    <app-car-state-machine [car]="car"></app-car-state-machine>
+  </div>
+</div>
+
+<hr>
+
+<div class="state-machine">
+  <div class="form">
+    <h4 aria-live="polite">plane state-machine</h4>
+    <form [formGroup]="planeForm">
+      <input name="first" formControlName="id" placeholder="Id1" [(ngModel)]="planeId"/>
+    </form>
+    <br>
+    <button class="btn btn-primary" (click)="getPlaneById()">search</button>
+    <button class="btn btn-primary" (click)="CreatePlane()">create</button>
+  </div>
+  <hr>
+  <div *ngIf="plane && plane?.id">
+    <app-plane-state-machine [plane]="plane"></app-plane-state-machine>
+  </div>
+</div>

@@ -1,0 +1,20 @@
+<div class="vehicle-info">
+  <p class="vehicle-info-item">Plane Id : {{plane.id}},</p>
+  <p class="vehicle-info-item">State : {{ PlaneState[plane!.state] }},</p>
+  <p class="vehicle-info-item">Speed {{ plane.speed }}</p>
+</div>
+<br>
+<div class="state-machine-states">
+  <ng-container *ngFor="let state of states">
+    <div class="inner-state">
+      <div *ngIf="plane.state == state" class="rounded-green-circle"></div>
+      <div *ngIf="plane.state > state" class="rounded-circle"></div>
+      {{PlaneState[+state]}}
+    </div>
+  </ng-container>
+</div>
+
+<br>
+<div class="actions-btn" *ngFor="let action of actions">
+  <button class="btn btn-primary" style="width: 200px; margin: 3px" (click)="TakeAction(action)">{{action}}</button>
+</div>

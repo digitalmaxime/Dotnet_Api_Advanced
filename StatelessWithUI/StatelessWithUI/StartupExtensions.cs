@@ -23,6 +23,7 @@ public static class StartupExtensions
         
         SetupDatabase(builder.Services);
         builder.Services.AddScoped<ICarService, CarService>();
+        builder.Services.AddScoped<IPlaneService, PlaneService>();
         builder.Services.AddScoped<ICarStateRepository, CarStateRepository>();
         builder.Services.AddScoped<IPlaneStateRepository, PlaneStateRepository>();
         builder.Services.AddSingleton<IVehicleFactory, VehicleFactory>();

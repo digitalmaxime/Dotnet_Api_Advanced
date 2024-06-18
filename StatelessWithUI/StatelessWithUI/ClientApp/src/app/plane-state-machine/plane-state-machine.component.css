@@ -33,3 +33,9 @@
 .vehicle-info-item {
   margin: 3px;
 }
+
+.actions-btn{
+  display: flex;
+  justify-content: flex-start;
+}
+

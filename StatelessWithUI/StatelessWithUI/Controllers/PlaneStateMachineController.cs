@@ -1,11 +1,8 @@
 using System.Net;
 using MediatR;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using StatelessWithUI.Application.Features.CarStateMachine.Commands;
-using StatelessWithUI.Application.Features.CarStateMachine.Queries;
 using StatelessWithUI.Application.Features.PlaneStateMachine.Commands;
-using StatelessWithUI.Persistence.Constants;
+using StatelessWithUI.Application.Features.PlaneStateMachine.Queries;
 using StatelessWithUI.Persistence.Domain;
 
 namespace StatelessWithUI.Controllers;
@@ -21,60 +18,40 @@ public class PlaneStateMachineController : ControllerBase
         _mediator = mediator;
     }
 
-    /*
-    [HttpGet("vehicle")]
-    public async Task<IEnumerable<EntityWithId>>? GetCars()
+    [HttpGet("plane")]
+    public async Task<IEnumerable<PlaneEntity>>? Get()
     {
-        return await _mediator.Send(new GetAllCarsQuery(vehicleType));
-    }
-*/
-    [HttpGet("vehicle/car/{id}")]
-    public async Task<CarEntity?> GetCar(string id)
-    {
-        var vehicle = await _mediator.Send(new GetCarByIdQuery(id));
-        return vehicle;
+        return await _mediator.Send(new GetAllPlaneQuery());
     }
 
-    [HttpPost("vehicle/car")]
-    public async Task<IActionResult> CreateCar(CarEntity car)
+    [HttpGet("plane/{id}")]
+    public async Task<PlaneEntity?> Get(string id)
     {
-        var success = await _mediator.Send(new CreateCarCommand(car.Id, car.Speed, car.State));
-        if (!success)
+        var plane = await _mediator.Send(new GetPlaneQuery(id));
+        return plane;
+    }
+
+    [HttpGet("plane/getpermittedtriggers/{id}")]
+    public async Task<IEnumerable<string>> GetPermittedTriggers(string id)
+    {
+        return await _mediator.Send(new GetPlaneGetPermittedTriggersQuery(id));
+    }
+
+    [HttpPost("plane")]
+    public async Task<IActionResult> Create(PlaneEntity plane)
+    {
+        var createdPlane = await _mediator.Send(new CreatePlaneCommand(plane.Id));
+        if (createdPlane == null)
         {
             return StatusCode((int)HttpStatusCode.InternalServerError);
         }
-
-        return Created();
+        
+        return CreatedAtAction(nameof(Get), new { id = createdPlane.Id }, createdPlane);
     }
 
-    [HttpPost("vehicle/plane")]
-    public async Task<IActionResult> CreatePlane(PlaneEntity plane)
+    [HttpPost("plane/action/{id}")]
+    public async Task<IActionResult> TakeAction(string id, [FromQuery] string action)
     {
-        var success = await _mediator.Send(new CreatePlaneCommand(plane.Id, plane.Speed, plane.State));
-        if (!success)
-        {
-            return StatusCode((int)HttpStatusCode.InternalServerError);
-        }
-
-        return Created();
-    }
-
-    /*
-    [HttpPost("car/nextstate/{id}")]
-    public async Task<IActionResult> GoToNextState(string id)
-    {
-        var success = await _mediator.Send(new GoToNextCarStateCommand(id));
-        if (!success)
-        {
-            return StatusCode((int)HttpStatusCode.InternalServerError);
-        }
+        await _mediator.Send(new TakePlaneActionCommand(id, action));
         return Ok();    
-    }
-    */
-    // [HttpPost("vehicle/{id}/begin")]
-    // public async Task<IActionResult> StartVehicle(string id)
-    // {
-    //     var result = await _mediator.Send(new BeginBuildCarCommand() {Id = id});
-    //     return result ? Ok() : BadRequest();
-    // }
-}
+    }}

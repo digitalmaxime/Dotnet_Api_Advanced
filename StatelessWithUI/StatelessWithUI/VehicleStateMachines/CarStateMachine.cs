@@ -118,6 +118,12 @@ public class CarStateMachine : IVehicleStateMachine
                 SaveState();
                 Console.WriteLine($"\tSpeed is {CurrentSpeed}");
             })
+            .InternalTransition(CarAction.Accelerate, () =>
+            {
+                CurrentSpeed += 35;
+                SaveState();
+                Console.WriteLine($"\tSpeed is {CurrentSpeed}");
+            })
             .InternalTransitionIf<int>(_decelerateWithParam, _ => CurrentSpeed > 0, (speed, _) =>
             {
                 CurrentSpeed = speed;
@@ -135,6 +141,12 @@ public class CarStateMachine : IVehicleStateMachine
         };
 
         carStateRepository.Save(carEntity);
+    }
+
+    public void GoToNextState()
+    {
+        var nextAvailableAction = _stateMachine.GetPermittedTriggers().OrderDescending().FirstOrDefault();
+        _stateMachine.Fire(nextAvailableAction);
     }
 
     public void TakeAction(string actionString)

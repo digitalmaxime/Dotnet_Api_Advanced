@@ -22,17 +22,22 @@ public class CarService : ICarService
         return await _carStateRepository.GetAll();
     }
 
-    public async Task<bool> CreateAsync(string vehicleId)
+    public async Task<CarEntity?> CreateAsync(string vehicleId)
     {
         try
         {
-            _vehicleFactory.GetOrAddVehicleStateMachine(VehicleType.Car, vehicleId);
-            return true;
+            var stateMachine = _vehicleFactory.GetOrAddVehicleStateMachine(VehicleType.Car, vehicleId);
+            return new CarEntity()
+            {
+                Id = stateMachine.Id, 
+                State = Enum.Parse<CarStateMachine.CarState>(stateMachine.GetCurrentState),
+                Speed = 0
+            };
         }
         catch (Exception e)
         {
             Console.WriteLine(e.Message);
-            return false;
+            return null;
         }
     }
 
@@ -47,7 +52,7 @@ public class CarService : ICarService
         return await _carStateRepository.GetById(vehicleId);
     }
 
-    public IEnumerable<string> GetPermittedTriggers(string vehicleId)
+    public async Task<IEnumerable<string>> GetPermittedTriggers(string vehicleId)
     {
         var stateMachine = _vehicleFactory.GetOrAddVehicleStateMachine(VehicleType.Car, vehicleId);
         return stateMachine.GetPermittedTriggers;
@@ -56,12 +61,7 @@ public class CarService : ICarService
     public void GoToNextState(string vehicleId)
     {
         var stateMachine = _vehicleFactory.GetOrAddVehicleStateMachine(VehicleType.Car, vehicleId);
-        var nextAvailableStates = stateMachine.GetPermittedTriggers;
-        IEnumerable<string> availableStates = nextAvailableStates as string[] ?? nextAvailableStates.ToArray();
-        if (availableStates.Any())
-        {
-            stateMachine.TakeAction(availableStates.First());
-        }
+        stateMachine.GoToNextState();
     }
 
     public void TakeAction(string vehicleId, string action)
