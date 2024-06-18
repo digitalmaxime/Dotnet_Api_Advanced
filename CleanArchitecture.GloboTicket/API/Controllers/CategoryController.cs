@@ -2,12 +2,13 @@ using Application.Features.Categories.Commands.CreateCategory;
 using Application.Features.Categories.Queries.GetCategoriesList;
 using Application.Features.Categories.Queries.GetCategoriesListWithEvents;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
 
-[Route("api/[controller]")]
 [ApiController]
+[Route("api/[controller]")]
 public class CategoryController : ControllerBase
 {
     private readonly IMediator _mediator;
@@ -48,6 +49,7 @@ public class CategoryController : ControllerBase
     }
     
     [HttpPost(Name = "AddCategory")]
+    [Authorize]
     public async Task<ActionResult<CreateCategoryCommandResponse>> Create([FromBody] CreateCategoryCommand createCategoryCommand)
     {
         var response = await _mediator.Send(createCategoryCommand);

@@ -1,14 +1,42 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
+import {Car, CarState} from "../Domain/CarConstants";
+import {HttpClient} from "@angular/common/http";
+import {FormBuilder, FormGroup} from "@angular/forms";
 
 @Component({
   selector: 'app-counter-component',
-  templateUrl: './counter.component.html'
+  templateUrl: './counter.component.html',
+  styleUrls: ['./counter.component.css']
 })
 export class CounterComponent {
-  public currentCount = 0;
+  private _carId: string | undefined;
 
-  public incrementCounter() {
-    this.currentCount++;
+  get carId(): string | undefined {
+    return this.car ? this.car.id : this._carId;
   }
+
+  set carId(value: string | undefined) {
+    this._carId = value;
+
+    if (this.car) {
+      this.car.id = value || '';
+    }
+  }
+
+  public car?: Car;
+  form: FormGroup;
+
+  constructor(private http: HttpClient, builder: FormBuilder) {
+    this.form = builder.group({
+      first: "",
+    });
+  }
+
+  public getCarById(): void {
+    this.http.get<Car>(`https://localhost:7276/api/VehicleStateMachine/vehicle/${this.carId || "Id2"}`).subscribe(result => {
+      this.car = result;
+    }, error => console.error(error));
+  }
+
 }
 

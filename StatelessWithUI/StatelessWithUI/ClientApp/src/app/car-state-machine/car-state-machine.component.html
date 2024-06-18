@@ -1,0 +1,15 @@
+<div class="car-info">
+  <p class="car-info-item">Car Id : {{car.id}},</p>
+  <p class="car-info-item">State : {{ CarState[car!.state] }},</p>
+  <p class="car-info-item">Speed {{ car.speed }}</p>
+</div>
+<br>
+<div class="state-machine-states">
+  <ng-container *ngFor="let state of states">
+    <div class="inner-state">
+      <div *ngIf="car.state == state" class="rounded-green-circle"></div>
+      <div *ngIf="car.state > state" class="rounded-circle"></div>
+      {{CarState[+state]}}
+    </div>
+  </ng-container>
+</div>

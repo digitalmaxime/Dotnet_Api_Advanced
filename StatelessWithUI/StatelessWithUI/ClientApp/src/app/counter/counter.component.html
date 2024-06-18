@@ -1,8 +1,20 @@
-<h1>Counter</h1>
+<h1>State Machine</h1>
 
-<p>This is a simple example of an Angular component.</p>
+<div class="car-form">
 
-<p aria-live="polite">Current count: <strong>{{ currentCount }}</strong></p>
+  <h4 aria-live="polite">car state-machine</h4>
 
-<button class="btn btn-primary" (click)="incrementCounter()">Increment</button>
+  <form [formGroup]="form">
+    <input name="first" formControlName="first" placeholder="Id1" [(ngModel)]="carId"/>
+  </form>
+  <br>
+  <button class="btn btn-primary" (click)="getCarById()">Send</button>
+</div>
+
+<hr>
+
+<div *ngIf="car && car?.id">
+  <app-car-state-machine [car]="car"></app-car-state-machine>
+</div>
+
 

@@ -1,0 +1,35 @@
+.state-machine-states {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.inner-state {
+  margin: 5px;
+}
+
+.rounded-circle {
+  border-radius: 50%;
+  background-color: green;
+  height: 7px;
+  width: 7px;
+}
+
+.rounded-green-circle {
+  border-radius: 50%;
+  background-color: darkslategray;
+  height: 10px;
+  width: 10px;
+}
+
+.car-info {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.car-info-item {
+  margin: 3px;
+}
