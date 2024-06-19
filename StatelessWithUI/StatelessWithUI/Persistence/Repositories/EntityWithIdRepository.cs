@@ -5,7 +5,7 @@ using StatelessWithUI.Persistence.Domain;
 
 namespace StatelessWithUI.Persistence.Repositories;
 
-public class EntityWithIdRepository<T> : IEntityWithIdRepository<T> where T : EntityWithId
+public class EntityWithIdRepository<T> : IEntityWithIdRepository<T> where T : EntityBase
 {
     private readonly VehicleDbContext _dbContext;
 
@@ -14,11 +14,14 @@ public class EntityWithIdRepository<T> : IEntityWithIdRepository<T> where T : En
         _dbContext = dbContext;
     }
 
-    public async Task<bool> Save(T entity)
+    public async Task<bool> SaveAsync(T entity)
     {
         var id = entity.Id;
+        
         var vehicleEntity =
-            await _dbContext.Set<T>().AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+            await _dbContext.Set<T>()
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.Id == id);
 
         if (vehicleEntity == null)
         {
@@ -35,11 +38,17 @@ public class EntityWithIdRepository<T> : IEntityWithIdRepository<T> where T : En
 
     public async Task<T?> GetById(string id)
     {
-        return await _dbContext.Set<T>().AsNoTracking().FirstOrDefaultAsync(c => c.Id == id);
+        return await _dbContext.Set<T>()
+            .Include(x => x.State)
+            .AsNoTracking()
+            .FirstOrDefaultAsync(c => c.Id == id);
     }
 
     public async Task<List<T>> GetAll()
     {
-        return await _dbContext.Set<T>().AsNoTracking().ToListAsync();
+        return await _dbContext.Set<T>()
+            .Include(x => x.State)
+            .AsNoTracking()
+            .ToListAsync();
     }
 }

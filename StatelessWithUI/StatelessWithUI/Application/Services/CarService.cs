@@ -3,6 +3,7 @@ using StatelessWithUI.Persistence.Contracts;
 using StatelessWithUI.Persistence.Domain;
 using StatelessWithUI.VehicleStateMachineFactory;
 using StatelessWithUI.VehicleStateMachines;
+using StatelessWithUI.VehicleStateMachines.CarStateMachine;
 
 namespace StatelessWithUI.Application.Services;
 
@@ -30,8 +31,8 @@ public class CarService : ICarService
             return new CarEntity()
             {
                 Id = stateMachine.Id, 
-                State = Enum.Parse<CarStateMachine.CarState>(stateMachine.GetCurrentState),
-                Speed = 0
+                State = stateMachine.State,
+                HorsePower = 0
             };
         }
         catch (Exception e)
@@ -44,7 +45,7 @@ public class CarService : ICarService
     public string GetCarState(string vehicleId)
     {
         var stateMachine = _vehicleFactory.GetOrAddVehicleStateMachine(VehicleType.Car, vehicleId);
-        return stateMachine.GetCurrentState;
+        return stateMachine.CurrentState;
     }
     
     public async Task<CarEntity?> GetCarEntity(string vehicleId)

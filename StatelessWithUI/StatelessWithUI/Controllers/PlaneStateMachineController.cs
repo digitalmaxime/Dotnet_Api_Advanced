@@ -32,9 +32,10 @@ public class PlaneStateMachineController : ControllerBase
     }
 
     [HttpGet("plane/getpermittedtriggers/{id}")]
-    public async Task<IEnumerable<string>> GetPermittedTriggers(string id)
+    public async Task<ActionResult<IEnumerable<string>>> GetPermittedTriggers(string id)
     {
-        return await _mediator.Send(new GetPlaneGetPermittedTriggersQuery(id));
+        var result =await _mediator.Send(new GetPlaneGetPermittedTriggersQuery(id));
+        return result == null ? NotFound() : Ok(result);
     }
 
     [HttpPost("plane")]
@@ -52,6 +53,6 @@ public class PlaneStateMachineController : ControllerBase
     [HttpPost("plane/action/{id}")]
     public async Task<IActionResult> TakeAction(string id, [FromQuery] string action)
     {
-        await _mediator.Send(new TakePlaneActionCommand(id, action));
-        return Ok();    
+        var result = await _mediator.Send(new TakePlaneActionCommand(id, action));
+        return result ? Ok() : BadRequest();    
     }}

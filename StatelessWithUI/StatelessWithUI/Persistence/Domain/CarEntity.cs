@@ -1,9 +1,8 @@
-using StatelessWithUI.VehicleStateMachines;
+using StatelessWithUI.VehicleStateMachines.PlaneStateMachine;
 
 namespace StatelessWithUI.Persistence.Domain;
 
-public class CarEntity: EntityWithId
+public class CarEntity: EntityBase
 {
-    public int Speed { get; set; }
-    public CarStateMachine.CarState State { get; set; }
+    public int HorsePower { get; set; }
 }

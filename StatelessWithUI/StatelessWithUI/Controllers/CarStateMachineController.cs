@@ -21,7 +21,7 @@ public class CarStateMachineController: ControllerBase
     }
     
     [HttpGet("car")]
-    public async Task<IEnumerable<EntityWithId>> GetCars()
+    public async Task<IEnumerable<EntityBase>> GetCars()
     {
         return await _mediator.Send(new GetAllCarsQuery());
     }

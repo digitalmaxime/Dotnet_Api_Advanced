@@ -3,7 +3,7 @@ using StatelessWithUI.Application.Services;
 
 namespace StatelessWithUI.Application.Features.PlaneStateMachine.Commands;
 
-public class TakePlaneActionCommandHandler : IRequestHandler<TakePlaneActionCommand>
+public class TakePlaneActionCommandHandler : IRequestHandler<TakePlaneActionCommand, bool>
 {
     private readonly IPlaneService _planeService;
 
@@ -12,8 +12,8 @@ public class TakePlaneActionCommandHandler : IRequestHandler<TakePlaneActionComm
         _planeService = planeService;
     }
 
-    public async Task Handle(TakePlaneActionCommand request, CancellationToken cancellationToken)
+    public async Task<bool> Handle(TakePlaneActionCommand request, CancellationToken cancellationToken)
     {
-        _planeService.TakeAction(request.Id, request.Action);
+        return _planeService.TakeAction(request.Id, request.Action).GetAwaiter().GetResult();
     }
 }

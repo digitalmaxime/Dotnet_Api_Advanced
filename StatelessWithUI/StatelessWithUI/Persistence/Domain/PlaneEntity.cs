@@ -1,9 +1,7 @@
-using StatelessWithUI.VehicleStateMachines;
+using StatelessWithUI.VehicleStateMachines.PlaneStateMachine;
 
 namespace StatelessWithUI.Persistence.Domain;
 
-public class PlaneEntity: EntityWithId
+public class PlaneEntity: EntityBase
 {
-    public int Speed { get; set; }
-    public PlaneStateMachine.PlaneState State { get; set; }
 }

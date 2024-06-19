@@ -1,5 +1,7 @@
 using StatelessWithUI.Persistence.Constants;
 using StatelessWithUI.VehicleStateMachines;
+using StatelessWithUI.VehicleStateMachines.CarStateMachine;
+using StatelessWithUI.VehicleStateMachines.PlaneStateMachine;
 
 namespace StatelessWithUI.VehicleStateMachineFactory;
 
@@ -46,5 +48,22 @@ public class VehicleFactory : IVehicleFactory
             VehicleType.Plane => GetOrAddPlaneStateMachine(vehicleId),
             _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
         };
+    }
+
+    public IVehicleStateMachine? GetVehicleStateMachine(VehicleType vehicleType, string vehicleId)
+    {
+        switch (vehicleType)
+        {
+            case VehicleType.Car:
+                _carStateMachineDictionary.TryGetValue(vehicleId, out var carStateMachine);
+                return carStateMachine;
+
+            case VehicleType.Plane:
+                _planeStateMachineDictionary.TryGetValue(vehicleId, out var planeStateMachine);
+                return planeStateMachine;
+
+            default:
+                throw new ArgumentOutOfRangeException(nameof(vehicleType), vehicleType, null);
+        }
     }
 }
