@@ -9,23 +9,23 @@ namespace StatelessWithUI.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class PlaneStateMachineController : ControllerBase
+public class PlaneController : ControllerBase
 {
     private readonly IMediator _mediator;
 
-    public PlaneStateMachineController(IMediator mediator)
+    public PlaneController(IMediator mediator)
     {
         _mediator = mediator;
     }
 
     [HttpGet("plane")]
-    public async Task<IEnumerable<PlaneEntity>>? Get()
+    public async Task<IEnumerable<PlaneSnapshotEntity>>? Get()
     {
         return await _mediator.Send(new GetAllPlaneQuery());
     }
 
     [HttpGet("plane/{id}")]
-    public async Task<PlaneEntity?> Get(string id)
+    public async Task<PlaneSnapshotEntity?> Get(string id)
     {
         var plane = await _mediator.Send(new GetPlaneQuery(id));
         return plane;

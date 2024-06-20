@@ -6,9 +6,9 @@ namespace StatelessWithUI.VehicleStateMachines;
 public interface IVehicleStateMachine
 {
     string Id { get; }
+    public string StateId { get; set; }
     IEnumerable<string> GetPermittedTriggers { get; }
     string CurrentStateName { get; }
-    Enum State { get; }
+    Enum StateEnum { get; }
     void TakeAction(string actionString);
-    void GoToNextState();
 }

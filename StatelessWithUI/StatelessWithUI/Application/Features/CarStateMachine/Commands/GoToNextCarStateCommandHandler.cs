@@ -14,6 +14,6 @@ public class GoToNextCarStateCommandHandler : IRequestHandler<GoToNextCarStateCo
 
     public async Task Handle(GoToNextCarStateCommand request, CancellationToken cancellationToken)
     {
-        _carService.GoToNextState(request.Id);
+        throw new NotImplementedException();
     }
 }

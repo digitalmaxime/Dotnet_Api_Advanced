@@ -2,6 +2,6 @@ using StatelessWithUI.Persistence.Domain;
 
 namespace StatelessWithUI.Persistence.Contracts;
 
-public interface ICarRepository : IEntityWithIdRepository<CarEntity>
+public interface ICarRepository : IEntityWithIdRepository<CarSnapshotEntity>
 {
 }

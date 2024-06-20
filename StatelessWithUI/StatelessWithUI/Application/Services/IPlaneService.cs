@@ -4,11 +4,10 @@ namespace StatelessWithUI.Application.Services;
 
 public interface  IPlaneService
 {
-    Task<IEnumerable<PlaneEntity>> GetAll();
-    Task<VehicleEntityBase?> CreateAsync(string vehicleId);
+    Task<IEnumerable<PlaneSnapshotEntity>> GetAll();
+    Task<VehicleSnapshotEntityBase?> CreateAsync(string vehicleId);
     string GetPlaneState(string vehicleId);
-    Task<PlaneEntity?> GetPlaneEntity(string vehicleId);
+    Task<PlaneSnapshotEntity?> GetPlaneEntity(string vehicleId);
     Task<IEnumerable<string>?> GetPermittedTriggers(string vehicleId);
-    void GoToNextState(string vehicleId);
     Task<bool> TakeAction(string vehicleId, string action);
 }

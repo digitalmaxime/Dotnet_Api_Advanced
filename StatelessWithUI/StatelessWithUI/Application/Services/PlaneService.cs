@@ -2,7 +2,6 @@ using StatelessWithUI.Persistence.Constants;
 using StatelessWithUI.Persistence.Contracts;
 using StatelessWithUI.Persistence.Domain;
 using StatelessWithUI.VehicleStateMachineFactory;
-using StatelessWithUI.VehicleStateMachines.PlaneStateMachine;
 
 namespace StatelessWithUI.Application.Services;
 
@@ -17,20 +16,21 @@ public class PlaneService : IPlaneService
         _planeRepository = planeRepository;
     }
 
-    public async Task<IEnumerable<PlaneEntity>> GetAll()
+    public async Task<IEnumerable<PlaneSnapshotEntity>> GetAll()
     {
         return await _planeRepository.GetAll();
     }
 
-    public async Task<VehicleEntityBase?> CreateAsync(string vehicleId)
+    public async Task<VehicleSnapshotEntityBase?> CreateAsync(string vehicleId)
     {
         try
         {
             var stateMachine = _vehicleFactory.GetOrAddVehicleStateMachine(VehicleType.Plane, vehicleId);
-            return new PlaneEntity()
+            return new PlaneSnapshotEntity()
             {
                 Id = stateMachine.Id,
-                StateEnumName = stateMachine.State.ToString()
+                CurrentStateEnumName = stateMachine.StateEnum.ToString(),
+                StateId = stateMachine.StateId
             };
         }
         catch (Exception e)
@@ -46,7 +46,7 @@ public class PlaneService : IPlaneService
         return stateMachine.CurrentStateName;
     }
 
-    public async Task<PlaneEntity?> GetPlaneEntity(string vehicleId)
+    public async Task<PlaneSnapshotEntity?> GetPlaneEntity(string vehicleId)
     {
         return await _planeRepository.GetById(vehicleId);
     }
@@ -55,12 +55,6 @@ public class PlaneService : IPlaneService
     {
         var stateMachine = _vehicleFactory.GetVehicleStateMachine(VehicleType.Plane, vehicleId);
         return stateMachine?.GetPermittedTriggers;
-    }
-
-    public void GoToNextState(string vehicleId)
-    {
-        var stateMachine = _vehicleFactory.GetVehicleStateMachine(VehicleType.Plane, vehicleId);
-        stateMachine?.GoToNextState();
     }
 
     public async Task<bool> TakeAction(string vehicleId, string action)

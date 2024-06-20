@@ -11,32 +11,32 @@ namespace StatelessWithUI.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class CarStateMachineController: ControllerBase
+public class CarController: ControllerBase
 {
     private readonly IMediator _mediator;
 
-    public CarStateMachineController(IMediator mediator)
+    public CarController(IMediator mediator)
     {
         _mediator = mediator;
     }
     
     [HttpGet("car")]
-    public async Task<IEnumerable<VehicleEntityBase>> GetCars()
+    public async Task<IEnumerable<VehicleSnapshotEntityBase>> GetCars()
     {
         return await _mediator.Send(new GetAllCarsQuery());
     }
 
     [HttpGet("car/{id}")]
-    public async Task<CarEntity?> Get(string id)
+    public async Task<CarSnapshotEntity?> Get(string id)
     {
         var vehicle = await _mediator.Send(new GetCarByIdQuery(id));
         return vehicle;
     }
         
     [HttpPost("car")]
-    public async Task<IActionResult> Create(CarEntity car)
+    public async Task<IActionResult> Create(CarSnapshotEntity carSnapshot)
     {
-        var createdCar = await _mediator.Send(new CreateCarCommand(car.Id));
+        var createdCar = await _mediator.Send(new CreateCarCommand(carSnapshot.Id));
         if (createdCar == null)
         {
             return StatusCode((int)HttpStatusCode.InternalServerError);

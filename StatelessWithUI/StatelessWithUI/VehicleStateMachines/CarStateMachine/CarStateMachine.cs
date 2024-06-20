@@ -31,11 +31,12 @@ public class CarStateMachine : IVehicleStateMachine
     }
 
     public string Id { get; set; }
+    public string StateId { get; set; }
     private int HorsePower { get; set; }
     private bool _isEnginBuilt { get; set; }
     private bool _isMainFrameBuilt { get; set; }
-    public Enum State { get; private set; }
-    public string CurrentStateName => State.ToString();
+    public Enum StateEnum { get; private set; }
+    public string CurrentStateName => StateEnum.ToString();
     private readonly StateMachine<CarState, CarAction> _stateMachine;
     public IEnumerable<string> GetPermittedTriggers => _stateMachine.GetPermittedTriggers().Select(x => x.ToString());
     
@@ -48,10 +49,10 @@ public class CarStateMachine : IVehicleStateMachine
         _serviceScopeFactory = serviceScopeFactory;
 
         _stateMachine = new StateMachine<CarState, CarAction>(
-            () => (CarState)State,
+            () => (CarState)StateEnum,
             (s) =>
             {
-                State = s;
+                StateEnum = s;
                 SaveState();
             }
         );
@@ -72,15 +73,15 @@ public class CarStateMachine : IVehicleStateMachine
         var car = await carStateRepository.GetById(id);
         if (car == null)
         {
-            car = new CarEntity()
+            car = new CarSnapshotEntity()
             {
-                Id = id, HorsePower = 0, StateEnumName = CarState.InitialState.ToString()
+                Id = id, HorsePower = 0, CurrentStateEnumName = CarState.InitialState.ToString()
             };
 
             await carStateRepository.SaveAsync(car);
         }
 
-        State = Enum.Parse<CarState>(car.StateEnumName);
+        StateEnum = Enum.Parse<CarState>(car.CurrentStateEnumName);
         HorsePower = car.HorsePower;
     }
 
@@ -147,9 +148,9 @@ public class CarStateMachine : IVehicleStateMachine
     {
         using var scope = _serviceScopeFactory.CreateScope();
         var carStateRepository = scope.ServiceProvider.GetRequiredService<ICarRepository>();
-        var carEntity = new CarEntity()
+        var carEntity = new CarSnapshotEntity()
         {
-            Id = Id, HorsePower = HorsePower, StateEnumName = State.ToString()
+            Id = Id, HorsePower = HorsePower, CurrentStateEnumName = StateEnum.ToString()
         };
 
         carStateRepository.SaveAsync(carEntity);

@@ -18,20 +18,20 @@ public class CarService : ICarService
         _carRepository = carRepository;
     }
 
-    public async Task<IEnumerable<CarEntity>> GetAll()
+    public async Task<IEnumerable<CarSnapshotEntity>> GetAll()
     {
         return await _carRepository.GetAll();
     }
 
-    public async Task<CarEntity?> CreateAsync(string vehicleId)
+    public async Task<CarSnapshotEntity?> CreateAsync(string vehicleId)
     {
         try
         {
             var stateMachine = _vehicleFactory.GetOrAddVehicleStateMachine(VehicleType.Car, vehicleId);
-            return new CarEntity()
+            return new CarSnapshotEntity()
             {
                 Id = stateMachine.Id, 
-                StateEnumName = stateMachine.State.ToString(),
+                CurrentStateEnumName = stateMachine.StateEnum.ToString(),
                 HorsePower = 0
             };
         }
@@ -48,7 +48,7 @@ public class CarService : ICarService
         return stateMachine.CurrentStateName;
     }
     
-    public async Task<CarEntity?> GetCarEntity(string vehicleId)
+    public async Task<CarSnapshotEntity?> GetCarEntity(string vehicleId)
     {
         return await _carRepository.GetById(vehicleId);
     }
@@ -61,8 +61,7 @@ public class CarService : ICarService
 
     public void GoToNextState(string vehicleId)
     {
-        var stateMachine = _vehicleFactory.GetOrAddVehicleStateMachine(VehicleType.Car, vehicleId);
-        stateMachine.GoToNextState();
+        throw new NotImplementedException();
     }
 
     public void TakeAction(string vehicleId, string action)

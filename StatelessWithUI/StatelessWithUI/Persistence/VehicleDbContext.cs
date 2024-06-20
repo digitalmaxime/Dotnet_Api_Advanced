@@ -36,27 +36,27 @@ public class VehicleDbContext : DbContext
         modelBuilder.Entity<BuildTask>()
             .HasKey(x => x.Id);
         
-        modelBuilder.Entity<CarEntity>()
-            .HasData(new CarEntity()
+        modelBuilder.Entity<CarSnapshotEntity>()
+            .HasData(new CarSnapshotEntity()
                 {
                     Id = "Id1",
                     HorsePower = 0,
                     StateId = "StateId1",
-                    StateEnumName = CarStateMachine.CarState.InitialState.ToString()
+                    CurrentStateEnumName = CarStateMachine.CarState.InitialState.ToString()
                 },
-                new CarEntity()
+                new CarSnapshotEntity()
                 {
                     Id = "Id2",
                     HorsePower = 0,
                     StateId = "StateId2",
-                    StateEnumName = CarStateMachine.CarState.InitialState.ToString()
+                    CurrentStateEnumName = CarStateMachine.CarState.InitialState.ToString()
                 });
 
         base.OnModelCreating(modelBuilder);
     }
 
-    public DbSet<CarEntity> CarEntity { get; set; } = default!;
-    public DbSet<PlaneEntity> PlaneEntity { get; set; } = default!;
+    public DbSet<CarSnapshotEntity> CarEntity { get; set; } = default!;
+    public DbSet<PlaneSnapshotEntity> PlaneEntity { get; set; } = default!;
     public DbSet<InitialState> InitialState { get; set; } = default!;
     public DbSet<DesignState> DesignState { get; set; } = default!;
     public DbSet<BuildState> BuildState { get; set; } = default!;

@@ -27,7 +27,7 @@ public static class StartupExtensions
         builder.Services.AddScoped<IPlaneService, PlaneService>();
         builder.Services.AddScoped<ICarRepository, CarRepository>();
         builder.Services.AddScoped<IPlaneRepository, PlaneRepository>();
-        builder.Services.AddScoped<IPlaneStateRepository, PlaneBuildStateRepository>();
+        builder.Services.AddScoped<IPlaneStateRepository, PlaneStateRepository>();
         builder.Services.AddSingleton<IVehicleFactory, VehicleFactory>();
         builder.Services.AddMediatR(cfg =>
             cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));

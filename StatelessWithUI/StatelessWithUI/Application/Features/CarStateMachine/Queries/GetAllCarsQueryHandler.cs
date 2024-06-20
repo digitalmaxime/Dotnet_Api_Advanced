@@ -6,7 +6,7 @@ using StatelessWithUI.Persistence.Domain;
 
 namespace StatelessWithUI.Application.Features.CarStateMachine.Queries;
 
-public class GetAllCarsQueryHandler: IRequestHandler<GetAllCarsQuery, IEnumerable<CarEntity>>
+public class GetAllCarsQueryHandler: IRequestHandler<GetAllCarsQuery, IEnumerable<CarSnapshotEntity>>
 {
     private readonly ICarService _carService;
 
@@ -15,7 +15,7 @@ public class GetAllCarsQueryHandler: IRequestHandler<GetAllCarsQuery, IEnumerabl
         _carService = carService;
     }
     
-    public async Task<IEnumerable<CarEntity>> Handle(GetAllCarsQuery request, CancellationToken cancellationToken)
+    public async Task<IEnumerable<CarSnapshotEntity>> Handle(GetAllCarsQuery request, CancellationToken cancellationToken)
     {
         return await _carService.GetAll();
     }

@@ -4,4 +4,4 @@ using StatelessWithUI.Persistence.Domain;
 
 namespace StatelessWithUI.Application.Features.CarStateMachine.Queries;
 
-public record GetAllCarsQuery: IRequest<IEnumerable<CarEntity>>;
+public record GetAllCarsQuery: IRequest<IEnumerable<CarSnapshotEntity>>;

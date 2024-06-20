@@ -1,11 +1,10 @@
 using Microsoft.EntityFrameworkCore;
-using StatelessWithUI.Persistence.Constants;
 using StatelessWithUI.Persistence.Contracts;
 using StatelessWithUI.Persistence.Domain;
 
 namespace StatelessWithUI.Persistence.Repositories;
 
-public class EntityWithIdRepository<T> : IEntityWithIdRepository<T> where T : VehicleEntityBase
+public class EntityWithIdRepository<T> : IEntityWithIdRepository<T> where T : VehicleSnapshotEntityBase
 {
     private readonly VehicleDbContext _dbContext;
 
@@ -16,12 +15,10 @@ public class EntityWithIdRepository<T> : IEntityWithIdRepository<T> where T : Ve
 
     public async Task<bool> SaveAsync(T entity)
     {
-        var id = entity.Id;
-        
         var vehicleEntity =
             await _dbContext.Set<T>()
                 .AsNoTracking()
-                .FirstOrDefaultAsync(x => x.Id == id);
+                .FirstOrDefaultAsync(x => x.Id == entity.Id);
 
         if (vehicleEntity == null)
         {
@@ -30,9 +27,8 @@ public class EntityWithIdRepository<T> : IEntityWithIdRepository<T> where T : Ve
         else
         {
             _dbContext.Set<T>().Update(entity);
-            // vehicleEntity.StateEnumName = entity.StateEnumName;
         }
-        
+
         try
         {
             var n = await _dbContext.SaveChangesAsync();
@@ -48,7 +44,6 @@ public class EntityWithIdRepository<T> : IEntityWithIdRepository<T> where T : Ve
     public async Task<T?> GetById(string id)
     {
         return await _dbContext.Set<T>()
-            // .Include(x => x.State)
             .AsNoTracking()
             .FirstOrDefaultAsync(c => c.Id == id);
     }
@@ -56,7 +51,6 @@ public class EntityWithIdRepository<T> : IEntityWithIdRepository<T> where T : Ve
     public async Task<List<T>> GetAll()
     {
         return await _dbContext.Set<T>()
-            // .Include(x => x.StateEnumName)
             .AsNoTracking()
             .ToListAsync();
     }
