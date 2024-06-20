@@ -23,18 +23,8 @@ public class VehicleDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        // modelBuilder.Entity<VehicleEntityBase>()
-        //     .Property(x => x.StateEnum)
-        //     .HasConversion<string>();
-        
-        modelBuilder.Entity<StateBase>()
-            .HasKey(x => x.Id);
-        
         modelBuilder.Entity<BuildState>()
             .Ignore(x => x.Graph);
-        
-        modelBuilder.Entity<BuildTask>()
-            .HasKey(x => x.Id);
         
         modelBuilder.Entity<CarSnapshotEntity>()
             .HasData(new CarSnapshotEntity()
