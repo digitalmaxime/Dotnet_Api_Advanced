@@ -2,7 +2,6 @@ using StatelessWithUI.VehicleStateMachines.PlaneStateMachine;
 
 namespace StatelessWithUI.Persistence.Domain;
 
-public class CarEntity: EntityBase
+public class PlaneVehicleEntity: VehicleEntityBase
 {
-    public int HorsePower { get; set; }
 }

@@ -8,25 +8,25 @@ namespace StatelessWithUI.Application.Services;
 public class PlaneService : IPlaneService
 {
     private readonly IVehicleFactory _vehicleFactory;
-    private readonly IPlaneStateRepository _planeStateRepository;
+    private readonly IPlaneRepository _planeRepository;
 
-    public PlaneService(IVehicleFactory vehicleFactory, IPlaneStateRepository planeStateRepository)
+    public PlaneService(IVehicleFactory vehicleFactory, IPlaneRepository planeRepository)
     {
         _vehicleFactory = vehicleFactory;
-        _planeStateRepository = planeStateRepository;
+        _planeRepository = planeRepository;
     }
 
-    public async Task<IEnumerable<PlaneEntity>> GetAll()
+    public async Task<IEnumerable<PlaneVehicleEntity>> GetAll()
     {
-        return await _planeStateRepository.GetAll();
+        return await _planeRepository.GetAll();
     }
 
-    public async Task<EntityBase?> CreateAsync(string vehicleId)
+    public async Task<VehicleEntityBase?> CreateAsync(string vehicleId)
     {
         try
         {
             var stateMachine = _vehicleFactory.GetOrAddVehicleStateMachine(VehicleType.Plane, vehicleId);
-            return new PlaneEntity()
+            return new PlaneVehicleEntity()
             {
                 Id = stateMachine.Id,
                 State = stateMachine.State
@@ -45,9 +45,9 @@ public class PlaneService : IPlaneService
         return stateMachine.CurrentState;
     }
 
-    public async Task<PlaneEntity?> GetPlaneEntity(string vehicleId)
+    public async Task<PlaneVehicleEntity?> GetPlaneEntity(string vehicleId)
     {
-        return await _planeStateRepository.GetById(vehicleId);
+        return await _planeRepository.GetById(vehicleId);
     }
 
     public async Task<IEnumerable<string>?> GetPermittedTriggers(string vehicleId)

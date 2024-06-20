@@ -4,7 +4,7 @@ using StatelessWithUI.Persistence.Domain;
 
 namespace StatelessWithUI.Application.Features.PlaneStateMachine.Commands;
 
-public class CreatePlaneCommandHandler : IRequestHandler<CreatePlaneCommand, EntityBase?>
+public class CreatePlaneCommandHandler : IRequestHandler<CreatePlaneCommand, VehicleEntityBase?>
 {
     private readonly IPlaneService _planeService;
 
@@ -13,7 +13,7 @@ public class CreatePlaneCommandHandler : IRequestHandler<CreatePlaneCommand, Ent
         _planeService = planeService;
     }
 
-    public async Task<EntityBase?> Handle(CreatePlaneCommand request, CancellationToken cancellationToken)
+    public async Task<VehicleEntityBase?> Handle(CreatePlaneCommand request, CancellationToken cancellationToken)
     {
         return await _planeService.CreateAsync(request.Id);
     }

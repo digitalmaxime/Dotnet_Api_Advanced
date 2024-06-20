@@ -11,9 +11,9 @@ public class Graph<T> where T : class
 
     public Node<T> AddNode(T value)
     {
-        if (nodes.ContainsKey(value))
+        if (nodes.TryGetValue(value, out var addNode))
         {
-            return nodes[value];
+            return addNode;
         }
 
         var node = new Node<T>(value);

@@ -1,11 +1,8 @@
 using StatelessWithUI.VehicleStateMachines.PlaneStateMachine;
+using StatelessWithUI.VehicleStateMachines.PlaneStateMachine.PlaneStates;
 
 namespace StatelessWithUI.VehicleStateMachines.CarStateMachine.CarStates;
 
-public class CarDesignedState: VehicleStateBase
+public class CarDesignedState: StateBase
 {
-    protected override string GetStateName()
-    {
-        throw new NotImplementedException();
-    }
 }

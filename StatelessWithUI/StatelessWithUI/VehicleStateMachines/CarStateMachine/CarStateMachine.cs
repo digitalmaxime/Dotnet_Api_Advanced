@@ -4,6 +4,7 @@ using StatelessWithUI.Persistence.Contracts;
 using StatelessWithUI.Persistence.Domain;
 using StatelessWithUI.VehicleStateMachines.CarStateMachine.CarStates;
 using StatelessWithUI.VehicleStateMachines.PlaneStateMachine;
+using StatelessWithUI.VehicleStateMachines.PlaneStateMachine.PlaneStates;
 using static System.Int32;
 
 namespace StatelessWithUI.VehicleStateMachines.CarStateMachine;
@@ -21,11 +22,11 @@ public class CarStateMachine : IVehicleStateMachine
         Assembled,
         Painted
     }
-    public VehicleInitialState InitialState { get; set; }
-    public VehicleInitialState Designed { get; set; }
-    public VehicleInitialState MainFrameBuilt { get; set; }
-    public VehicleInitialState EngineBuilt { get; set; }
-    public VehicleInitialState Assembled { get; set; }
+    public InitialState InitialState { get; set; }
+    public InitialState Designed { get; set; }
+    public InitialState MainFrameBuilt { get; set; }
+    public InitialState EngineBuilt { get; set; }
+    public InitialState Assembled { get; set; }
     
     public enum CarAction
     {
@@ -41,20 +42,20 @@ public class CarStateMachine : IVehicleStateMachine
     private int HorsePower { get; set; }
     private bool _isEnginBuilt { get; set; }
     private bool _isMainFrameBuilt { get; set; }
-    public VehicleStateBase State { get; private set; }
+    public StateBase State { get; private set; }
     public string CurrentState => State.ToString();
-    private readonly StateMachine<VehicleStateBase, CarAction> _stateMachine;
+    private readonly StateMachine<StateBase, CarAction> _stateMachine;
     public IEnumerable<string> GetPermittedTriggers => _stateMachine.GetPermittedTriggers().Select(x => x.ToString());
     
-    private StateMachine<VehicleStateBase, CarAction>.TriggerWithParameters<int>? _addHorsePower;
-    private StateMachine<VehicleStateBase, CarAction>.TriggerWithParameters<string>? _paintWithColor;
+    private StateMachine<StateBase, CarAction>.TriggerWithParameters<int>? _addHorsePower;
+    private StateMachine<StateBase, CarAction>.TriggerWithParameters<string>? _paintWithColor;
 
     public CarStateMachine(string id, IServiceScopeFactory serviceScopeFactory)
     {
         Id = id;
         _serviceScopeFactory = serviceScopeFactory;
 
-        _stateMachine = new StateMachine<VehicleStateBase, CarAction>(
+        _stateMachine = new StateMachine<StateBase, CarAction>(
             () => State,
             (s) =>
             {
@@ -75,11 +76,11 @@ public class CarStateMachine : IVehicleStateMachine
     private async Task InitializeStateMachine(string id)
     {
         using var scope = _serviceScopeFactory.CreateScope();
-        var carStateRepository = scope.ServiceProvider.GetRequiredService<ICarStateRepository>();
+        var carStateRepository = scope.ServiceProvider.GetRequiredService<ICarRepository>();
         var car = await carStateRepository.GetById(id);
         if (car == null)
         {
-            car = new CarEntity()
+            car = new CarVehicleEntity()
             {
                 Id = id, HorsePower = 0, State = new CarDesignedState()
             };
@@ -153,8 +154,8 @@ public class CarStateMachine : IVehicleStateMachine
     private void SaveState()
     {
         using var scope = _serviceScopeFactory.CreateScope();
-        var carStateRepository = scope.ServiceProvider.GetRequiredService<ICarStateRepository>();
-        var carEntity = new CarEntity()
+        var carStateRepository = scope.ServiceProvider.GetRequiredService<ICarRepository>();
+        var carEntity = new CarVehicleEntity()
         {
             Id = Id, HorsePower = HorsePower, State = State
         };
@@ -195,7 +196,7 @@ public class CarStateMachine : IVehicleStateMachine
         }
     }
 
-    private static void PrintState(StateMachine<VehicleStateBase, CarAction>.Transition state)
+    private static void PrintState(StateMachine<StateBase, CarAction>.Transition state)
     {
         Console.WriteLine(
             $"\tOnEntry/OnExit\n\tState Source : {state.Source}, " +

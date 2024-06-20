@@ -3,14 +3,14 @@ using StatelessWithUI.Persistence.Domain;
 
 namespace StatelessWithUI.Persistence.Repositories;
 
-public class CarStateRepository : EntityWithIdRepository<CarEntity>, ICarStateRepository
+public class CarRepository : EntityWithIdRepository<CarVehicleEntity>, ICarRepository
 {
-    public CarStateRepository(VehicleDbContext dbContext): base(dbContext)
+    public CarRepository(VehicleDbContext dbContext): base(dbContext)
     {
         Console.WriteLine("CarStateRepository created");
     }
     
-    ~CarStateRepository()
+    ~CarRepository()
     {
         Console.WriteLine("CarStateRepository destroyed");
     }

@@ -10,25 +10,25 @@ namespace StatelessWithUI.Application.Services;
 public class CarService : ICarService
 {
     private readonly IVehicleFactory _vehicleFactory;
-    private readonly ICarStateRepository _carStateRepository;
+    private readonly ICarRepository _carRepository;
 
-    public CarService(IVehicleFactory vehicleFactory, ICarStateRepository carStateRepository)
+    public CarService(IVehicleFactory vehicleFactory, ICarRepository carRepository)
     {
         _vehicleFactory = vehicleFactory;
-        _carStateRepository = carStateRepository;
+        _carRepository = carRepository;
     }
 
-    public async Task<IEnumerable<CarEntity>> GetAll()
+    public async Task<IEnumerable<CarVehicleEntity>> GetAll()
     {
-        return await _carStateRepository.GetAll();
+        return await _carRepository.GetAll();
     }
 
-    public async Task<CarEntity?> CreateAsync(string vehicleId)
+    public async Task<CarVehicleEntity?> CreateAsync(string vehicleId)
     {
         try
         {
             var stateMachine = _vehicleFactory.GetOrAddVehicleStateMachine(VehicleType.Car, vehicleId);
-            return new CarEntity()
+            return new CarVehicleEntity()
             {
                 Id = stateMachine.Id, 
                 State = stateMachine.State,
@@ -48,9 +48,9 @@ public class CarService : ICarService
         return stateMachine.CurrentState;
     }
     
-    public async Task<CarEntity?> GetCarEntity(string vehicleId)
+    public async Task<CarVehicleEntity?> GetCarEntity(string vehicleId)
     {
-        return await _carStateRepository.GetById(vehicleId);
+        return await _carRepository.GetById(vehicleId);
     }
 
     public async Task<IEnumerable<string>> GetPermittedTriggers(string vehicleId)

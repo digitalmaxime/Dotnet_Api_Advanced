@@ -5,7 +5,7 @@ using StatelessWithUI.Persistence.Domain;
 
 namespace StatelessWithUI.Persistence.Repositories;
 
-public class EntityWithIdRepository<T> : IEntityWithIdRepository<T> where T : EntityBase
+public class EntityWithIdRepository<T> : IEntityWithIdRepository<T> where T : VehicleEntityBase
 {
     private readonly VehicleDbContext _dbContext;
 
@@ -20,6 +20,7 @@ public class EntityWithIdRepository<T> : IEntityWithIdRepository<T> where T : En
         
         var vehicleEntity =
             await _dbContext.Set<T>()
+                .Include(x => x.State)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == id);
 
@@ -29,11 +30,19 @@ public class EntityWithIdRepository<T> : IEntityWithIdRepository<T> where T : En
         }
         else
         {
-            _dbContext.Set<T>().Update(entity);
+            vehicleEntity.State = entity.State;
         }
-
-        var n = await _dbContext.SaveChangesAsync();
-        return n > 0;
+        
+        try
+        {
+            var n = await _dbContext.SaveChangesAsync();
+            return n > 0;
+        }
+        catch (DbUpdateConcurrencyException e)
+        {
+            Console.WriteLine(e.Message);
+            throw new Exception("Concurrency exception : " + e.Message);
+        }
     }
 
     public async Task<T?> GetById(string id)

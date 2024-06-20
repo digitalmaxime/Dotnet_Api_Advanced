@@ -5,6 +5,7 @@ using StatelessWithUI.Persistence;
 using StatelessWithUI.Persistence.Contracts;
 using StatelessWithUI.Persistence.Repositories;
 using StatelessWithUI.VehicleStateMachineFactory;
+using StatelessWithUI.VehicleStateMachines.PlaneStateMachine.PlaneStates;
 
 namespace StatelessWithUI;
 
@@ -24,8 +25,9 @@ public static class StartupExtensions
         SetupDatabase(builder.Services);
         builder.Services.AddScoped<ICarService, CarService>();
         builder.Services.AddScoped<IPlaneService, PlaneService>();
-        builder.Services.AddScoped<ICarStateRepository, CarStateRepository>();
-        builder.Services.AddScoped<IPlaneStateRepository, PlaneStateRepository>();
+        builder.Services.AddScoped<ICarRepository, CarRepository>();
+        builder.Services.AddScoped<IPlaneRepository, PlaneRepository>();
+        builder.Services.AddScoped<IPlaneStateRepository, PlaneBuildStateRepository>();
         builder.Services.AddSingleton<IVehicleFactory, VehicleFactory>();
         builder.Services.AddMediatR(cfg =>
             cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));

@@ -1,10 +1,6 @@
-namespace StatelessWithUI.VehicleStateMachines.PlaneStateMachine.DesignState;
+namespace StatelessWithUI.VehicleStateMachines.PlaneStateMachine.PlaneStates;
 
-public class DesignState: VehicleStateBase
+public class DesignState: StateBase
 {
     
-    protected override string GetStateName()
-    {
-        return nameof(DesignState);
-    }
 }
