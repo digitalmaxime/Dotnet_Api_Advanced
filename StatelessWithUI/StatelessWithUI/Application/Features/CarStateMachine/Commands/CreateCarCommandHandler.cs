@@ -4,7 +4,7 @@ using StatelessWithUI.Persistence.Domain;
 
 namespace StatelessWithUI.Application.Features.CarStateMachine.Commands
 {
-    public class CreateCarCommandHandler : IRequestHandler<CreateCarCommand, CarVehicleEntity?>
+    public class CreateCarCommandHandler : IRequestHandler<CreateCarCommand, CarEntity?>
     {
         private readonly ICarService _carService;
 
@@ -13,7 +13,7 @@ namespace StatelessWithUI.Application.Features.CarStateMachine.Commands
             _carService = carService;
         }
 
-        public Task<CarVehicleEntity?> Handle(CreateCarCommand request, CancellationToken cancellationToken)
+        public Task<CarEntity?> Handle(CreateCarCommand request, CancellationToken cancellationToken)
         {
             return _carService.CreateAsync(request.Id);
         }

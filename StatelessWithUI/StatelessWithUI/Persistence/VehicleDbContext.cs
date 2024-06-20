@@ -23,15 +23,10 @@ public class VehicleDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<PlaneVehicleEntity>()
-            .HasKey(x => x.Id);
+        // modelBuilder.Entity<VehicleEntityBase>()
+        //     .Property(x => x.StateEnum)
+        //     .HasConversion<string>();
         
-        modelBuilder.Entity<PlaneVehicleEntity>()
-            .HasOne<StateBase>(x => x.State);
-
-        modelBuilder.Entity<PlaneVehicleEntity>()
-            .HasOne<StateBase>(x => x.State);
-
         modelBuilder.Entity<StateBase>()
             .HasKey(x => x.Id);
         
@@ -41,28 +36,27 @@ public class VehicleDbContext : DbContext
         modelBuilder.Entity<BuildTask>()
             .HasKey(x => x.Id);
         
-        modelBuilder.Entity<CarVehicleEntity>()
-            .HasKey(x => x.Id);
-
-        modelBuilder.Entity<CarVehicleEntity>()
-            .HasData(new CarVehicleEntity()
+        modelBuilder.Entity<CarEntity>()
+            .HasData(new CarEntity()
                 {
                     Id = "Id1",
                     HorsePower = 0,
-                    StateId = "StateId1"
+                    StateId = "StateId1",
+                    StateEnumName = CarStateMachine.CarState.InitialState.ToString()
                 },
-                new CarVehicleEntity()
+                new CarEntity()
                 {
                     Id = "Id2",
                     HorsePower = 0,
-                    StateId = "StateId2"
+                    StateId = "StateId2",
+                    StateEnumName = CarStateMachine.CarState.InitialState.ToString()
                 });
 
         base.OnModelCreating(modelBuilder);
     }
 
-    public DbSet<CarVehicleEntity> CarEntity { get; set; } = default!;
-    public DbSet<PlaneVehicleEntity> PlaneEntity { get; set; } = default!;
+    public DbSet<CarEntity> CarEntity { get; set; } = default!;
+    public DbSet<PlaneEntity> PlaneEntity { get; set; } = default!;
     public DbSet<InitialState> InitialState { get; set; } = default!;
     public DbSet<DesignState> DesignState { get; set; } = default!;
     public DbSet<BuildState> BuildState { get; set; } = default!;

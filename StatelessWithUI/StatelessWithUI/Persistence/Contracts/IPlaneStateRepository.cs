@@ -5,5 +5,6 @@ namespace StatelessWithUI.Persistence.Contracts;
 
 public interface IPlaneStateRepository 
 {
-    Task AddStateAsync(StateBase state);
+    Task<string> AddStateAsync(StateBase state);
+    Task<StateBase?> GetStateByVehicleId(string id, string stateName);
 }

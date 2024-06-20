@@ -2,6 +2,7 @@ using StatelessWithUI.Persistence.Constants;
 using StatelessWithUI.Persistence.Contracts;
 using StatelessWithUI.Persistence.Domain;
 using StatelessWithUI.VehicleStateMachineFactory;
+using StatelessWithUI.VehicleStateMachines.PlaneStateMachine;
 
 namespace StatelessWithUI.Application.Services;
 
@@ -16,7 +17,7 @@ public class PlaneService : IPlaneService
         _planeRepository = planeRepository;
     }
 
-    public async Task<IEnumerable<PlaneVehicleEntity>> GetAll()
+    public async Task<IEnumerable<PlaneEntity>> GetAll()
     {
         return await _planeRepository.GetAll();
     }
@@ -26,10 +27,10 @@ public class PlaneService : IPlaneService
         try
         {
             var stateMachine = _vehicleFactory.GetOrAddVehicleStateMachine(VehicleType.Plane, vehicleId);
-            return new PlaneVehicleEntity()
+            return new PlaneEntity()
             {
                 Id = stateMachine.Id,
-                State = stateMachine.State
+                StateEnumName = stateMachine.State.ToString()
             };
         }
         catch (Exception e)
@@ -42,10 +43,10 @@ public class PlaneService : IPlaneService
     public string GetPlaneState(string vehicleId)
     {
         var stateMachine = _vehicleFactory.GetVehicleStateMachine(VehicleType.Plane, vehicleId);
-        return stateMachine.CurrentState;
+        return stateMachine.CurrentStateName;
     }
 
-    public async Task<PlaneVehicleEntity?> GetPlaneEntity(string vehicleId)
+    public async Task<PlaneEntity?> GetPlaneEntity(string vehicleId)
     {
         return await _planeRepository.GetById(vehicleId);
     }

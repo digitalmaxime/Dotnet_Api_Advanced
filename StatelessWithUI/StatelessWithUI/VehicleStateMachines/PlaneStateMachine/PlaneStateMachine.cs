@@ -10,22 +10,29 @@ public class PlaneStateMachine : IVehicleStateMachine
 {
     private readonly IServiceScopeFactory _serviceScopeFactory;
 
-    public string Id { get; private set; }
-    public StateBase State { get; private set; }
-    private InitialState InitialState { get; set; }
-    private DesignState DesignState { get; set; }
-    private BuildState BuildState { get; set; }
-    private TestingState TestingState { get; set; }
+    public enum PlaneState
+    {
+        InitialState,
+        DesignState,
+        BuildState,
+        TestingState
+    }
 
-    public string CurrentState => State.ToString() ?? "Undefined";
-    private StateMachine<StateBase, PlaneAction> _stateMachine;
+    public string Id { get; private set; }
+    public Enum State { get; private set; }
+    public string StateId { get; set; }
+
+    public string CurrentStateName => State.ToString();
+
+    private StateMachine<PlaneState, PlaneAction> _stateMachine;
     public IEnumerable<string> GetPermittedTriggers => _stateMachine.GetPermittedTriggers().Select(x => x.ToString());
 
     public PlaneStateMachine(string id, IServiceScopeFactory serviceScopeFactory)
     {
         Id = id;
-        _serviceScopeFactory = serviceScopeFactory;
         
+        _serviceScopeFactory = serviceScopeFactory;
+
         InitializeStateMachine(id).GetAwaiter().GetResult();
         ConfigureStates();
     }
@@ -44,54 +51,51 @@ public class PlaneStateMachine : IVehicleStateMachine
         Id = id;
         if (plane == null)
         {
-            InitialState = new InitialState { Id = Guid.NewGuid().ToString() };
-            DesignState = new DesignState { Id = Guid.NewGuid().ToString() };
-            BuildState = new BuildState { Id = Guid.NewGuid().ToString() };
-            TestingState = new TestingState { Id = Guid.NewGuid().ToString() };
-            // await planeStateRepository.AddStateAsync(InitialState);
-            await planeStateRepository.AddStateAsync(DesignState);
-            
-            State = InitialState;
+            State = PlaneState.InitialState;
+            var stateId = await planeStateRepository.AddStateAsync(new InitialState() { Id = Guid.NewGuid().ToString() });
+            StateId = stateId;
         }
         else
         {
-            State = plane.State;
+            State = Enum.Parse<PlaneState>(plane.StateEnumName);
+            StateId = plane.StateId;
         }
-        async void StateMutator(StateBase s)
+
+        async void StateMutator(PlaneState s)
         {
             State = s;
             await SaveState();
         }
 
-        _stateMachine = new StateMachine<StateBase, PlaneAction>(
-            () => State ?? throw new InvalidOperationException("Plane state is null"),
+        _stateMachine = new StateMachine<PlaneState, PlaneAction>(
+            () => (PlaneState)State,
             StateMutator
         );
-        
+
         await SaveState();
     }
 
     private void ConfigureStates()
     {
-        _stateMachine.Configure(InitialState)
-            .Permit(PlaneAction.Design, DesignState)
+        _stateMachine.Configure(PlaneState.InitialState)
+            .Permit(PlaneAction.Design, PlaneState.DesignState)
             .OnEntry(EntryAction);
 
-        _stateMachine.Configure(DesignState)
-            .Permit(PlaneAction.Build, BuildState)
+        _stateMachine.Configure(PlaneState.DesignState)
+            .Permit(PlaneAction.Build, PlaneState.BuildState)
+            .OnEntry(EntryAction)
+            ;
+
+        _stateMachine.Configure(PlaneState.BuildState)
+            .Permit(PlaneAction.Test, PlaneState.TestingState)
             .OnEntry(EntryAction);
 
-        _stateMachine.Configure(BuildState)
-            .Permit(PlaneAction.Test, TestingState)
-            .OnEntry(EntryAction);
-
-        _stateMachine.Configure(TestingState)
+        _stateMachine.Configure(PlaneState.TestingState)
             .OnEntryFrom(PlaneAction.Design, EntryAction);
     }
 
-    private async void EntryAction(StateMachine<StateBase, PlaneAction>.Transition transition)
+    private async void EntryAction(StateMachine<PlaneState, PlaneAction>.Transition transition)
     {
-        await SaveState();
         PrintTransitionState(transition);
     }
 
@@ -99,13 +103,14 @@ public class PlaneStateMachine : IVehicleStateMachine
     {
         using var scope = _serviceScopeFactory.CreateScope();
         var planeStateRepository = scope.ServiceProvider.GetRequiredService<IPlaneRepository>();
-        var plane = new PlaneVehicleEntity
+        var plane = new PlaneEntity
         {
-            Id = Id, State = State, StateId = State.Id
+            Id = Id, StateEnumName = State.ToString(), StateId = StateId
         };
 
         await planeStateRepository.SaveAsync(plane);
     }
+
 
     public void GoToNextState()
     {
@@ -141,7 +146,7 @@ public class PlaneStateMachine : IVehicleStateMachine
         }
     }
 
-    private static void PrintTransitionState(StateMachine<StateBase, PlaneAction>.Transition transition)
+    private static void PrintTransitionState(StateMachine<PlaneState, PlaneAction>.Transition transition)
     {
         Console.WriteLine(
             $"\tOnEntry/OnExit\n\tState Source : {transition.Source}, " +

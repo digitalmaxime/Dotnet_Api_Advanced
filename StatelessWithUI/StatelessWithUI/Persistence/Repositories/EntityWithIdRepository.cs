@@ -20,7 +20,6 @@ public class EntityWithIdRepository<T> : IEntityWithIdRepository<T> where T : Ve
         
         var vehicleEntity =
             await _dbContext.Set<T>()
-                .Include(x => x.State)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == id);
 
@@ -30,7 +29,8 @@ public class EntityWithIdRepository<T> : IEntityWithIdRepository<T> where T : Ve
         }
         else
         {
-            vehicleEntity.State = entity.State;
+            _dbContext.Set<T>().Update(entity);
+            // vehicleEntity.StateEnumName = entity.StateEnumName;
         }
         
         try
@@ -48,7 +48,7 @@ public class EntityWithIdRepository<T> : IEntityWithIdRepository<T> where T : Ve
     public async Task<T?> GetById(string id)
     {
         return await _dbContext.Set<T>()
-            .Include(x => x.State)
+            // .Include(x => x.State)
             .AsNoTracking()
             .FirstOrDefaultAsync(c => c.Id == id);
     }
@@ -56,7 +56,7 @@ public class EntityWithIdRepository<T> : IEntityWithIdRepository<T> where T : Ve
     public async Task<List<T>> GetAll()
     {
         return await _dbContext.Set<T>()
-            .Include(x => x.State)
+            // .Include(x => x.StateEnumName)
             .AsNoTracking()
             .ToListAsync();
     }

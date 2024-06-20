@@ -19,13 +19,13 @@ public class PlaneStateMachineController : ControllerBase
     }
 
     [HttpGet("plane")]
-    public async Task<IEnumerable<PlaneVehicleEntity>>? Get()
+    public async Task<IEnumerable<PlaneEntity>>? Get()
     {
         return await _mediator.Send(new GetAllPlaneQuery());
     }
 
     [HttpGet("plane/{id}")]
-    public async Task<PlaneVehicleEntity?> Get(string id)
+    public async Task<PlaneEntity?> Get(string id)
     {
         var plane = await _mediator.Send(new GetPlaneQuery(id));
         return plane;
@@ -39,9 +39,9 @@ public class PlaneStateMachineController : ControllerBase
     }
 
     [HttpPost("plane")]
-    public async Task<IActionResult> Create(PlaneVehicleEntity planeVehicle)
+    public async Task<IActionResult> Create(CreatePlaneCommand plane)
     {
-        var createdPlane = await _mediator.Send(new CreatePlaneCommand(planeVehicle.Id));
+        var createdPlane = await _mediator.Send(plane);
         if (createdPlane == null)
         {
             return StatusCode((int)HttpStatusCode.InternalServerError);

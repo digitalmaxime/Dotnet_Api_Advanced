@@ -7,5 +7,5 @@ public abstract class VehicleEntityBase
 {
     public string Id { get; init; } = null!;
     public string StateId { get; set; }
-    public StateBase State { get; set; }
+    public string StateEnumName { get; set; }
 }

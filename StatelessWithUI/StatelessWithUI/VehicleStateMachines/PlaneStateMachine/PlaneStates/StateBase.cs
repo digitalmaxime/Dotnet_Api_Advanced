@@ -6,5 +6,5 @@ public class StateBase
 {
     public string Id { get; init; } = null!;
 
-    protected string GetStateName() => GetType().Name;
+    public string GetStateName() => GetType().Name;
 }
