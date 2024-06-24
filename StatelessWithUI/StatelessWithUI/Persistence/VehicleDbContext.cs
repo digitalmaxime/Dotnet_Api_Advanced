@@ -74,11 +74,7 @@ public class VehicleDbContext : DbContext
             .HasData(new PlaneEntity()
             {
                 Id = "1",
-                CurrentStateEnumName = PlaneStateMachine.PlaneState.InitialState.ToString()
-                // InitialStates = { },
-                // DesignStates = { },
-                // BuildStates = { },
-                // TestingStates = { }
+                CurrentStateEnumName = PlaneStateMachine.PlaneState.DesignState.ToString()
             });
 
         modelBuilder.Entity<InitialState>()
@@ -87,6 +83,16 @@ public class VehicleDbContext : DbContext
                 new InitialState()
                 {
                     Id = "InitialStateId1",
+                    PlaneEntityId = "1"
+                }
+            });
+        
+        modelBuilder.Entity<DesignState>()
+            .HasData(new List<DesignState>()
+            {
+                new DesignState()
+                {
+                    Id = "DesignStateId1",
                     PlaneEntityId = "1"
                 }
             });

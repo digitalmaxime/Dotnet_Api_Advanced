@@ -42,4 +42,34 @@ public class StateController: ControllerBase
         return Ok(result);
     }
     
+    [HttpGet("state/initial/{id}")]
+    public async Task<IActionResult> GetInitialState(string id)
+    {
+        var result = await _mediator.Send(new GetPlaneStateQuery(id, PlaneStateMachine.PlaneState.InitialState));
+        
+        if (result == null) return NotFound($"Plane State Not Found for stateId : {id} at Initial State");
+
+        return Ok(result);
+    }
+    
+    [HttpGet("state/design/{id}")]
+    public async Task<IActionResult> GetDesignState(string id)
+    {
+        var result = await _mediator.Send(new GetPlaneStateQuery(id, PlaneStateMachine.PlaneState.DesignState));
+        
+        if (result == null) return NotFound($"Plane State Not Found for stateId : {id} at Design State");
+
+        return Ok(result);
+    }
+    
+    [HttpGet("state/build/{id}")]
+    public async Task<IActionResult> GetBuildState(string id)
+    {
+        var result = await _mediator.Send(new GetPlaneBuildStateQuery(id));
+        
+        if (result == null) return NotFound($"Plane State Not Found for stateId : {id} at Design State");
+
+        return Ok(result);
+    }
+    
 }

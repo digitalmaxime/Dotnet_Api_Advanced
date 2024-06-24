@@ -75,7 +75,9 @@ public class PlaneService : IPlaneService
 
     public async Task<IEnumerable<string>?> GetPermittedTriggers(string vehicleId)
     {
-        var stateMachine = _vehicleFactory.GetVehicleStateMachine(VehicleType.Plane, vehicleId);
+        if (await _planeRepository.GetById(vehicleId) == null) return null;
+        
+        var stateMachine = _vehicleFactory.GetOrAddVehicleStateMachine(VehicleType.Plane, vehicleId);
         return stateMachine?.GetPermittedTriggers;
     }
 

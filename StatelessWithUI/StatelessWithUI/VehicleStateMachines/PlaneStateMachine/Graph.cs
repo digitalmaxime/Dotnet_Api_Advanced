@@ -1,6 +1,8 @@
+using StatelessWithUI.VehicleStateMachines.PlaneStateMachine.PlaneStates;
+
 namespace StatelessWithUI.VehicleStateMachines.PlaneStateMachine;
 
-public class Graph<T> where T : class
+public class Graph<T> where T : BuildTask
 {
     private readonly Dictionary<T, Node<T>> nodes;
 
@@ -26,6 +28,12 @@ public class Graph<T> where T : class
         var fromNode = AddNode(from);
         var toNode = AddNode(to);
         fromNode.Dependencies.Add(toNode);
+    }
+
+    public ICollection<T>? GetDependencies(T node)
+    {
+        nodes.TryGetValue(node, out var toto);
+        return toto?.Dependencies.Select(x => x.Value).ToList();
     }
 
     public List<T> TopologicalSort()

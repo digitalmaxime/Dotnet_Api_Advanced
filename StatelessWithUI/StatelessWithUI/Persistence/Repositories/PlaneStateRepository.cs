@@ -21,20 +21,6 @@ public class PlaneStateRepository : IPlaneStateRepository
         return entity.Entity.Id;
     }
 
-    public async Task<StateBase?> GetStateByVehicleId(string id, string stateName)
-    {
-        StateBase? state = stateName switch
-        {
-            "InitialState" => await _dbContext.Set<InitialState>().FirstOrDefaultAsync(x => x.Id == id),
-            "DesignState" => await _dbContext.Set<DesignState>().FirstOrDefaultAsync(x => x.Id == id),
-            "BuildState" => await _dbContext.Set<BuildState>().FirstOrDefaultAsync(x => x.Id == id),
-            "TestingState" => await _dbContext.Set<TestingState>().FirstOrDefaultAsync(x => x.Id == id),
-            _ => throw new InvalidOperationException("Invalid state name")
-        };
-
-        return state;
-    }
-
     public async Task<StateBase?> GetState(string id, PlaneStateMachine.PlaneState planeState)
     {
         StateBase? state = planeState switch
@@ -52,6 +38,15 @@ public class PlaneStateRepository : IPlaneStateRepository
         };
 
         return state;
+    }
+    
+    public async Task<BuildState?> GetBuildState(string id)
+    {
+        var buildState = await _dbContext.Set<BuildState>()
+            // .Include(x => x.Graph)
+            .FirstOrDefaultAsync(x => x.Id == id);
+        
+        return buildState;
     }
 
     public async Task<IEnumerable<StateBase>?> GetAllStates(PlaneStateMachine.PlaneState planeState)
