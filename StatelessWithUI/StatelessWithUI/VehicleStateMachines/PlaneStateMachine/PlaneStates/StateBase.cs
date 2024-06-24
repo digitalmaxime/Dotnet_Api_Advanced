@@ -7,7 +7,7 @@ public class StateBase
     public string Id { get; init; } = null!;
 
     public string GetStateName() => GetType().Name;
-    
-    // public string PlaneStateMachineId { get; set; } = null!;
-    // public PlaneStateMachine PlaneStateMachine { get; set; }
+    public virtual string PlaneEntityId { get; set; } = null!;
+    public virtual PlaneEntity PlaneEntity { get; set; }
+
 }

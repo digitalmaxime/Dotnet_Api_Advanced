@@ -20,7 +20,6 @@ public class PlaneStateMachine : IVehicleStateMachine
 
     public string Id { get; private set; }
     public Enum StateEnum { get; private set; }
-    public string StateId { get; set; }
 
     public string CurrentStateName => StateEnum.ToString();
 
@@ -35,6 +34,7 @@ public class PlaneStateMachine : IVehicleStateMachine
 
         InitializeStateMachine(id).GetAwaiter().GetResult();
         ConfigureStates();
+        // _stateMachine!.Activate();
     }
 
     ~PlaneStateMachine()
@@ -51,12 +51,14 @@ public class PlaneStateMachine : IVehicleStateMachine
         if (plane == null)
         {
             StateEnum = PlaneState.InitialState;
-            StateId = await CreateState(new InitialState() { Id = Guid.NewGuid().ToString() });
+            await CreateState(new InitialState()
+            {
+                Id = Guid.NewGuid().ToString(), PlaneEntityId = this.Id
+            });
         }
         else
         {
             StateEnum = Enum.Parse<PlaneState>(plane.CurrentStateEnumName);
-            StateId = plane.StateId;
         }
 
         _stateMachine = new StateMachine<PlaneState, PlaneAction>(
@@ -74,15 +76,16 @@ public class PlaneStateMachine : IVehicleStateMachine
         switch (stateEnum)
         {
             case PlaneState.InitialState:
+                await CreateState(new InitialState() { Id = id, PlaneEntityId = this.Id });
                 break;
             case PlaneState.DesignState:
-                StateId = await CreateState(new DesignState() { Id = id });
+                await CreateState(new DesignState() { Id = id, PlaneEntityId = this.Id });
                 break;
             case PlaneState.BuildState:
-                StateId = await CreateState(new BuildState() { Id = id });
+                await CreateState(new BuildState() { Id = id, PlaneEntityId = this.Id });
                 break;
             case PlaneState.TestingState:
-                StateId = await CreateState(new TestingState() { Id = id });
+                await CreateState(new TestingState() { Id = id, PlaneEntityId = this.Id });
                 break;
             default:
                 throw new ArgumentException("not supported state");
@@ -102,6 +105,7 @@ public class PlaneStateMachine : IVehicleStateMachine
     private void ConfigureStates()
     {
         _stateMachine.Configure(PlaneState.InitialState)
+            .OnActivate(() => { _stateMachine.Fire(PlaneAction.Design); })
             .Permit(PlaneAction.Design, PlaneState.DesignState)
             .OnEntry(EntryAction);
 
@@ -127,19 +131,12 @@ public class PlaneStateMachine : IVehicleStateMachine
     {
         using var scope = _serviceScopeFactory.CreateScope();
         var planeStateRepository = scope.ServiceProvider.GetRequiredService<IPlaneRepository>();
-        var plane = new PlaneSnapshotEntity
+        var plane = new PlaneEntity
         {
-            Id = Id, CurrentStateEnumName = StateEnum.ToString(), StateId = StateId
+            Id = Id, CurrentStateEnumName = StateEnum.ToString()
         };
 
         await planeStateRepository.SaveAsync(plane);
-    }
-
-
-    public void GoToNextState()
-    {
-        var nextAvailableAction = _stateMachine.GetPermittedTriggers().OrderDescending().FirstOrDefault();
-        _stateMachine.Fire(nextAvailableAction);
     }
 
     public void TakeAction(string actionString)

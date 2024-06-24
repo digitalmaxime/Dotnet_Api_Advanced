@@ -23,30 +23,58 @@ public class VehicleDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        // modelBuilder.Entity<PlaneEntity>()
+        //     .HasMany<StateBase>()
+        //     .WithOne(x => x.PlaneEntity)
+        //     .HasForeignKey(x => x.PlaneEntityId);
+        modelBuilder.Entity<PlaneEntity>()
+            .HasMany<InitialState>(x => x.InitialStates)
+            .WithOne(x => x.PlaneEntity)
+            .HasForeignKey(x => x.PlaneEntityId);
+        // modelBuilder.Entity<StateBase>()
+        //     .Ignore(x => x.PlaneEntity);
+
+        // modelBuilder.Entity<PlaneEntity>()
+        //     .HasMany<DesignState>(x => x.DesignStates)
+        //     .WithOne(x => x.PlaneEntity)
+        //     .HasForeignKey(x => x.PlaneEntityId);
+        // modelBuilder.Entity<PlaneEntity>()
+        //     .HasMany<BuildState>(x => x.BuildStates)
+        //     .WithOne(x => x.PlaneEntity)
+        //     .HasForeignKey(x => x.PlaneEntityId);
+        // modelBuilder.Entity<PlaneEntity>()
+        //     .HasMany<TestingState>(x => x.TestingStates)
+        //     .WithOne(x => x.PlaneEntity)
+        //     .HasForeignKey(x => x.PlaneEntityId);
+        //
+        // modelBuilder.Entity<BuildState>()
+        //     .HasOne(x => x.PlaneEntity)
+        //     .WithMany(x => x.States);
+        
         modelBuilder.Entity<BuildState>()
             .Ignore(x => x.Graph);
         
-        modelBuilder.Entity<CarSnapshotEntity>()
-            .HasData(new CarSnapshotEntity()
+        modelBuilder.Entity<CarEntity>()
+            .HasData(new CarEntity()
                 {
                     Id = "Id1",
                     HorsePower = 0,
-                    StateId = "StateId1",
+                    // StateId = "StateId1",
                     CurrentStateEnumName = CarStateMachine.CarState.InitialState.ToString()
                 },
-                new CarSnapshotEntity()
+                new CarEntity()
                 {
                     Id = "Id2",
                     HorsePower = 0,
-                    StateId = "StateId2",
+                    // StateId = "StateId2",
                     CurrentStateEnumName = CarStateMachine.CarState.InitialState.ToString()
                 });
 
         base.OnModelCreating(modelBuilder);
     }
 
-    public DbSet<CarSnapshotEntity> CarEntity { get; set; } = default!;
-    public DbSet<PlaneSnapshotEntity> PlaneEntity { get; set; } = default!;
+    public DbSet<CarEntity> CarEntity { get; set; } = default!;
+    public DbSet<PlaneEntity> PlaneEntity { get; set; } = default!;
     public DbSet<InitialState> InitialState { get; set; } = default!;
     public DbSet<DesignState> DesignState { get; set; } = default!;
     public DbSet<BuildState> BuildState { get; set; } = default!;

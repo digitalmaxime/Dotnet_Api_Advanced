@@ -1,7 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using Stateless.Graph;
 using StatelessWithUI.Persistence.Contracts;
-using StatelessWithUI.Persistence.Domain;
 using StatelessWithUI.VehicleStateMachines.PlaneStateMachine;
 using StatelessWithUI.VehicleStateMachines.PlaneStateMachine.PlaneStates;
 
@@ -42,6 +40,7 @@ public class PlaneStateRepository : IPlaneStateRepository
         StateBase? state = planeState switch
         {
             PlaneStateMachine.PlaneState.InitialState => await _dbContext.Set<InitialState>()
+                .Include(x => x.PlaneEntity)
                 .FirstOrDefaultAsync(x => x.Id == id),
             PlaneStateMachine.PlaneState.DesignState => await _dbContext.Set<DesignState>()
                 .FirstOrDefaultAsync(x => x.Id == id),
@@ -54,4 +53,19 @@ public class PlaneStateRepository : IPlaneStateRepository
 
         return state;
     }
+
+    public async Task<IEnumerable<StateBase>?> GetAllStates(PlaneStateMachine.PlaneState planeState)
+    {
+        IEnumerable<StateBase> states = planeState switch
+        {
+            PlaneStateMachine.PlaneState.InitialState => await _dbContext.Set<InitialState>()
+                .Include(x => x.PlaneEntity) // TODO: Not working..
+                .ToListAsync(),
+            PlaneStateMachine.PlaneState.DesignState => await _dbContext.Set<DesignState>().ToListAsync(),
+            PlaneStateMachine.PlaneState.BuildState => await _dbContext.Set<BuildState>().ToListAsync(),
+            PlaneStateMachine.PlaneState.TestingState => await _dbContext.Set<TestingState>().ToListAsync(),
+            _ => throw new InvalidOperationException("Invalid state name")
+        };
+
+        return states;    }
 }

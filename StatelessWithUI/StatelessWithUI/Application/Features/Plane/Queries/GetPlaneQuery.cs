@@ -3,4 +3,4 @@ using StatelessWithUI.Persistence.Domain;
 
 namespace StatelessWithUI.Application.Features.PlaneStateMachine.Queries;
 
-public record GetAllPlaneQuery : IRequest<IEnumerable<PlaneSnapshotEntity>>;
+public record GetPlaneQuery(string Id, bool includes) : IRequest<GetPlaneQueryResponseDto?>;

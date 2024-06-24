@@ -1,3 +1,4 @@
+using StatelessWithUI.Application.Features.PlaneStateMachine.Queries;
 using StatelessWithUI.Persistence.Constants;
 using StatelessWithUI.Persistence.Contracts;
 using StatelessWithUI.Persistence.Domain;
@@ -16,21 +17,21 @@ public class PlaneService : IPlaneService
         _planeRepository = planeRepository;
     }
 
-    public async Task<IEnumerable<PlaneSnapshotEntity>> GetAll()
+    public async Task<IEnumerable<PlaneEntity>> GetAll()
     {
         return await _planeRepository.GetAll();
     }
 
-    public async Task<VehicleSnapshotEntityBase?> CreateAsync(string vehicleId)
+    public async Task<VehicleEntityBase?> CreateAsync(string vehicleId)
     {
         try
         {
             var stateMachine = _vehicleFactory.GetOrAddVehicleStateMachine(VehicleType.Plane, vehicleId);
-            return new PlaneSnapshotEntity()
+            return new PlaneEntity()
             {
                 Id = stateMachine.Id,
                 CurrentStateEnumName = stateMachine.StateEnum.ToString(),
-                StateId = stateMachine.StateId
+                // StateId = stateMachine.StateId
             };
         }
         catch (Exception e)
@@ -46,9 +47,30 @@ public class PlaneService : IPlaneService
         return stateMachine.CurrentStateName;
     }
 
-    public async Task<PlaneSnapshotEntity?> GetPlaneEntity(string vehicleId)
+    public async Task<GetPlaneQueryResponseDto?> GetPlaneEntity(string vehicleId, bool includes = false)
     {
-        return await _planeRepository.GetById(vehicleId);
+        var entity = includes
+            ? await _planeRepository.GetByIdWithIncludes(vehicleId)
+            : await _planeRepository.GetById(vehicleId);
+
+        if (entity == null) return null;
+
+        return new GetPlaneQueryResponseDto()
+        {
+            CurrentStateEnumName = entity.CurrentStateEnumName,
+            InitialStateIds = entity.InitialStates
+                .OrderByDescending(x => x.Id)
+                .Select(x => x.Id).ToList(),
+            DesignStateIds = entity.DesignStates
+                .OrderByDescending(x => x.Id)
+                .Select(x => x.Id).ToList(),
+            BuildStateIds = entity.BuildStates
+                .OrderByDescending(x => x.Id)
+                .Select(x => x.Id).ToList(),
+            TestingStateIds = entity.TestingStates
+                .OrderByDescending(x => x.Id)
+                .Select(x => x.Id).ToList()
+        };
     }
 
     public async Task<IEnumerable<string>?> GetPermittedTriggers(string vehicleId)

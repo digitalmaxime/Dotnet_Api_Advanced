@@ -1,6 +1,6 @@
 namespace StatelessWithUI.Persistence.Domain;
 
-public class CarSnapshotEntity: VehicleSnapshotEntityBase
+public class CarEntity: VehicleEntityBase
 {
     public int HorsePower { get; set; }
 }

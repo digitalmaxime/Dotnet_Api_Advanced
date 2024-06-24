@@ -3,7 +3,7 @@ using StatelessWithUI.Persistence.Domain;
 
 namespace StatelessWithUI.Persistence.Repositories;
 
-public class CarRepository : EntityWithIdRepository<CarSnapshotEntity>, ICarRepository
+public class CarRepository : EntityWithIdRepository<CarEntity>, ICarRepository
 {
     public CarRepository(VehicleDbContext dbContext): base(dbContext)
     {

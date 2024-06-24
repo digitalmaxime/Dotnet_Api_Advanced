@@ -21,22 +21,22 @@ public class CarController: ControllerBase
     }
     
     [HttpGet("car")]
-    public async Task<IEnumerable<VehicleSnapshotEntityBase>> GetCars()
+    public async Task<IEnumerable<VehicleEntityBase>> GetCars()
     {
         return await _mediator.Send(new GetAllCarsQuery());
     }
 
     [HttpGet("car/{id}")]
-    public async Task<CarSnapshotEntity?> Get(string id)
+    public async Task<CarEntity?> Get(string id)
     {
         var vehicle = await _mediator.Send(new GetCarByIdQuery(id));
         return vehicle;
     }
         
     [HttpPost("car")]
-    public async Task<IActionResult> Create(CarSnapshotEntity carSnapshot)
+    public async Task<IActionResult> Create(CarEntity car)
     {
-        var createdCar = await _mediator.Send(new CreateCarCommand(carSnapshot.Id));
+        var createdCar = await _mediator.Send(new CreateCarCommand(car.Id));
         if (createdCar == null)
         {
             return StatusCode((int)HttpStatusCode.InternalServerError);

@@ -1,4 +1,6 @@
 using System.Reflection;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using StatelessWithUI.Application.Services;
 using StatelessWithUI.Persistence;
@@ -21,10 +23,15 @@ public static class StartupExtensions
         //         .Enrich.FromLogContext()
         //         .WriteTo.Console();
         // });
-        
+        JsonSerializerOptions jsonOptions = new()
+        {
+            ReferenceHandler = ReferenceHandler.IgnoreCycles,
+            WriteIndented = true
+        };
         SetupDatabase(builder.Services);
         builder.Services.AddScoped<ICarService, CarService>();
         builder.Services.AddScoped<IPlaneService, PlaneService>();
+        builder.Services.AddScoped<IStateService, StateService>();
         builder.Services.AddScoped<ICarRepository, CarRepository>();
         builder.Services.AddScoped<IPlaneRepository, PlaneRepository>();
         builder.Services.AddScoped<IPlaneStateRepository, PlaneStateRepository>();
@@ -32,7 +39,11 @@ public static class StartupExtensions
         builder.Services.AddMediatR(cfg =>
             cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
         builder.Services.AddHttpContextAccessor();
-        builder.Services.AddControllers();
+        builder.Services.AddControllers()
+            .AddJsonOptions(
+            o => o.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles
+        )
+            ;
         builder.Services.AddCors(
             options =>
                 options.AddPolicy(
@@ -44,26 +55,26 @@ public static class StartupExtensions
                             .SetIsOriginAllowed(p => true)
                             .AllowCredentials()
                 ));
-        
+
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
         return builder;
     }
-    
-    
+
+
     public static WebApplication ConfigurePipeline(this WebApplication app)
     {
         if (!app.Environment.IsDevelopment())
         {
             app.UseHsts();
         }
-        
+
         app.UseCors("open");
         app.UseHttpsRedirection();
         // app.UseStaticFiles();
         // app.UseRouting();
-        
+
         // app.UseCustomMiddlewareHandler();
 
         app.MapControllers();
@@ -71,16 +82,16 @@ public static class StartupExtensions
         {
             ConfigureSwagger(app);
         }
-        
+
         app.MapGet("/", context =>
         {
             context.Response.Redirect("./swagger/index.html", permanent: false);
             return Task.FromResult(0);
         });
-        
+
         return app;
     }
-    
+
     private static WebApplication ConfigureSwagger(this WebApplication app)
     {
         app.UseSwagger();
@@ -89,14 +100,14 @@ public static class StartupExtensions
             c.SwaggerEndpoint("/swagger/v1/swagger.json", "StateMachine API V1");
             c.RoutePrefix = string.Empty;
         });
-    
+
         return app;
     }
 
     private static void SetupDatabase(IServiceCollection services)
     {
         services.AddDbContext<VehicleDbContext>();
-        var serviceProvider =  services.BuildServiceProvider();
+        var serviceProvider = services.BuildServiceProvider();
         using var scope = serviceProvider.CreateScope();
         var scopedServices = scope.ServiceProvider;
         var dbContext = scopedServices.GetRequiredService<VehicleDbContext>();

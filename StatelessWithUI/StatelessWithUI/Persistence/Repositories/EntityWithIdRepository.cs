@@ -4,9 +4,9 @@ using StatelessWithUI.Persistence.Domain;
 
 namespace StatelessWithUI.Persistence.Repositories;
 
-public class EntityWithIdRepository<T> : IEntityWithIdRepository<T> where T : VehicleSnapshotEntityBase
+public class EntityWithIdRepository<T> : IEntityWithIdRepository<T> where T : VehicleEntityBase
 {
-    private readonly VehicleDbContext _dbContext;
+    protected readonly VehicleDbContext _dbContext;
 
     protected EntityWithIdRepository(VehicleDbContext dbContext)
     {

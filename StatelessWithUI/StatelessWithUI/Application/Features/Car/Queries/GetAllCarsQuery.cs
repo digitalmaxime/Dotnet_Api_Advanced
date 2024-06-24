@@ -1,6 +1,7 @@
 using MediatR;
+using StatelessWithUI.Persistence.Constants;
 using StatelessWithUI.Persistence.Domain;
 
 namespace StatelessWithUI.Application.Features.CarStateMachine.Queries;
 
-public record GetCarByIdQuery(string Id) : IRequest<CarSnapshotEntity?>;
+public record GetAllCarsQuery: IRequest<IEnumerable<CarEntity>>;

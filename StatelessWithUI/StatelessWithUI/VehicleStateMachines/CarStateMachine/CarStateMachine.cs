@@ -73,7 +73,7 @@ public class CarStateMachine : IVehicleStateMachine
         var car = await carStateRepository.GetById(id);
         if (car == null)
         {
-            car = new CarSnapshotEntity()
+            car = new CarEntity()
             {
                 Id = id, HorsePower = 0, CurrentStateEnumName = CarState.InitialState.ToString()
             };
@@ -148,7 +148,7 @@ public class CarStateMachine : IVehicleStateMachine
     {
         using var scope = _serviceScopeFactory.CreateScope();
         var carStateRepository = scope.ServiceProvider.GetRequiredService<ICarRepository>();
-        var carEntity = new CarSnapshotEntity()
+        var carEntity = new CarEntity()
         {
             Id = Id, HorsePower = HorsePower, CurrentStateEnumName = StateEnum.ToString()
         };

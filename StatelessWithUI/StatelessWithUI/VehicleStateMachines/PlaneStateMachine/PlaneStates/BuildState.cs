@@ -1,3 +1,5 @@
+using StatelessWithUI.Persistence.Domain;
+
 namespace StatelessWithUI.VehicleStateMachines.PlaneStateMachine.PlaneStates;
 
 public class BuildState : StateBase

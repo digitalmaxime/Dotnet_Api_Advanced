@@ -4,7 +4,7 @@ using StatelessWithUI.Persistence.Domain;
 
 namespace StatelessWithUI.Application.Features.PlaneStateMachine.Queries;
 
-public class GetPlaneQueryHandler : IRequestHandler<GetPlaneQuery, PlaneSnapshotEntity?>
+public class GetPlaneQueryHandler : IRequestHandler<GetPlaneQuery, GetPlaneQueryResponseDto?>
 {
     private readonly IPlaneService _planeService;
 
@@ -13,8 +13,8 @@ public class GetPlaneQueryHandler : IRequestHandler<GetPlaneQuery, PlaneSnapshot
         _planeService = planeService;
     }
 
-    public async Task<PlaneSnapshotEntity?> Handle(GetPlaneQuery request, CancellationToken cancellationToken)
+    public async Task<GetPlaneQueryResponseDto?> Handle(GetPlaneQuery request, CancellationToken cancellationToken)
     {
-        return await _planeService.GetPlaneEntity(request.Id);
+        return await _planeService.GetPlaneEntity(request.Id, request.includes);
     }
 }

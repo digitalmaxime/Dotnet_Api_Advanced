@@ -9,4 +9,5 @@ public interface IPlaneStateRepository
     Task<string> AddStateAsync<T>(T state) where T : StateBase;
     Task<StateBase?> GetStateByVehicleId(string id, string stateName);
     Task<StateBase?> GetState(string id,  PlaneStateMachine.PlaneState planeState);
+    Task<IEnumerable<StateBase>?> GetAllStates(PlaneStateMachine.PlaneState planeState);
 }

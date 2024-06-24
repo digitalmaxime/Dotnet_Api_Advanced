@@ -18,17 +18,17 @@ public class CarService : ICarService
         _carRepository = carRepository;
     }
 
-    public async Task<IEnumerable<CarSnapshotEntity>> GetAll()
+    public async Task<IEnumerable<CarEntity>> GetAll()
     {
         return await _carRepository.GetAll();
     }
 
-    public async Task<CarSnapshotEntity?> CreateAsync(string vehicleId)
+    public async Task<CarEntity?> CreateAsync(string vehicleId)
     {
         try
         {
             var stateMachine = _vehicleFactory.GetOrAddVehicleStateMachine(VehicleType.Car, vehicleId);
-            return new CarSnapshotEntity()
+            return new CarEntity()
             {
                 Id = stateMachine.Id, 
                 CurrentStateEnumName = stateMachine.StateEnum.ToString(),
@@ -48,7 +48,7 @@ public class CarService : ICarService
         return stateMachine.CurrentStateName;
     }
     
-    public async Task<CarSnapshotEntity?> GetCarEntity(string vehicleId)
+    public async Task<CarEntity?> GetCarEntity(string vehicleId)
     {
         return await _carRepository.GetById(vehicleId);
     }

@@ -19,22 +19,27 @@ public class PlaneController : ControllerBase
     }
 
     [HttpGet("plane")]
-    public async Task<IEnumerable<PlaneSnapshotEntity>>? Get()
+    public async Task<IEnumerable<PlaneEntity>>? Get()
     {
         return await _mediator.Send(new GetAllPlaneQuery());
     }
 
     [HttpGet("plane/{id}")]
-    public async Task<PlaneSnapshotEntity?> Get(string id)
+    public async Task<ActionResult<GetPlaneQueryResponseDto>> Get(string id, [FromQuery] bool includes)
     {
-        var plane = await _mediator.Send(new GetPlaneQuery(id));
-        return plane;
+        var plane = await _mediator.Send(new GetPlaneQuery(id, includes));
+        if (plane == null)
+        {
+            return NotFound("Plane not found");
+        }
+
+        return Ok(plane);
     }
 
     [HttpGet("plane/getpermittedtriggers/{id}")]
     public async Task<ActionResult<IEnumerable<string>>> GetPermittedTriggers(string id)
     {
-        var result =await _mediator.Send(new GetPlaneGetPermittedTriggersQuery(id));
+        var result = await _mediator.Send(new GetPlaneGetPermittedTriggersQuery(id));
         return result == null ? NotFound() : Ok(result);
     }
 
@@ -46,7 +51,7 @@ public class PlaneController : ControllerBase
         {
             return StatusCode((int)HttpStatusCode.InternalServerError);
         }
-        
+
         return CreatedAtAction(nameof(Get), new { id = createdPlane.Id }, createdPlane);
     }
 
@@ -54,5 +59,6 @@ public class PlaneController : ControllerBase
     public async Task<IActionResult> TakeAction(string id, [FromQuery] string action)
     {
         var result = await _mediator.Send(new TakePlaneActionCommand(id, action));
-        return result ? Ok() : BadRequest();    
-    }}
+        return result ? Ok() : BadRequest();
+    }
+}
