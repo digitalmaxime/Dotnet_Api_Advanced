@@ -31,11 +31,11 @@ public class VehicleFactory : IVehicleFactory
     private PlaneStateMachine GetOrAddPlaneStateMachine(string id)
     {
         var success = _planeStateMachineDictionary.TryGetValue(id, out var stateMachine);
-        if (!success)
-        {
-            stateMachine = new PlaneStateMachine(id, _serviceScopeFactory);
-            _planeStateMachineDictionary.Add(id, stateMachine);
-        }
+        
+        if (success) return stateMachine!;
+        
+        stateMachine = new PlaneStateMachine(id, _serviceScopeFactory);
+        _planeStateMachineDictionary.Add(id, stateMachine);
 
         return stateMachine!;
     }

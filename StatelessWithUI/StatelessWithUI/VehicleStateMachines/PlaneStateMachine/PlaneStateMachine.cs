@@ -66,7 +66,7 @@ public class PlaneStateMachine : IVehicleStateMachine
             StateMutator
         );
 
-        await SaveState();
+        await SaveState(); // TODO: only if necessary
     }
 
     async void StateMutator(PlaneState stateEnum)

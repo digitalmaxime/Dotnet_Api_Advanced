@@ -81,7 +81,7 @@ public class PlaneService : IPlaneService
 
     public async Task<bool> TakeAction(string vehicleId, string action)
     {
-        var stateMachine = _vehicleFactory.GetVehicleStateMachine(VehicleType.Plane, vehicleId);
+        var stateMachine = _vehicleFactory.GetOrAddVehicleStateMachine(VehicleType.Plane, vehicleId);
 
         if (stateMachine == null) return false;
 

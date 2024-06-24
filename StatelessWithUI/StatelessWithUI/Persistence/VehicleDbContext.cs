@@ -12,8 +12,8 @@ public class VehicleDbContext : DbContext
 {
     public VehicleDbContext(DbContextOptions<VehicleDbContext> options) : base(options)
     {
-        
     }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.UseInMemoryDatabase("VehicleState");
@@ -50,10 +50,10 @@ public class VehicleDbContext : DbContext
         // modelBuilder.Entity<BuildState>()
         //     .HasOne(x => x.PlaneEntity)
         //     .WithMany(x => x.States);
-        
+
         modelBuilder.Entity<BuildState>()
             .Ignore(x => x.Graph);
-        
+
         modelBuilder.Entity<CarEntity>()
             .HasData(new CarEntity()
                 {
@@ -69,6 +69,27 @@ public class VehicleDbContext : DbContext
                     // StateId = "StateId2",
                     CurrentStateEnumName = CarStateMachine.CarState.InitialState.ToString()
                 });
+
+        modelBuilder.Entity<PlaneEntity>()
+            .HasData(new PlaneEntity()
+            {
+                Id = "1",
+                CurrentStateEnumName = PlaneStateMachine.PlaneState.InitialState.ToString()
+                // InitialStates = { },
+                // DesignStates = { },
+                // BuildStates = { },
+                // TestingStates = { }
+            });
+
+        modelBuilder.Entity<InitialState>()
+            .HasData(new List<InitialState>()
+            {
+                new InitialState()
+                {
+                    Id = "InitialStateId1",
+                    PlaneEntityId = "1"
+                }
+            });
 
         base.OnModelCreating(modelBuilder);
     }
