@@ -1,10 +1,8 @@
 using MediatR;
 using StatelessWithUI.Application.Services;
-using StatelessWithUI.Persistence.Constants;
-using StatelessWithUI.Persistence.Contracts;
 using StatelessWithUI.Persistence.Domain;
 
-namespace StatelessWithUI.Application.Features.CarStateMachine.Queries;
+namespace StatelessWithUI.Application.Features.Car.Queries;
 
 public class GetAllCarsQueryHandler: IRequestHandler<GetAllCarsQuery, IEnumerable<CarEntity>>
 {

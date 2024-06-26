@@ -1,6 +1,6 @@
 using MediatR;
 using StatelessWithUI.Persistence.Domain;
 
-namespace StatelessWithUI.Application.Features.PlaneStateMachine.Commands;
+namespace StatelessWithUI.Application.Features.Plane.Commands;
 
-public record CreatePlaneCommand(string Id) : IRequest<VehicleEntityBase?>;
+public record CreatePlaneCommand : IRequest<VehicleEntityBase?>;

@@ -3,11 +3,11 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using StatelessWithUI.Application.Services;
+using StatelessWithUI.Controllers;
 using StatelessWithUI.Persistence;
 using StatelessWithUI.Persistence.Contracts;
 using StatelessWithUI.Persistence.Repositories;
 using StatelessWithUI.VehicleStateMachineFactory;
-using StatelessWithUI.VehicleStateMachines.PlaneStateMachine.PlaneStates;
 
 namespace StatelessWithUI;
 
@@ -30,11 +30,13 @@ public static class StartupExtensions
         };
         SetupDatabase(builder.Services);
         builder.Services.AddScoped<ICarService, CarService>();
+        builder.Services.AddScoped<ITaskService, TaskService>();
         builder.Services.AddScoped<IPlaneService, PlaneService>();
         builder.Services.AddScoped<IStateService, StateService>();
         builder.Services.AddScoped<ICarRepository, CarRepository>();
         builder.Services.AddScoped<IPlaneRepository, PlaneRepository>();
         builder.Services.AddScoped<IPlaneStateRepository, PlaneStateRepository>();
+        builder.Services.AddScoped<IBuildTaskRepository, BuildTaskRepository>();
         builder.Services.AddSingleton<IVehicleFactory, VehicleFactory>();
         builder.Services.AddMediatR(cfg =>
             cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));

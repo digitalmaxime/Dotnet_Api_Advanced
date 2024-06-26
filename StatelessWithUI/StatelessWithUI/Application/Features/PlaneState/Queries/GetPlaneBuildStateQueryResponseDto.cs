@@ -1,4 +1,4 @@
-using StatelessWithUI.VehicleStateMachines.PlaneStateMachine.PlaneStates;
+using StatelessWithUI.Persistence.Domain.PlaneStates;
 
 namespace StatelessWithUI.Application.Features.PlaneState.Queries;
 

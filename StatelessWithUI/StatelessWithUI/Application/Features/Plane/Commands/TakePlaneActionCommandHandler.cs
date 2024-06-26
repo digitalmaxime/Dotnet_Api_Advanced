@@ -1,7 +1,7 @@
 using MediatR;
 using StatelessWithUI.Application.Services;
 
-namespace StatelessWithUI.Application.Features.PlaneStateMachine.Commands;
+namespace StatelessWithUI.Application.Features.Plane.Commands;
 
 public class TakePlaneActionCommandHandler : IRequestHandler<TakePlaneActionCommand, bool>
 {
@@ -14,6 +14,6 @@ public class TakePlaneActionCommandHandler : IRequestHandler<TakePlaneActionComm
 
     public async Task<bool> Handle(TakePlaneActionCommand request, CancellationToken cancellationToken)
     {
-        return _planeService.TakeAction(request.Id, request.Action).GetAwaiter().GetResult();
+        return _planeService.TakeActionAsync(request.Id, request.Action).GetAwaiter().GetResult();
     }
 }

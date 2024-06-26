@@ -1,7 +1,7 @@
 using MediatR;
 using StatelessWithUI.Application.Services;
 
-namespace StatelessWithUI.Application.Features.PlaneStateMachine.Queries;
+namespace StatelessWithUI.Application.Features.Plane.Queries;
 
 public class GetPlaneGetPermittedTriggersQueryHandler: IRequestHandler<GetPlaneGetPermittedTriggersQuery, IEnumerable<string>?>
 {

@@ -30,8 +30,7 @@ public class CarService : ICarService
             var stateMachine = _vehicleFactory.GetOrAddVehicleStateMachine(VehicleType.Car, vehicleId);
             return new CarEntity()
             {
-                Id = stateMachine.Id, 
-                CurrentStateEnumName = stateMachine.StateEnum.ToString(),
+                Id = stateMachine.Id,
                 HorsePower = 0
             };
         }

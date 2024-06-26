@@ -2,7 +2,7 @@ using MediatR;
 using StatelessWithUI.Application.Services;
 using StatelessWithUI.Persistence.Domain;
 
-namespace StatelessWithUI.Application.Features.PlaneStateMachine.Commands;
+namespace StatelessWithUI.Application.Features.Plane.Commands;
 
 public class CreatePlaneCommandHandler : IRequestHandler<CreatePlaneCommand, VehicleEntityBase?>
 {
@@ -15,6 +15,6 @@ public class CreatePlaneCommandHandler : IRequestHandler<CreatePlaneCommand, Veh
 
     public async Task<VehicleEntityBase?> Handle(CreatePlaneCommand request, CancellationToken cancellationToken)
     {
-        return await _planeService.CreateAsync(request.Id);
+        return await _planeService.CreateAsync();
     }
 }

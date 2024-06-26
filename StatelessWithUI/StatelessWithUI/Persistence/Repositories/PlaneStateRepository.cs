@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using StatelessWithUI.Persistence.Contracts;
+using StatelessWithUI.Persistence.Domain.PlaneStates;
 using StatelessWithUI.VehicleStateMachines.PlaneStateMachine;
-using StatelessWithUI.VehicleStateMachines.PlaneStateMachine.PlaneStates;
 
 namespace StatelessWithUI.Persistence.Repositories;
 
@@ -14,11 +14,28 @@ public class PlaneStateRepository : IPlaneStateRepository
         _dbContext = dbContext;
     }
 
-    public async Task<string> AddStateAsync<T>(T state) where T : StateBase
+    public async Task<T> AddStateAsync<T>(T state) where T : StateBase
     {
         var entity = await _dbContext.Set<T>().AddAsync(state);
         await _dbContext.SaveChangesAsync();
-        return entity.Entity.Id;
+        return entity.Entity;
+    }
+
+    public async Task<T> UpdateStateAsync<T>(T state) where T : StateBase
+    {
+        var res = _dbContext.Set<T>().Update(state);
+        var nb = await _dbContext.SaveChangesAsync();
+        
+        if (nb < 1) throw new DbUpdateException($"Failed to update state stateid : {state.Id}");
+        
+        return res.Entity;
+    }
+
+    public async Task<BuildState> AddBuildStateAsync(BuildState state)
+    {
+        var entity = await _dbContext.BuildState.AddAsync(state);
+        await _dbContext.SaveChangesAsync();
+        return entity.Entity;
     }
 
     public async Task<StateBase?> GetState(string id, PlaneStateMachine.PlaneState planeState)

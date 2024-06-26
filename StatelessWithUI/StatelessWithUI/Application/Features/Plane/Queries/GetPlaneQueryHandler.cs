@@ -1,8 +1,7 @@
 using MediatR;
 using StatelessWithUI.Application.Services;
-using StatelessWithUI.Persistence.Domain;
 
-namespace StatelessWithUI.Application.Features.PlaneStateMachine.Queries;
+namespace StatelessWithUI.Application.Features.Plane.Queries;
 
 public class GetPlaneQueryHandler : IRequestHandler<GetPlaneQuery, GetPlaneQueryResponseDto?>
 {

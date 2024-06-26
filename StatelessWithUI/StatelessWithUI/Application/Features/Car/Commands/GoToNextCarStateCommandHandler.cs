@@ -1,7 +1,7 @@
 using MediatR;
 using StatelessWithUI.Application.Services;
 
-namespace StatelessWithUI.Application.Features.CarStateMachine.Commands;
+namespace StatelessWithUI.Application.Features.Car.Commands;
 
 public class GoToNextCarStateCommandHandler : IRequestHandler<GoToNextCarStateCommand>
 {

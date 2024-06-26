@@ -1,10 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using StatelessWithUI.Persistence.Domain;
+using StatelessWithUI.Persistence.Domain.PlaneStates;
 using StatelessWithUI.VehicleStateMachines;
 using StatelessWithUI.VehicleStateMachines.CarStateMachine;
-using StatelessWithUI.VehicleStateMachines.CarStateMachine.CarStates;
 using StatelessWithUI.VehicleStateMachines.PlaneStateMachine;
-using StatelessWithUI.VehicleStateMachines.PlaneStateMachine.PlaneStates;
 
 namespace StatelessWithUI.Persistence;
 
@@ -23,58 +22,26 @@ public class VehicleDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        // modelBuilder.Entity<PlaneEntity>()
-        //     .HasMany<StateBase>()
-        //     .WithOne(x => x.PlaneEntity)
-        //     .HasForeignKey(x => x.PlaneEntityId);
         modelBuilder.Entity<PlaneEntity>()
-            .HasMany<InitialState>(x => x.InitialStates)
+            .HasMany<StateBase>(x => x.PlaneStates)
             .WithOne(x => x.PlaneEntity)
             .HasForeignKey(x => x.PlaneEntityId);
-        // modelBuilder.Entity<StateBase>()
-        //     .Ignore(x => x.PlaneEntity);
 
         // modelBuilder.Entity<PlaneEntity>()
-        //     .HasMany<DesignState>(x => x.DesignStates)
+        //     .HasMany<InitialState>(x => x.InitialStates)
         //     .WithOne(x => x.PlaneEntity)
         //     .HasForeignKey(x => x.PlaneEntityId);
-        // modelBuilder.Entity<PlaneEntity>()
-        //     .HasMany<BuildState>(x => x.BuildStates)
-        //     .WithOne(x => x.PlaneEntity)
-        //     .HasForeignKey(x => x.PlaneEntityId);
-        // modelBuilder.Entity<PlaneEntity>()
-        //     .HasMany<TestingState>(x => x.TestingStates)
-        //     .WithOne(x => x.PlaneEntity)
-        //     .HasForeignKey(x => x.PlaneEntityId);
-        //
-        // modelBuilder.Entity<BuildState>()
-        //     .HasOne(x => x.PlaneEntity)
-        //     .WithMany(x => x.States);
 
-        modelBuilder.Entity<BuildState>()
-            .Ignore(x => x.Graph);
-
-        modelBuilder.Entity<CarEntity>()
-            .HasData(new CarEntity()
-                {
-                    Id = "Id1",
-                    HorsePower = 0,
-                    // StateId = "StateId1",
-                    CurrentStateEnumName = CarStateMachine.CarState.InitialState.ToString()
-                },
-                new CarEntity()
-                {
-                    Id = "Id2",
-                    HorsePower = 0,
-                    // StateId = "StateId2",
-                    CurrentStateEnumName = CarStateMachine.CarState.InitialState.ToString()
-                });
+        modelBuilder.Entity<BuildTask>()
+            .HasOne(x => x.BuildState)
+            .WithMany(x => x.BuildTasks)
+            .HasForeignKey(x => x.BuildStateId);
 
         modelBuilder.Entity<PlaneEntity>()
             .HasData(new PlaneEntity()
             {
                 Id = "1",
-                CurrentStateEnumName = PlaneStateMachine.PlaneState.DesignState.ToString()
+                // CurrentStateEnumName = PlaneStateMachine.PlaneState.DesignState.ToString()
             });
 
         modelBuilder.Entity<InitialState>()
@@ -86,7 +53,14 @@ public class VehicleDbContext : DbContext
                     PlaneEntityId = "1"
                 }
             });
-        
+
+        modelBuilder.Entity<BuildState>()
+            .HasOne(x => x.PlaneEntity)
+            // .WithMany(x => x.PlaneStates)
+            // .WithMany(x => x.BuildStates)
+            // .HasForeignKey(x => x.PlaneEntityId)
+            ;
+
         modelBuilder.Entity<DesignState>()
             .HasData(new List<DesignState>()
             {

@@ -2,7 +2,7 @@ using MediatR;
 using StatelessWithUI.Application.Services;
 using StatelessWithUI.Persistence.Domain;
 
-namespace StatelessWithUI.Application.Features.CarStateMachine.Commands
+namespace StatelessWithUI.Application.Features.Car.Commands
 {
     public class CreateCarCommandHandler : IRequestHandler<CreateCarCommand, CarEntity?>
     {
