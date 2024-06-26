@@ -1,5 +1,6 @@
 using StatelessWithUI.Application.Contracts;
 using StatelessWithUI.Application.VehicleStateMachineFactory;
+using StatelessWithUI.Application.VehicleStateMachines.PlaneStateMachine.PlaneActions;
 using StatelessWithUI.Persistence.Constants;
 using StatelessWithUI.Persistence.Domain;
 
@@ -56,12 +57,17 @@ public class CarService : ICarService
         return stateMachine.GetPermittedTriggers;
     }
 
+    public void TakeAction(string vehicleId, string action)
+    {
+        throw new NotImplementedException();
+    }
+
     public void GoToNextState(string vehicleId)
     {
         throw new NotImplementedException();
     }
 
-    public void TakeAction(string vehicleId, string action)
+    public void TakeAction(string vehicleId, PlaneAction action)
     {
         var stateMachine = _vehicleFactory.GetOrAddVehicleStateMachine(VehicleType.Car, vehicleId);
         stateMachine.TakeAction(action);

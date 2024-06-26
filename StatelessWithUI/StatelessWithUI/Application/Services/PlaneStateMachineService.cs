@@ -1,5 +1,6 @@
 using StatelessWithUI.Application.Contracts;
 using StatelessWithUI.Application.VehicleStateMachineFactory;
+using StatelessWithUI.Application.VehicleStateMachines.PlaneStateMachine.PlaneActions;
 using StatelessWithUI.Persistence.Constants;
 
 namespace StatelessWithUI.Application.Services;
@@ -24,7 +25,12 @@ public class PlaneStateMachineService: IPlaneStateMachineService
         return stateMachine?.GetPermittedTriggers;
     }
 
-    public async Task<bool> TakeActionAsync(string vehicleId, string action)
+    public Task<bool> TakeActionAsync(PlaneAction vehicleId, string action)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<bool> TakeActionAsync(string vehicleId, PlaneAction action)
     {
         var stateMachine = _vehicleFactory.GetOrAddVehicleStateMachine(VehicleType.Plane, vehicleId);
 

@@ -27,7 +27,7 @@ public class StateService : IStateService
         var result = await _planeStateRepository.GetState(stateId, planeState);
         if (result == null)
             throw new ArgumentException($"{nameof(CompleteStateAsync)} - no StateBase found, Invalid StateId");
-        
+
         foreach (var s in result.StateTasks)
         {
             await _taskService.CompleteTaskAsync(s.Id);
@@ -45,15 +45,31 @@ public class StateService : IStateService
     {
         StateBase? res;
         StateBase state;
-        
+
         switch (planeState)
         {
             case PlaneStateMachine.PlaneState.InitialState:
-                state = new InitialState() { Id = Guid.NewGuid().ToString(), PlaneEntityId = requestPlaneId };
+                state = new InitialState()
+                {
+                    Id = Guid.NewGuid().ToString(), PlaneEntityId = requestPlaneId,
+                    StateTasks = new List<StateTask>()
+                    {
+                        new StateTask()
+                            { Id = Guid.NewGuid().ToString(), TaskName = "Do initial stuff", IsComplete = false }
+                    }
+                };
                 res = await _planeStateRepository.AddStateAsync((InitialState)state);
                 break;
             case PlaneStateMachine.PlaneState.DesignState:
-                state = new DesignState() { Id = Guid.NewGuid().ToString(), PlaneEntityId = requestPlaneId };
+                state = new DesignState()
+                {
+                    Id = Guid.NewGuid().ToString(), PlaneEntityId = requestPlaneId,
+                    StateTasks = new List<StateTask>()
+                    {
+                        new StateTask()
+                            { Id = Guid.NewGuid().ToString(), TaskName = "Do design stuff", IsComplete = false }
+                    }
+                };
                 res = await _planeStateRepository.AddStateAsync((DesignState)state);
                 break;
             case PlaneStateMachine.PlaneState.BuildState:
@@ -70,20 +86,20 @@ public class StateService : IStateService
 
         return res;
     }
-    
+
     public async Task<BuildState?> InitializeBuildStateTasks(string buildStateId)
     {
         // get buildState from db
         var buildState = await _planeStateRepository.GetBuildState(buildStateId);
-        
+
         // if not exists --> return
         if (buildState == null) return null;
-        
+
         // if task exists and has tasks already --> return
         if (buildState.StateTasks.Any()) return buildState;
-        
+
         // if no tasks, init
-        var values = Enum.GetValues(typeof(BuildState.BuildTasksEnum));
+        var values = Enum.GetValues(typeof(BuildState.StateTasksEnum));
         foreach (var taskName in values)
         {
             var taskNameStr = taskName.ToString();
@@ -94,12 +110,12 @@ public class StateService : IStateService
                 BuildStateId = buildState.Id
             });
         }
-        
+
         // save to db
         var res = await _planeStateRepository.UpdateStateAsync(buildState);
         return res;
     }
-    //
+
     // public async Task<StateBase?> InitializeInitialStateTasks(string stateId, PlaneStateMachine.PlaneState planeState)
     // {
     //     // get buildState from db
@@ -112,7 +128,7 @@ public class StateService : IStateService
     //     if (state.StateTasks.Any()) return state;
     //     
     //     // if no tasks, init
-    //     var values = Enum.GetValues(typeof(BuildState.BuildTasksEnum));
+    //     var values = Enum.GetValues(typeof(BuildState.StateTasksEnum));
     //     foreach (var taskName in values)
     //     {
     //         var taskNameStr = taskName.ToString();

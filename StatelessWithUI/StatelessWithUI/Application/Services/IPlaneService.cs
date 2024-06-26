@@ -7,7 +7,7 @@ namespace StatelessWithUI.Application.Services;
 public interface  IPlaneService
 {
     Task<IEnumerable<PlaneEntity>> GetAllPlanes();
-    Task<PlaneEntity?> CreatePlaneAtInitialStateAsync();
+    Task<PlaneEntity?> CreatePlaneAtInitialStateAsync(string? planeId);
     Task<PlaneEntity?> CreatePlaneAtBuildStateAsync();
     Task<GetPlaneQueryResponseDto?> GetPlaneEntity(string vehicleId, bool includes = false);
 

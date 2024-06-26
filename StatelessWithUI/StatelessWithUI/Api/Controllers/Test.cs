@@ -14,10 +14,10 @@ public class Test: ControllerBase
         _planeService = planeService;
     }
 
-    [HttpPost("create-default-plane")]
-    public async Task<ActionResult<PlaneDto>> CreateDefaultPlane()
+    [HttpPost("create-default-plane/{planeId}")]
+    public async Task<ActionResult<PlaneDto>> CreateDefaultPlane(string? planeId)
     {
-        var planeEntity = await _planeService.CreatePlaneAtInitialStateAsync();
+        var planeEntity = await _planeService.CreatePlaneAtInitialStateAsync(planeId);
         var responseDto = new PlaneDto()
         {
             PlaneId = planeEntity.Id,

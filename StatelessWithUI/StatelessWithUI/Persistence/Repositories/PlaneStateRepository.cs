@@ -43,13 +43,16 @@ public class PlaneStateRepository : IPlaneStateRepository
         StateBase? state = planeState switch
         {
             PlaneStateMachine.PlaneState.InitialState => await _dbContext.Set<InitialState>()
-                .Include(x => x.PlaneEntity)
+                .Include(x => x.StateTasks)
                 .FirstOrDefaultAsync(x => x.Id == id),
             PlaneStateMachine.PlaneState.DesignState => await _dbContext.Set<DesignState>()
+                .Include(x => x.StateTasks)
                 .FirstOrDefaultAsync(x => x.Id == id),
             PlaneStateMachine.PlaneState.BuildState => await _dbContext.Set<BuildState>()
+                .Include(x => x.StateTasks)
                 .FirstOrDefaultAsync(x => x.Id == id),
             PlaneStateMachine.PlaneState.TestingState => await _dbContext.Set<TestingState>()
+                .Include(x => x.StateTasks)
                 .FirstOrDefaultAsync(x => x.Id == id),
             _ => throw new InvalidOperationException("Invalid state name")
         };

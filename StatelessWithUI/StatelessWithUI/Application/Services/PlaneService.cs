@@ -24,11 +24,11 @@ public class PlaneService : IPlaneService
         return await _planeRepository.GetAllPlanes();
     }
 
-    public async Task<PlaneEntity?> CreatePlaneAtInitialStateAsync()
+    public async Task<PlaneEntity?> CreatePlaneAtInitialStateAsync(string? planeId)
     {
         try
         {
-            var createdPlane = await _planeRepository.Create();
+            var createdPlane = await _planeRepository.Create(planeId);
             var state = await _stateService.CreatePlaneStateAsync(createdPlane.Id,
                 PlaneStateMachine.PlaneState.InitialState);
             return createdPlane;
@@ -44,7 +44,7 @@ public class PlaneService : IPlaneService
     {
         try
         {
-            var createdPlane = await _planeRepository.Create();
+            var createdPlane = await _planeRepository.Create(null);
             await _stateService.CreatePlaneStateAsync(createdPlane.Id, PlaneStateMachine.PlaneState.InitialState);
             await _stateService.CreatePlaneStateAsync(createdPlane.Id, PlaneStateMachine.PlaneState.DesignState);
             var buildState = await _stateService.CreatePlaneStateAsync(createdPlane.Id, PlaneStateMachine.PlaneState.BuildState);

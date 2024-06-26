@@ -16,7 +16,7 @@ public class CreatePlaneCommandHandler : IRequestHandler<CreatePlaneCommand, Cre
     public async Task<CreatePlaneCommandResponseDto?> Handle(CreatePlaneCommand request,
         CancellationToken cancellationToken)
     {
-        var res = await _planeService.CreatePlaneAtInitialStateAsync();
+        var res = await _planeService.CreatePlaneAtInitialStateAsync(request.PlaneId);
         if (res == null) return null;
         return new CreatePlaneCommandResponseDto()
         {

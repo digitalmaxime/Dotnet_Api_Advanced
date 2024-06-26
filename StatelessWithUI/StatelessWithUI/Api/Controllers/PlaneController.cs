@@ -39,7 +39,7 @@ public class PlaneController : ControllerBase
     [HttpPost("create")]
     public async Task<ActionResult<CreatePlaneCommandResponseDto?>> Create()
     {
-        var createdPlane = await _mediator.Send(new CreatePlaneCommand());
+        var createdPlane = await _mediator.Send(new CreatePlaneCommand(null));
         if (createdPlane == null)
         {
             return StatusCode((int)HttpStatusCode.InternalServerError);

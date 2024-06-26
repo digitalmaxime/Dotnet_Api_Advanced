@@ -1,6 +1,7 @@
 using Stateless;
 using Stateless.Graph;
 using StatelessWithUI.Application.Contracts;
+using StatelessWithUI.Application.VehicleStateMachines.PlaneStateMachine.PlaneActions;
 using StatelessWithUI.Persistence.Domain;
 using static System.Int32;
 
@@ -37,6 +38,11 @@ public class CarStateMachine : IVehicleStateMachine
     private bool _isMainFrameBuilt { get; set; }
     public Enum StateEnum { get; private set; }
     public string CurrentStateName => StateEnum.ToString();
+    public void TakeAction(PlaneAction actionString)
+    {
+        throw new NotImplementedException();
+    }
+
     private readonly StateMachine<CarState, CarAction> _stateMachine;
     public IEnumerable<string> GetPermittedTriggers => _stateMachine.GetPermittedTriggers().Select(x => x.ToString());
     

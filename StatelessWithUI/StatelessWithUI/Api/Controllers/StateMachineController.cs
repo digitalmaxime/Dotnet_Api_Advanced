@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using StatelessWithUI.Application.Services;
+using StatelessWithUI.Application.VehicleStateMachines.PlaneStateMachine.PlaneActions;
 
 namespace StatelessWithUI.Api.Controllers;
 
@@ -21,7 +22,7 @@ public class StateMachineController: ControllerBase
     }
     
     [HttpPost("TakeAction/{vehicleId}")]
-    public async Task<IActionResult> TakeAction(string vehicleId, [FromQuery] string action)
+    public async Task<IActionResult> TakeAction(string vehicleId, [FromQuery] PlaneAction action)
     {
         var result = await _planeStateMachineService.TakeActionAsync(vehicleId, action);
         return Ok(result);

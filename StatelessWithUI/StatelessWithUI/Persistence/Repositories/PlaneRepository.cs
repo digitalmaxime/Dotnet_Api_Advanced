@@ -24,9 +24,9 @@ public class PlaneRepository : EntityWithIdRepository<PlaneEntity>, IPlaneReposi
             .FirstOrDefaultAsync(c => c.Id == id);
     }
 
-    public async Task<PlaneEntity> Create()
+    public async Task<PlaneEntity> Create(string? planeId)
     {
-        var planeId = Guid.NewGuid().ToString();
+        planeId ??= Guid.NewGuid().ToString();
 
         var createEntity = await _dbContext.PlaneEntity.AddAsync(new PlaneEntity()
         {

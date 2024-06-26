@@ -3,4 +3,4 @@ using StatelessWithUI.Persistence.Domain;
 
 namespace StatelessWithUI.Application.Features.Plane.Commands;
 
-public record CreatePlaneCommand : IRequest<CreatePlaneCommandResponseDto?>;
+public record CreatePlaneCommand(string? PlaneId) : IRequest<CreatePlaneCommandResponseDto?>;
