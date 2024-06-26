@@ -15,7 +15,7 @@ public class PlaneRepository : EntityWithIdRepository<PlaneEntity>, IPlaneReposi
     {
         return await _dbContext.PlaneEntity
             .Include(x => x.PlaneStates)
-            .ThenInclude(x => x.StateTask)
+            .ThenInclude(x => x.StateTasks)
             // .Include(x => x.InitialStates)
             // .Include(x => x.DesignStates)
             // .Include(x => x.BuildStates)
@@ -51,7 +51,7 @@ public class PlaneRepository : EntityWithIdRepository<PlaneEntity>, IPlaneReposi
     {
         var entities = await _dbContext.PlaneEntity
             .Include(x => x.PlaneStates)
-            .ThenInclude(x => x.StateTask)
+            .ThenInclude(x => x.StateTasks)
             .ToListAsync();
 
         return entities;

@@ -9,9 +9,7 @@ public interface  IPlaneService
     Task<IEnumerable<PlaneEntity>> GetAllPlanes();
     Task<PlaneEntity?> CreatePlaneAtInitialStateAsync();
     Task<PlaneEntity?> CreatePlaneAtBuildStateAsync();
-    string? GetPlaneState(string vehicleId);
     Task<GetPlaneQueryResponseDto?> GetPlaneEntity(string vehicleId, bool includes = false);
-    Task<IEnumerable<string>?> GetPermittedTriggers(string vehicleId);
-    Task<bool> TakeActionAsync(string vehicleId, string action);
+
     Task<PlaneEntity> InitializeStates(string planeEnityId);
 }

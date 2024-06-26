@@ -14,17 +14,17 @@ public class TaskService : ITaskService
         _buildTaskRepository = buildTaskRepository;
     }
 
-    public async Task<StateTask?> GetBuildTask(string id)
+    public async Task<StateTask?> GetTaskAsync(string id)
     {
         return await Task.FromResult<StateTask?>(null);
     }
     
-    public async Task<StateTask?> CompleteBuildTask(string id)
+    public async Task CompleteTaskAsync(string id)
     {
-        return await Task.FromResult<StateTask?>(null);
+        await _buildTaskRepository.CompleteTaskAsync(id);
     }
 
-    public async Task<StateTask?> CreatePlaneBuildTask(string planeStateId, string taskName)
+    public async Task<StateTask?> CreatePlaneBuildTaskAsync(string planeStateId, string taskName)
     {
         var res = await _buildTaskRepository.CreatePlaneBuildTaskAsync(planeStateId, taskName);
         return res;

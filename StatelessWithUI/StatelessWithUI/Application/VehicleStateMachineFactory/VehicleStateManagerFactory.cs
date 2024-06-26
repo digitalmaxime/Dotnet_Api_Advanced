@@ -51,7 +51,7 @@ public class VehicleFactory : IVehicleFactory
         };
     }
 
-    public IVehicleStateMachine? GetVehicleStateMachine(VehicleType vehicleType, string vehicleId)
+    public IVehicleStateMachine? GetVehicleStateMachine(VehicleType vehicleType, string vehicleId) // TODO: Remove, perhaps not useful
     {
         switch (vehicleType)
         {

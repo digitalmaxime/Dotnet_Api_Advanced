@@ -42,9 +42,12 @@ public class PlaneStateMachine : IVehicleStateMachine
     {
         using var scope = _serviceScopeFactory.CreateScope();
         var planeRepository = scope.ServiceProvider.GetRequiredService<IPlaneRepository>();
-        var plane = await planeRepository.GetById(VehicleId);
+        var plane = await planeRepository.GetByIdWithIncludes(VehicleId);
         
-        if (plane == null) throw new ArgumentException("No plane found with id : {id}");
+        if (plane == null)
+        {
+            throw new ArgumentException("No plane found with id : {id}");
+        }
 
         StateEnum = Enum.Parse<PlaneState>(plane.GetCurrentStateEnumName());
 
@@ -63,11 +66,39 @@ public class PlaneStateMachine : IVehicleStateMachine
         _stateMachine.Configure(PlaneState.InitialState)
             .OnActivate(() => { _stateMachine.Fire(PlaneAction.Design); })
             .Permit(PlaneAction.Design, PlaneState.DesignState)
-            .OnEntry(EntryAction);
+            .OnEntry(async (transition) =>
+            {
+                EntryAction(transition);
+                using var scope = _serviceScopeFactory.CreateScope();
+                var stateService = scope.ServiceProvider.GetRequiredService<IStateService>();
+                var planeRepository = scope.ServiceProvider.GetRequiredService<IPlaneRepository>();
+                var plane = await planeRepository.GetById(VehicleId);
+                var planeState = plane?.PlaneStates.First(x => x.StateName == PlaneState.InitialState.ToString());
+                var updatedState = await stateService.CompleteStateAsync(planeState.Id, PlaneState.InitialState);
+            });
 
         _stateMachine.Configure(PlaneState.DesignState)
             .Permit(PlaneAction.Build, PlaneState.BuildState)
-            .OnEntry(EntryAction)
+            .OnEntry(async (transition) =>
+            {
+                EntryAction(transition);
+                using var scope = _serviceScopeFactory.CreateScope();
+                var stateService = scope.ServiceProvider.GetRequiredService<IStateService>();
+                var planeRepository = scope.ServiceProvider.GetRequiredService<IPlaneRepository>();
+                var plane = await planeRepository.GetByIdWithIncludes(VehicleId);
+                var planeState = plane?.PlaneStates.First(x => x.StateName == PlaneState.DesignState.ToString());
+                var updatedState = await stateService.CompleteStateAsync(planeState.Id, PlaneState.DesignState);
+                
+                // TODO: If complete, go to next state
+                if (updatedState.IsStateComplete)
+                {
+                    TakeAction("Build");
+                }
+                else
+                {
+                    // TODO: I dunno..
+                }
+            })
             ;
 
         _stateMachine.Configure(PlaneState.BuildState)

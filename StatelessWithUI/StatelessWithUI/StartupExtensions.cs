@@ -28,6 +28,7 @@ public static class StartupExtensions
         builder.Services.AddScoped<ITaskService, TaskService>();
         builder.Services.AddScoped<IPlaneService, PlaneService>();
         builder.Services.AddScoped<IStateService, StateService>();
+        builder.Services.AddScoped<IPlaneStateMachineService, PlaneStateMachineService>();
         builder.Services.AddScoped<ICarRepository, CarRepository>();
         builder.Services.AddScoped<IPlaneRepository, PlaneRepository>();
         builder.Services.AddScoped<IPlaneStateRepository, PlaneStateRepository>();

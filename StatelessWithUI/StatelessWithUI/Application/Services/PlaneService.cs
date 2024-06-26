@@ -10,13 +10,11 @@ namespace StatelessWithUI.Application.Services;
 
 public class PlaneService : IPlaneService
 {
-    private readonly IVehicleFactory _vehicleFactory;
     private readonly IPlaneRepository _planeRepository;
     private readonly IStateService _stateService;
 
-    public PlaneService(IVehicleFactory vehicleFactory, IPlaneRepository planeRepository, IStateService stateService)
+    public PlaneService(IPlaneRepository planeRepository, IStateService stateService)
     {
-        _vehicleFactory = vehicleFactory;
         _planeRepository = planeRepository;
         _stateService = stateService;
     }
@@ -50,7 +48,7 @@ public class PlaneService : IPlaneService
             await _stateService.CreatePlaneStateAsync(createdPlane.Id, PlaneStateMachine.PlaneState.InitialState);
             await _stateService.CreatePlaneStateAsync(createdPlane.Id, PlaneStateMachine.PlaneState.DesignState);
             var buildState = await _stateService.CreatePlaneStateAsync(createdPlane.Id, PlaneStateMachine.PlaneState.BuildState);
-            await _stateService.InitializeBuildStates(buildState.Id);
+            await _stateService.InitializeBuildStateTasks(buildState.Id);
             // var storedPlane = await _planeRepository.GetByIdWithIncludes(createdPlane.Id);
             return createdPlane;
         }
@@ -59,12 +57,6 @@ public class PlaneService : IPlaneService
             Console.WriteLine(e.Message);
             return null;
         }
-    }
-
-    public string? GetPlaneState(string vehicleId)
-    {
-        var stateMachine = _vehicleFactory.GetVehicleStateMachine(VehicleType.Plane, vehicleId);
-        return stateMachine?.CurrentStateName;
     }
 
     public async Task<GetPlaneQueryResponseDto?> GetPlaneEntity(string vehicleId, bool includes = false)
@@ -86,31 +78,6 @@ public class PlaneService : IPlaneService
         };
     }
 
-    public async Task<IEnumerable<string>?> GetPermittedTriggers(string vehicleId)
-    {
-        if (await _planeRepository.GetById(vehicleId) == null) return null;
-
-        var stateMachine = _vehicleFactory.GetOrAddVehicleStateMachine(VehicleType.Plane, vehicleId);
-        return stateMachine?.GetPermittedTriggers;
-    }
-
-    public async Task<bool> TakeActionAsync(string vehicleId, string action)
-    {
-        var stateMachine = _vehicleFactory.GetOrAddVehicleStateMachine(VehicleType.Plane, vehicleId);
-
-        if (stateMachine == null) return false;
-
-        try
-        {
-            stateMachine.TakeAction(action);
-            return true;
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e.Message);
-            return false;
-        }
-    }
 
     public async Task<PlaneEntity> InitializeStates(string planeEnityId)
     {

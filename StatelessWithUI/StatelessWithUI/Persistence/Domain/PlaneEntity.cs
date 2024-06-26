@@ -9,7 +9,8 @@ public class PlaneEntity: VehicleEntityBase
         InitialState,
         DesignState,
         BuildState,
-        TestingState
+        TestingState,
+        UndefinedState,
     }
 
     public ICollection<StateBase> PlaneStates { get; set; } = new List<StateBase>();
@@ -23,6 +24,6 @@ public class PlaneEntity: VehicleEntityBase
             if (state != null && !state.IsStateComplete) return planeState.ToString();
         }
 
-        return PlaneStateNameEnum.TestingState.ToString();
+        return PlaneStateNameEnum.UndefinedState.ToString();
     }
 }

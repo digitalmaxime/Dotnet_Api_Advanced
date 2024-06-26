@@ -35,14 +35,7 @@ public class PlaneController : ControllerBase
 
         return Ok(plane);
     }
-
-    [HttpGet("getpermittedtriggers/{id}")]
-    public async Task<ActionResult<IEnumerable<string>>> GetPermittedTriggers(string id)
-    {
-        var result = await _mediator.Send(new GetPlaneGetPermittedTriggersQuery(id));
-        return result == null ? NotFound() : Ok(result);
-    }
-
+    
     [HttpPost("create")]
     public async Task<ActionResult<CreatePlaneCommandResponseDto?>> Create()
     {
@@ -53,12 +46,5 @@ public class PlaneController : ControllerBase
         }
 
         return CreatedAtAction(nameof(Get), new { id = createdPlane.PlaneId }, createdPlane);
-    }
-
-    [HttpPost("action/{id}")]
-    public async Task<IActionResult> TakeAction(string id, [FromQuery] string action)
-    {
-        var result = await _mediator.Send(new TakePlaneActionCommand(id, action));
-        return result ? Ok() : BadRequest();
     }
 }

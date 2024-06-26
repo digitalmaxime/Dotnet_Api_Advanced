@@ -26,7 +26,7 @@ public class VehicleDbContext : DbContext
 
         modelBuilder.Entity<StateTask>()
             .HasOne(x => x.BuildState)
-            .WithMany(x => x.StateTask)
+            .WithMany(x => x.StateTasks)
             .HasForeignKey(x => x.BuildStateId);
 
         base.OnModelCreating(modelBuilder);

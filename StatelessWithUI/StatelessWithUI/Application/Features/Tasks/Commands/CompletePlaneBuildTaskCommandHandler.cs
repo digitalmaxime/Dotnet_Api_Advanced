@@ -13,7 +13,7 @@ public class CompletePlaneBuildTaskCommandHandler : IRequestHandler<CompletePlan
 
     public async Task<CompletePlaneBuildTaskCommandResponseDto?> Handle(CompletePlaneBuildTaskCommand request, CancellationToken cancellationToken)
     {
-        var result = await _buildTaskRepository.CompleteTask(request.Id);
+        var result = await _buildTaskRepository.CompleteTaskAsync(request.Id);
         return new CompletePlaneBuildTaskCommandResponseDto()
         {
             Success = result

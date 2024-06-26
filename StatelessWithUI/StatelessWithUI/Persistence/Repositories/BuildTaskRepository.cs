@@ -21,7 +21,7 @@ public class BuildTaskRepository : IBuildTaskRepository
         return task;
     }
 
-    public async Task<bool> CompleteTask(string id)
+    public async Task<bool> CompleteTaskAsync(string id)
     {
         var task = await _context.BuildTask.FirstOrDefaultAsync(x => x.Id == id);
         if (task == null) return false;

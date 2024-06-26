@@ -26,7 +26,7 @@ public class Test: ControllerBase
             {
                 StateId = x.Id,
                 StateName = x.StateName,
-                TaskDtos = x.StateTask.Select(y => new TaskDto()
+                TaskDtos = x.StateTasks.Select(y => new TaskDto()
                 {
                     TaskId = y.Id,
                     TaskName = y.TaskName,
@@ -50,7 +50,7 @@ public class Test: ControllerBase
             {
                 StateId = x.Id,
                 StateName = x.StateName,
-                TaskDtos = x.StateTask.Select(y => new TaskDto()
+                TaskDtos = x.StateTasks.Select(y => new TaskDto()
                 {
                     TaskId = y.Id,
                     TaskName = y.TaskName,

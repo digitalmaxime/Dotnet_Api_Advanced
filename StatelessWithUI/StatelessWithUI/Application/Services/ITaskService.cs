@@ -5,9 +5,9 @@ namespace StatelessWithUI.Application.Services;
 
 public interface ITaskService
 {
-    public Task<StateTask?> GetBuildTask(string id);
-    public Task<StateTask?> CompleteBuildTask(string id);
+    public Task<StateTask?> GetTaskAsync(string id);
+    public Task CompleteTaskAsync(string id);
 
-    public Task<StateTask?> CreatePlaneBuildTask(string planeStateId, string taskName);
+    public Task<StateTask?> CreatePlaneBuildTaskAsync(string planeStateId, string taskName);
     Task<GetAllBuildPlaneTaskQueryResponseDto?> GetAllPlaneBuildTasksAsync();
 }

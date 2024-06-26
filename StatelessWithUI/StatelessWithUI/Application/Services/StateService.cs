@@ -22,6 +22,20 @@ public class StateService : IStateService
         throw new NotImplementedException();
     }
 
+    public async Task<StateBase?> CompleteStateAsync(string stateId, PlaneStateMachine.PlaneState planeState)
+    {
+        var result = await _planeStateRepository.GetState(stateId, planeState);
+        if (result == null)
+            throw new ArgumentException($"{nameof(CompleteStateAsync)} - no StateBase found, Invalid StateId");
+        
+        foreach (var s in result.StateTasks)
+        {
+            await _taskService.CompleteTaskAsync(s.Id);
+        }
+
+        return result;
+    }
+
     public async Task<StateBase?> GetState(string id, PlaneStateMachine.PlaneState planeState)
     {
         throw new NotImplementedException();
@@ -57,7 +71,7 @@ public class StateService : IStateService
         return res;
     }
     
-    public async Task<BuildState?> InitializeBuildStates(string buildStateId)
+    public async Task<BuildState?> InitializeBuildStateTasks(string buildStateId)
     {
         // get buildState from db
         var buildState = await _planeStateRepository.GetBuildState(buildStateId);
@@ -66,15 +80,14 @@ public class StateService : IStateService
         if (buildState == null) return null;
         
         // if task exists and has tasks already --> return
-        // if (buildState.BuildTasks.Any()) return buildState;
-        if (buildState.StateTask.Any()) return buildState;
+        if (buildState.StateTasks.Any()) return buildState;
         
         // if no tasks, init
         var values = Enum.GetValues(typeof(BuildState.BuildTasksEnum));
         foreach (var taskName in values)
         {
             var taskNameStr = taskName.ToString();
-            buildState.StateTask.Add(new StateTask
+            buildState.StateTasks.Add(new StateTask
             {
                 Id = Guid.NewGuid().ToString(),
                 TaskName = taskNameStr,
@@ -86,4 +99,33 @@ public class StateService : IStateService
         var res = await _planeStateRepository.UpdateStateAsync(buildState);
         return res;
     }
+    //
+    // public async Task<StateBase?> InitializeInitialStateTasks(string stateId, PlaneStateMachine.PlaneState planeState)
+    // {
+    //     // get buildState from db
+    //     var state = await _planeStateRepository.GetState(stateId, planeState);
+    //     
+    //     // if not exists --> return
+    //     if (state == null) return null;
+    //     
+    //     // if task exists and has tasks already --> return
+    //     if (state.StateTasks.Any()) return state;
+    //     
+    //     // if no tasks, init
+    //     var values = Enum.GetValues(typeof(BuildState.BuildTasksEnum));
+    //     foreach (var taskName in values)
+    //     {
+    //         var taskNameStr = taskName.ToString();
+    //         state.StateTasks.Add(new StateTask
+    //         {
+    //             Id = Guid.NewGuid().ToString(),
+    //             TaskName = taskNameStr,
+    //             BuildStateId = state.Id
+    //         });
+    //     }
+    //     
+    //     // save to db
+    //     var res = await _planeStateRepository.UpdateStateAsync(state);
+    //     return res;
+    // }
 }
