@@ -11,6 +11,6 @@ public record GetPlaneBuildStateQueryResponseDto
 
 public record BuildTaskNode
 {
-    public BuildTask BuildTask { get; set; }
-    public ICollection<BuildTask>? Dependencies { get; set; }
+    public StateTask StateTask { get; set; }
+    public ICollection<StateTask>? Dependencies { get; set; }
 };

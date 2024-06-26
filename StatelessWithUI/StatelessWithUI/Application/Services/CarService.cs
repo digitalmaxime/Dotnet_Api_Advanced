@@ -1,9 +1,7 @@
+using StatelessWithUI.Application.Contracts;
+using StatelessWithUI.Application.VehicleStateMachineFactory;
 using StatelessWithUI.Persistence.Constants;
-using StatelessWithUI.Persistence.Contracts;
 using StatelessWithUI.Persistence.Domain;
-using StatelessWithUI.VehicleStateMachineFactory;
-using StatelessWithUI.VehicleStateMachines;
-using StatelessWithUI.VehicleStateMachines.CarStateMachine;
 
 namespace StatelessWithUI.Application.Services;
 
@@ -30,7 +28,7 @@ public class CarService : ICarService
             var stateMachine = _vehicleFactory.GetOrAddVehicleStateMachine(VehicleType.Car, vehicleId);
             return new CarEntity()
             {
-                Id = stateMachine.Id,
+                Id = stateMachine.VehicleId,
                 HorsePower = 0
             };
         }

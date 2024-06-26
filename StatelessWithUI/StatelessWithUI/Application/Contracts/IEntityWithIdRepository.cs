@@ -1,7 +1,6 @@
-using StatelessWithUI.Persistence.Constants;
 using StatelessWithUI.Persistence.Domain;
 
-namespace StatelessWithUI.Persistence.Contracts;
+namespace StatelessWithUI.Application.Contracts;
 
 public interface IEntityWithIdRepository<T> where T : VehicleEntityBase
 {

@@ -1,9 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using StatelessWithUI.Persistence.Domain;
 using StatelessWithUI.Persistence.Domain.PlaneStates;
-using StatelessWithUI.VehicleStateMachines;
-using StatelessWithUI.VehicleStateMachines.CarStateMachine;
-using StatelessWithUI.VehicleStateMachines.PlaneStateMachine;
 
 namespace StatelessWithUI.Persistence;
 
@@ -27,49 +24,10 @@ public class VehicleDbContext : DbContext
             .WithOne(x => x.PlaneEntity)
             .HasForeignKey(x => x.PlaneEntityId);
 
-        // modelBuilder.Entity<PlaneEntity>()
-        //     .HasMany<InitialState>(x => x.InitialStates)
-        //     .WithOne(x => x.PlaneEntity)
-        //     .HasForeignKey(x => x.PlaneEntityId);
-
-        modelBuilder.Entity<BuildTask>()
+        modelBuilder.Entity<StateTask>()
             .HasOne(x => x.BuildState)
-            .WithMany(x => x.BuildTasks)
+            .WithMany(x => x.StateTask)
             .HasForeignKey(x => x.BuildStateId);
-
-        modelBuilder.Entity<PlaneEntity>()
-            .HasData(new PlaneEntity()
-            {
-                Id = "1",
-                // CurrentStateEnumName = PlaneStateMachine.PlaneState.DesignState.ToString()
-            });
-
-        modelBuilder.Entity<InitialState>()
-            .HasData(new List<InitialState>()
-            {
-                new InitialState()
-                {
-                    Id = "InitialStateId1",
-                    PlaneEntityId = "1"
-                }
-            });
-
-        modelBuilder.Entity<BuildState>()
-            .HasOne(x => x.PlaneEntity)
-            // .WithMany(x => x.PlaneStates)
-            // .WithMany(x => x.BuildStates)
-            // .HasForeignKey(x => x.PlaneEntityId)
-            ;
-
-        modelBuilder.Entity<DesignState>()
-            .HasData(new List<DesignState>()
-            {
-                new DesignState()
-                {
-                    Id = "DesignStateId1",
-                    PlaneEntityId = "1"
-                }
-            });
 
         base.OnModelCreating(modelBuilder);
     }
@@ -80,5 +38,5 @@ public class VehicleDbContext : DbContext
     public DbSet<DesignState> DesignState { get; set; } = default!;
     public DbSet<BuildState> BuildState { get; set; } = default!;
     public DbSet<TestingState> TestingState { get; set; } = default!;
-    public DbSet<BuildTask> BuildTask { get; set; } = default!;
+    public DbSet<StateTask> BuildTask { get; set; } = default!;
 }

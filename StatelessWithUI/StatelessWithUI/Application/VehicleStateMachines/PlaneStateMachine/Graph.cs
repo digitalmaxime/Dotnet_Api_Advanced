@@ -1,44 +1,44 @@
 using StatelessWithUI.Persistence.Domain.PlaneStates;
 
-namespace StatelessWithUI.VehicleStateMachines.PlaneStateMachine;
+namespace StatelessWithUI.Application.VehicleStateMachines.PlaneStateMachine;
 
 public class Graph
 {
-    private readonly Dictionary<BuildTask, Node<BuildTask>> nodes;
+    private readonly Dictionary<StateTask, Node<StateTask>> nodes;
 
     public Graph()
     {
-        nodes = new Dictionary<BuildTask, Node<BuildTask>>();
+        nodes = new Dictionary<StateTask, Node<StateTask>>();
     }
     
     
 
-    public Node<BuildTask> AddNode(BuildTask value)
+    public Node<StateTask> AddNode(StateTask value)
     {
         if (nodes.TryGetValue(value, out var addNode))
         {
             return addNode;
         }
 
-        var node = new Node<BuildTask>(value);
+        var node = new Node<StateTask>(value);
         nodes.Add(value, node);
         return node;
     }
 
-    public void AddDependency(BuildTask from, BuildTask to)
+    public void AddDependency(StateTask from, StateTask to)
     {
         var fromNode = AddNode(from);
         var toNode = AddNode(to);
         fromNode.Dependencies.Add(toNode);
     }
 
-    public ICollection<BuildTask>? GetDependencies(BuildTask node)
+    public ICollection<StateTask>? GetDependencies(StateTask node)
     {
         nodes.TryGetValue(node, out var toto);
         return toto?.Dependencies.Select(x => x.Value).ToList();
     }
     
-    private void InitializeGraph(List<BuildTask> Tasks)
+    private void InitializeGraph(List<StateTask> Tasks)
     {
         AddNode(Tasks.First(x => x.TaskName == "GetMaterials"));
         AddDependency(Tasks.First(x => x.TaskName == "BuildSoftware"),
@@ -57,10 +57,10 @@ public class Graph
             Tasks.First(x => x.TaskName == "BuildSoftware"));
     }
 
-    public List<BuildTask> TopologicalSort()
+    public List<StateTask> TopologicalSort()
     {
-        var visited = new HashSet<BuildTask>();
-        var result = new List<BuildTask>();
+        var visited = new HashSet<StateTask>();
+        var result = new List<StateTask>();
 
         foreach (var node in nodes.Values)
         {
@@ -70,7 +70,7 @@ public class Graph
         return result;
     }
 
-    private void TopologicalSort(Node<BuildTask> node, HashSet<BuildTask> visited, List<BuildTask> result)
+    private void TopologicalSort(Node<StateTask> node, HashSet<StateTask> visited, List<StateTask> result)
     {
         if (visited.Contains(node.Value))
         {

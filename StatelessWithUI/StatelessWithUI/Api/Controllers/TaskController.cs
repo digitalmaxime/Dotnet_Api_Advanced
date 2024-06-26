@@ -1,10 +1,9 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using StatelessWithUI.Application.Features.PlaneState.Queries;
 using StatelessWithUI.Application.Features.Tasks.Commands;
 using StatelessWithUI.Application.Features.Tasks.Queries;
 
-namespace StatelessWithUI.Controllers;
+namespace StatelessWithUI.Api.Controllers;
 
 [Controller]
 [Route("api/[controller]")]

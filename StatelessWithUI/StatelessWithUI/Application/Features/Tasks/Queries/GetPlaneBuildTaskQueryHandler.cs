@@ -1,6 +1,5 @@
 using MediatR;
-using StatelessWithUI.Controllers;
-using StatelessWithUI.Persistence.Contracts;
+using StatelessWithUI.Application.Contracts;
 
 namespace StatelessWithUI.Application.Features.Tasks.Queries;
 

@@ -1,8 +1,7 @@
 using MediatR;
 using StatelessWithUI.Application.Services;
-using StatelessWithUI.Persistence.Contracts;
 
-namespace StatelessWithUI.Controllers;
+namespace StatelessWithUI.Application.Features.Tasks.Commands;
 
 public class CreatePlaneBuildTaskCommandHandler : IRequestHandler<CreatePlaneBuildTaskCommandDto, CreatePlaneBuildTaskCommandResponseDto?>
 {

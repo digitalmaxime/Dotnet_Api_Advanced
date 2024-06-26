@@ -1,7 +1,5 @@
 using MediatR;
 using StatelessWithUI.Application.Services;
-using StatelessWithUI.Persistence.Contracts;
-using StatelessWithUI.VehicleStateMachines.PlaneStateMachine;
 
 namespace StatelessWithUI.Application.Features.PlaneState.Commands;
 
@@ -23,7 +21,7 @@ public class CreatePlaneBuildStateCommandHandler : IRequestHandler<CreatePlaneBu
         return new CreatePlaneBuildStateCommandResponseDto()
         {
             StateId = res.Id,
-            StateName = res.GetStateName(),
+            StateName = res.StateName,
             PlaneId = res.PlaneEntityId
         };
 

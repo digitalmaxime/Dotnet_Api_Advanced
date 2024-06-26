@@ -5,7 +5,7 @@ using StatelessWithUI.Application.Features.Plane.Commands;
 using StatelessWithUI.Application.Features.Plane.Queries;
 using StatelessWithUI.Persistence.Domain;
 
-namespace StatelessWithUI.Controllers;
+namespace StatelessWithUI.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -19,7 +19,7 @@ public class PlaneController : ControllerBase
     }
 
     [HttpGet("all")]
-    public async Task<IEnumerable<PlaneEntity>>? Get()
+    public async Task<ActionResult<GetAllPlaneQueryResponseDto?>> Get()
     {
         return await _mediator.Send(new GetAllPlaneQuery());
     }
@@ -44,7 +44,7 @@ public class PlaneController : ControllerBase
     }
 
     [HttpPost("create")]
-    public async Task<IActionResult> Create()
+    public async Task<ActionResult<CreatePlaneCommandResponseDto?>> Create()
     {
         var createdPlane = await _mediator.Send(new CreatePlaneCommand());
         if (createdPlane == null)
@@ -52,7 +52,7 @@ public class PlaneController : ControllerBase
             return StatusCode((int)HttpStatusCode.InternalServerError);
         }
 
-        return CreatedAtAction(nameof(Get), new { id = createdPlane.Id }, createdPlane);
+        return CreatedAtAction(nameof(Get), new { id = createdPlane.PlaneId }, createdPlane);
     }
 
     [HttpPost("action/{id}")]

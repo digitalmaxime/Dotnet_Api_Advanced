@@ -2,12 +2,11 @@ using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
+using StatelessWithUI.Application.Contracts;
 using StatelessWithUI.Application.Services;
-using StatelessWithUI.Controllers;
+using StatelessWithUI.Application.VehicleStateMachineFactory;
 using StatelessWithUI.Persistence;
-using StatelessWithUI.Persistence.Contracts;
 using StatelessWithUI.Persistence.Repositories;
-using StatelessWithUI.VehicleStateMachineFactory;
 
 namespace StatelessWithUI;
 
@@ -23,11 +22,7 @@ public static class StartupExtensions
         //         .Enrich.FromLogContext()
         //         .WriteTo.Console();
         // });
-        JsonSerializerOptions jsonOptions = new()
-        {
-            ReferenceHandler = ReferenceHandler.IgnoreCycles,
-            WriteIndented = true
-        };
+        
         SetupDatabase(builder.Services);
         builder.Services.AddScoped<ICarService, CarService>();
         builder.Services.AddScoped<ITaskService, TaskService>();

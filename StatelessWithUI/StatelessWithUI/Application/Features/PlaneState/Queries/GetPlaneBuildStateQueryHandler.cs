@@ -1,5 +1,5 @@
 using MediatR;
-using StatelessWithUI.Persistence.Contracts;
+using StatelessWithUI.Application.Contracts;
 
 namespace StatelessWithUI.Application.Features.PlaneState.Queries;
 
@@ -21,7 +21,7 @@ public class
         if (result == null) return null;
         return new GetPlaneBuildStateQueryResponseDto()
         {
-            StateName = result.GetStateName(),
+            StateName = result.StateName,
             StateId = result.Id,
             BuildTaskNodes = new List<BuildTaskNode>()
             {

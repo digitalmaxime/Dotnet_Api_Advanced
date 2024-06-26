@@ -1,10 +1,10 @@
+using StatelessWithUI.Application.Contracts;
 using StatelessWithUI.Application.Features.Plane.Queries;
+using StatelessWithUI.Application.VehicleStateMachineFactory;
+using StatelessWithUI.Application.VehicleStateMachines.PlaneStateMachine;
 using StatelessWithUI.Persistence.Constants;
-using StatelessWithUI.Persistence.Contracts;
 using StatelessWithUI.Persistence.Domain;
 using StatelessWithUI.Persistence.Domain.PlaneStates;
-using StatelessWithUI.VehicleStateMachineFactory;
-using StatelessWithUI.VehicleStateMachines.PlaneStateMachine;
 
 namespace StatelessWithUI.Application.Services;
 
@@ -21,18 +21,37 @@ public class PlaneService : IPlaneService
         _stateService = stateService;
     }
 
-    public async Task<IEnumerable<PlaneEntity>> GetAll()
+    public async Task<IEnumerable<PlaneEntity>> GetAllPlanes()
     {
-        return await _planeRepository.GetAll();
+        return await _planeRepository.GetAllPlanes();
     }
 
-    public async Task<PlaneEntity?> CreateAsync()
+    public async Task<PlaneEntity?> CreatePlaneAtInitialStateAsync()
     {
         try
         {
-            var createdPlane = await _planeRepository.Create(); // TODO:
+            var createdPlane = await _planeRepository.Create();
             var state = await _stateService.CreatePlaneStateAsync(createdPlane.Id,
                 PlaneStateMachine.PlaneState.InitialState);
+            return createdPlane;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            return null;
+        }
+    }
+
+    public async Task<PlaneEntity?> CreatePlaneAtBuildStateAsync()
+    {
+        try
+        {
+            var createdPlane = await _planeRepository.Create();
+            await _stateService.CreatePlaneStateAsync(createdPlane.Id, PlaneStateMachine.PlaneState.InitialState);
+            await _stateService.CreatePlaneStateAsync(createdPlane.Id, PlaneStateMachine.PlaneState.DesignState);
+            var buildState = await _stateService.CreatePlaneStateAsync(createdPlane.Id, PlaneStateMachine.PlaneState.BuildState);
+            await _stateService.InitializeBuildStates(buildState.Id);
+            // var storedPlane = await _planeRepository.GetByIdWithIncludes(createdPlane.Id);
             return createdPlane;
         }
         catch (Exception e)
@@ -62,20 +81,8 @@ public class PlaneService : IPlaneService
             PlaneStateIds = entity.PlaneStates
                 .Select(x => new PlaneStateNameId()
                 {
-                    StateName = x.GetStateName(), StateId = x.Id
+                    StateName = x.StateName, StateId = x.Id
                 }).ToList()
-            // InitialStateIds = entity.InitialStates
-            //     .OrderByDescending(x => x.Id)
-            //     .Select(x => x.Id).ToList(),
-            // DesignStateIds = entity.DesignStates
-            //     .OrderByDescending(x => x.Id)
-            //     .Select(x => x.Id).ToList(),
-            // BuildStateIds = entity.BuildStates
-            //     .OrderByDescending(x => x.Id)
-            //     .Select(x => x.Id).ToList(),
-            // TestingStateIds = entity.TestingStates
-            //     .OrderByDescending(x => x.Id)
-            //     .Select(x => x.Id).ToList()
         };
     }
 
@@ -122,7 +129,7 @@ public class PlaneService : IPlaneService
             Id = Guid.NewGuid().ToString(),
             PlaneEntityId = planeEntity.Id
         });
-        
+
         // save to db
         var res = await _planeRepository.UpdateStateAsync(planeEntity);
         return res;

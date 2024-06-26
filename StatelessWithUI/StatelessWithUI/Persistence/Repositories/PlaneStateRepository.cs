@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using StatelessWithUI.Persistence.Contracts;
+using StatelessWithUI.Application.Contracts;
+using StatelessWithUI.Application.VehicleStateMachines.PlaneStateMachine;
 using StatelessWithUI.Persistence.Domain.PlaneStates;
-using StatelessWithUI.VehicleStateMachines.PlaneStateMachine;
 
 namespace StatelessWithUI.Persistence.Repositories;
 
@@ -60,7 +60,6 @@ public class PlaneStateRepository : IPlaneStateRepository
     public async Task<BuildState?> GetBuildState(string id)
     {
         var buildState = await _dbContext.Set<BuildState>()
-            // .Include(x => x.Graph)
             .FirstOrDefaultAsync(x => x.Id == id);
         
         return buildState;

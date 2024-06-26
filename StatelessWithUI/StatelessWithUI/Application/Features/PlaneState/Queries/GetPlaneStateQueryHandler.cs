@@ -1,5 +1,5 @@
 using MediatR;
-using StatelessWithUI.Persistence.Contracts;
+using StatelessWithUI.Application.Contracts;
 
 namespace StatelessWithUI.Application.Features.PlaneState.Queries;
 
@@ -20,7 +20,7 @@ public class GetPlaneStateQueryHandler: IRequestHandler<GetPlaneStateQuery, GetP
         
         return new GetPlaneStateQueryResponseDto()
         {
-            StateName = result.GetStateName(),
+            StateName = result.StateName,
             StateId = result.Id
         };
     }

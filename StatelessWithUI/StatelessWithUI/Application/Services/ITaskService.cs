@@ -1,14 +1,13 @@
-using StatelessWithUI.Controllers;
-using StatelessWithUI.Persistence.Contracts;
+using StatelessWithUI.Application.Features.Tasks.Queries;
 using StatelessWithUI.Persistence.Domain.PlaneStates;
 
 namespace StatelessWithUI.Application.Services;
 
 public interface ITaskService
 {
-    public Task<BuildTask?> GetBuildTask(string id);
-    public Task<BuildTask?> CompleteBuildTask(string id);
+    public Task<StateTask?> GetBuildTask(string id);
+    public Task<StateTask?> CompleteBuildTask(string id);
 
-    public Task<BuildTask?> CreatePlaneBuildTask(string planeStateId, string taskName);
+    public Task<StateTask?> CreatePlaneBuildTask(string planeStateId, string taskName);
     Task<GetAllBuildPlaneTaskQueryResponseDto?> GetAllPlaneBuildTasksAsync();
 }

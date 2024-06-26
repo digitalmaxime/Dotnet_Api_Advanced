@@ -1,6 +1,6 @@
-using StatelessWithUI.Persistence.Contracts;
+using StatelessWithUI.Application.Contracts;
+using StatelessWithUI.Application.VehicleStateMachines.PlaneStateMachine;
 using StatelessWithUI.Persistence.Domain.PlaneStates;
-using StatelessWithUI.VehicleStateMachines.PlaneStateMachine;
 
 namespace StatelessWithUI.Application.Services;
 
@@ -57,7 +57,7 @@ public class StateService : IStateService
         return res;
     }
     
-    public async Task<BuildState> InitializeTasks(string buildStateId)
+    public async Task<BuildState?> InitializeBuildStates(string buildStateId)
     {
         // get buildState from db
         var buildState = await _planeStateRepository.GetBuildState(buildStateId);
@@ -66,14 +66,15 @@ public class StateService : IStateService
         if (buildState == null) return null;
         
         // if task exists and has tasks already --> return
-        if (buildState.BuildTasks.Any()) return buildState;
+        // if (buildState.BuildTasks.Any()) return buildState;
+        if (buildState.StateTask.Any()) return buildState;
         
         // if no tasks, init
         var values = Enum.GetValues(typeof(BuildState.BuildTasksEnum));
         foreach (var taskName in values)
         {
             var taskNameStr = taskName.ToString();
-            buildState.BuildTasks.Add(new BuildTask
+            buildState.StateTask.Add(new StateTask
             {
                 Id = Guid.NewGuid().ToString(),
                 TaskName = taskNameStr,

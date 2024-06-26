@@ -1,7 +1,7 @@
 using MediatR;
 using StatelessWithUI.Application.Services;
 
-namespace StatelessWithUI.Controllers;
+namespace StatelessWithUI.Application.Features.Tasks.Queries;
 
 public class GetAllBuildPlaneTaskQueryHandler : IRequestHandler<GetAllBuildPlaneTaskQuery, GetAllBuildPlaneTaskQueryResponseDto?>
 {

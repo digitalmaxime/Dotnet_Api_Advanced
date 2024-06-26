@@ -1,6 +1,6 @@
 using StatelessWithUI.Persistence.Domain.PlaneStates;
 
-namespace StatelessWithUI.Controllers;
+namespace StatelessWithUI.Application.Features.Tasks.Queries;
 
 public class GetAllBuildPlaneTaskQueryResponseDto
 {
@@ -10,6 +10,6 @@ public class GetAllBuildPlaneTaskQueryResponseDto
 public class Asdf
 {
     public string StateId { get; set; }
-    public ICollection<BuildTask> BuildStateTasks { get; set; }
+    public ICollection<StateTask> BuildStateTasks { get; set; }
     
 }

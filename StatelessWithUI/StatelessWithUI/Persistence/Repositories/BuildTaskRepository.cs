@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using StatelessWithUI.Controllers;
-using StatelessWithUI.Persistence.Contracts;
+using StatelessWithUI.Application.Contracts;
 using StatelessWithUI.Persistence.Domain.PlaneStates;
 
 namespace StatelessWithUI.Persistence.Repositories;
@@ -14,7 +13,7 @@ public class BuildTaskRepository : IBuildTaskRepository
         _context = context;
     }
 
-    public async Task<BuildTask?> GetTaskByIdAsync(string id)
+    public async Task<StateTask?> GetTaskByIdAsync(string id)
     {
         var task = await _context.BuildTask
             // .Include(x => x.BuildState) // TODO:
@@ -30,9 +29,9 @@ public class BuildTaskRepository : IBuildTaskRepository
         return await _context.SaveChangesAsync() > 0;
     }
 
-    public async Task<BuildTask?> CreatePlaneBuildTaskAsync(string planeStateId, string taskName)
+    public async Task<StateTask?> CreatePlaneBuildTaskAsync(string planeStateId, string taskName)
     {
-        var newTask = new BuildTask()
+        var newTask = new StateTask()
         {
             Id = Guid.NewGuid().ToString(),
             TaskName = taskName,
@@ -43,7 +42,7 @@ public class BuildTaskRepository : IBuildTaskRepository
         return await _context.SaveChangesAsync() != 1 ? null : res.Entity;
     }
 
-    public async Task<ICollection<BuildTask>?> GetAllPlaneBuildTasks()
+    public async Task<ICollection<StateTask>?> GetAllPlaneBuildTasks()
     {
         return await _context.BuildTask.ToListAsync();
     }

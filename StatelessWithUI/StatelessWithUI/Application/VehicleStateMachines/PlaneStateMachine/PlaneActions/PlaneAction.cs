@@ -1,4 +1,4 @@
-namespace StatelessWithUI.VehicleStateMachines.PlaneStateMachine.PlaneActions;
+namespace StatelessWithUI.Application.VehicleStateMachines.PlaneStateMachine.PlaneActions;
 
 public enum PlaneAction
 {

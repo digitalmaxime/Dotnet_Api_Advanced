@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using StatelessWithUI.Persistence.Contracts;
+using StatelessWithUI.Application.Contracts;
 using StatelessWithUI.Persistence.Domain;
 
 namespace StatelessWithUI.Persistence.Repositories;

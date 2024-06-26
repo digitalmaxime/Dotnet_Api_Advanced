@@ -3,10 +3,9 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using StatelessWithUI.Application.Features.Car.Commands;
 using StatelessWithUI.Application.Features.Car.Queries;
-using StatelessWithUI.Persistence.Constants;
 using StatelessWithUI.Persistence.Domain;
 
-namespace StatelessWithUI.Controllers;
+namespace StatelessWithUI.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]

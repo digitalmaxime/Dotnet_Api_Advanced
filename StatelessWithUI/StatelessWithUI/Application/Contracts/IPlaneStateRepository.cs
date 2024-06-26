@@ -1,8 +1,7 @@
-using StatelessWithUI.Persistence.Domain;
+using StatelessWithUI.Application.VehicleStateMachines.PlaneStateMachine;
 using StatelessWithUI.Persistence.Domain.PlaneStates;
-using StatelessWithUI.VehicleStateMachines.PlaneStateMachine;
 
-namespace StatelessWithUI.Persistence.Contracts;
+namespace StatelessWithUI.Application.Contracts;
 
 public interface IPlaneStateRepository 
 {

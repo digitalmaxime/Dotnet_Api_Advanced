@@ -1,5 +1,5 @@
+using StatelessWithUI.Application.VehicleStateMachines.PlaneStateMachine;
 using StatelessWithUI.Persistence.Domain.PlaneStates;
-using StatelessWithUI.VehicleStateMachines.PlaneStateMachine;
 
 namespace StatelessWithUI.Application.Services;
 
@@ -9,5 +9,5 @@ public interface IStateService
     Task<StateBase?> GetState(string id,  PlaneStateMachine.PlaneState planeState);
     
     Task<StateBase?> CreatePlaneStateAsync(string requestPlaneId, PlaneStateMachine.PlaneState planeState);
-    Task<BuildState> InitializeTasks(string buildStateId);
+    Task<BuildState?> InitializeBuildStates(string stateId);
 }

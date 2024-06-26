@@ -1,6 +1,6 @@
 using StatelessWithUI.Persistence.Domain;
 
-namespace StatelessWithUI.Persistence.Contracts;
+namespace StatelessWithUI.Application.Contracts;
 
 public interface IPlaneRepository : IEntityWithIdRepository<PlaneEntity>
 {
@@ -8,4 +8,5 @@ public interface IPlaneRepository : IEntityWithIdRepository<PlaneEntity>
     Task<PlaneEntity> Create();
 
     Task<PlaneEntity> UpdateStateAsync(PlaneEntity planeEntity);
+    Task<IEnumerable<PlaneEntity>> GetAllPlanes();
 }

@@ -1,5 +1,5 @@
 using MediatR;
-using StatelessWithUI.VehicleStateMachines.PlaneStateMachine;
+using StatelessWithUI.Application.VehicleStateMachines.PlaneStateMachine;
 
 namespace StatelessWithUI.Application.Features.PlaneState.Commands;
 

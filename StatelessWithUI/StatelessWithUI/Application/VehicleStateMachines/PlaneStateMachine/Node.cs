@@ -1,4 +1,4 @@
-namespace StatelessWithUI.VehicleStateMachines.PlaneStateMachine;
+namespace StatelessWithUI.Application.VehicleStateMachines.PlaneStateMachine;
 
 public class Node<T>
 {

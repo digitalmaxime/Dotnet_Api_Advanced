@@ -1,6 +1,6 @@
 using Microsoft.JSInterop.Infrastructure;
-using StatelessWithUI.Controllers;
-using StatelessWithUI.Persistence.Contracts;
+using StatelessWithUI.Application.Contracts;
+using StatelessWithUI.Application.Features.Tasks.Queries;
 using StatelessWithUI.Persistence.Domain.PlaneStates;
 
 namespace StatelessWithUI.Application.Services;
@@ -14,17 +14,17 @@ public class TaskService : ITaskService
         _buildTaskRepository = buildTaskRepository;
     }
 
-    public async Task<BuildTask?> GetBuildTask(string id)
+    public async Task<StateTask?> GetBuildTask(string id)
     {
-        return await Task.FromResult<BuildTask?>(null);
+        return await Task.FromResult<StateTask?>(null);
     }
     
-    public async Task<BuildTask?> CompleteBuildTask(string id)
+    public async Task<StateTask?> CompleteBuildTask(string id)
     {
-        return await Task.FromResult<BuildTask?>(null);
+        return await Task.FromResult<StateTask?>(null);
     }
 
-    public async Task<BuildTask?> CreatePlaneBuildTask(string planeStateId, string taskName)
+    public async Task<StateTask?> CreatePlaneBuildTask(string planeStateId, string taskName)
     {
         var res = await _buildTaskRepository.CreatePlaneBuildTaskAsync(planeStateId, taskName);
         return res;
@@ -46,7 +46,7 @@ public class TaskService : ITaskService
                 dto.BuildStateTasks.Add(x.BuildStateId, new Asdf()
                 {
                     StateId = x.BuildStateId,
-                    BuildStateTasks = new List<BuildTask> { x }
+                    BuildStateTasks = new List<StateTask> { x }
                 });
                 
             }

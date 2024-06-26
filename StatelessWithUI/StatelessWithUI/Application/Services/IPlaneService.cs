@@ -6,8 +6,9 @@ namespace StatelessWithUI.Application.Services;
 
 public interface  IPlaneService
 {
-    Task<IEnumerable<PlaneEntity>> GetAll();
-    Task<PlaneEntity?> CreateAsync();
+    Task<IEnumerable<PlaneEntity>> GetAllPlanes();
+    Task<PlaneEntity?> CreatePlaneAtInitialStateAsync();
+    Task<PlaneEntity?> CreatePlaneAtBuildStateAsync();
     string? GetPlaneState(string vehicleId);
     Task<GetPlaneQueryResponseDto?> GetPlaneEntity(string vehicleId, bool includes = false);
     Task<IEnumerable<string>?> GetPermittedTriggers(string vehicleId);

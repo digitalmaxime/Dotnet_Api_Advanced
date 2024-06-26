@@ -1,9 +1,10 @@
+using StatelessWithUI.Application.Services;
+using StatelessWithUI.Application.VehicleStateMachines;
+using StatelessWithUI.Application.VehicleStateMachines.CarStateMachine;
+using StatelessWithUI.Application.VehicleStateMachines.PlaneStateMachine;
 using StatelessWithUI.Persistence.Constants;
-using StatelessWithUI.VehicleStateMachines;
-using StatelessWithUI.VehicleStateMachines.CarStateMachine;
-using StatelessWithUI.VehicleStateMachines.PlaneStateMachine;
 
-namespace StatelessWithUI.VehicleStateMachineFactory;
+namespace StatelessWithUI.Application.VehicleStateMachineFactory;
 
 public class VehicleFactory : IVehicleFactory
 {

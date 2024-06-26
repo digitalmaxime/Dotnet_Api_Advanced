@@ -1,13 +1,10 @@
-using StatelessWithUI.VehicleStateMachines.PlaneStateMachine;
-
-namespace StatelessWithUI.VehicleStateMachines;
+namespace StatelessWithUI.Application.VehicleStateMachines;
 
 public interface IVehicleStateMachine
 {
-    string Id { get; }
+    string VehicleId { get; }
     // public string StateId { get; set; }
     IEnumerable<string> GetPermittedTriggers { get; }
     string CurrentStateName { get; }
-    Enum StateEnum { get; }
     void TakeAction(string actionString);
 }

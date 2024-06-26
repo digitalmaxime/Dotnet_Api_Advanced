@@ -1,7 +1,7 @@
+using StatelessWithUI.Application.VehicleStateMachines;
 using StatelessWithUI.Persistence.Constants;
-using StatelessWithUI.VehicleStateMachines;
 
-namespace StatelessWithUI.VehicleStateMachineFactory;
+namespace StatelessWithUI.Application.VehicleStateMachineFactory;
 
 public interface IVehicleFactory
 {

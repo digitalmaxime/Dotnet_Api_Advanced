@@ -1,11 +1,11 @@
 using StatelessWithUI.Persistence.Domain.PlaneStates;
 
-namespace StatelessWithUI.Persistence.Contracts;
+namespace StatelessWithUI.Application.Contracts;
 
 public interface IBuildTaskRepository
 {
-    public Task<BuildTask?> GetTaskByIdAsync(string id);
+    public Task<StateTask?> GetTaskByIdAsync(string id);
     public Task<bool> CompleteTask(string id);
-    public Task<BuildTask?> CreatePlaneBuildTaskAsync(string planeStateId, string taskName);
-    Task<ICollection<BuildTask>?> GetAllPlaneBuildTasks();
+    public Task<StateTask?> CreatePlaneBuildTaskAsync(string planeStateId, string taskName);
+    Task<ICollection<StateTask>?> GetAllPlaneBuildTasks();
 }

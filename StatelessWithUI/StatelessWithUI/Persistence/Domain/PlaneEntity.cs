@@ -11,15 +11,18 @@ public class PlaneEntity: VehicleEntityBase
         BuildState,
         TestingState
     }
-    
-    public ICollection<StateBase> PlaneStates { get; set; }
-    // public ICollection<InitialState> InitialStates { get; }
-    // public ICollection<DesignState> DesignStates { get; }
-    // public ICollection<BuildState> BuildStates { get; }
-    // public ICollection<TestingState> TestingStates { get; }
 
-    public override string GetCurrentStateEnumName()
+    public ICollection<StateBase> PlaneStates { get; set; } = new List<StateBase>();
+
+    public override string? GetCurrentStateEnumName()
     {
-        return "PATATE"; // TODO:
+        var planeStateEnumerable = Enum.GetValues(typeof(PlaneStateNameEnum));
+        foreach(var planeState in planeStateEnumerable)
+        {
+            var state = PlaneStates.FirstOrDefault(x => x.StateName == planeState.ToString());
+            if (state != null && !state.IsStateComplete) return planeState.ToString();
+        }
+
+        return PlaneStateNameEnum.TestingState.ToString();
     }
 }

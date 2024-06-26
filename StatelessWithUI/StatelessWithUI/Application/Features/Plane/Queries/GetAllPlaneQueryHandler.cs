@@ -4,7 +4,7 @@ using StatelessWithUI.Persistence.Domain;
 
 namespace StatelessWithUI.Application.Features.Plane.Queries;
 
-public class GetAllPlaneQueryHandler : IRequestHandler<GetAllPlaneQuery, IEnumerable<PlaneEntity>>
+public class GetAllPlaneQueryHandler : IRequestHandler<GetAllPlaneQuery, GetAllPlaneQueryResponseDto?>
 {
     private readonly IPlaneService _planeService;
 
@@ -13,8 +13,22 @@ public class GetAllPlaneQueryHandler : IRequestHandler<GetAllPlaneQuery, IEnumer
         _planeService = planeService;
     }
 
-    public async Task<IEnumerable<PlaneEntity>> Handle(GetAllPlaneQuery request, CancellationToken cancellationToken)
+    public async Task<GetAllPlaneQueryResponseDto?> Handle(GetAllPlaneQuery request, CancellationToken cancellationToken)
     {
-        return await _planeService.GetAll();
+        var res = await _planeService.GetAllPlanes();
+        if (res == null) return null;
+        return new GetAllPlaneQueryResponseDto()
+        {
+            GetAllPlaneQueryDto = res.Select(x => new AllPlaneDto()
+            {
+                PlaneId = x.Id,
+                PlaneStateDtos = x.PlaneStates.Select(y => new GetAllPlaneQueryPlaneStateDto()
+                {
+                    StateId = y.Id,
+                    StateName = y.StateName,
+                    IsComplete = y.IsStateComplete
+                })
+            })
+        };
     }
 }

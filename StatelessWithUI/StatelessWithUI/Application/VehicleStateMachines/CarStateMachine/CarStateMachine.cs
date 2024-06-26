@@ -1,10 +1,10 @@
 using Stateless;
 using Stateless.Graph;
-using StatelessWithUI.Persistence.Contracts;
+using StatelessWithUI.Application.Contracts;
 using StatelessWithUI.Persistence.Domain;
 using static System.Int32;
 
-namespace StatelessWithUI.VehicleStateMachines.CarStateMachine;
+namespace StatelessWithUI.Application.VehicleStateMachines.CarStateMachine;
 
 public class CarStateMachine : IVehicleStateMachine
 {
@@ -30,7 +30,7 @@ public class CarStateMachine : IVehicleStateMachine
         Paint
     }
 
-    public string Id { get; set; }
+    public string VehicleId { get; set; }
     public string StateId { get; set; }
     private int HorsePower { get; set; }
     private bool _isEnginBuilt { get; set; }
@@ -45,7 +45,7 @@ public class CarStateMachine : IVehicleStateMachine
 
     public CarStateMachine(string id, IServiceScopeFactory serviceScopeFactory)
     {
-        Id = id;
+        VehicleId = id;
         _serviceScopeFactory = serviceScopeFactory;
 
         _stateMachine = new StateMachine<CarState, CarAction>(
@@ -150,7 +150,7 @@ public class CarStateMachine : IVehicleStateMachine
         var carStateRepository = scope.ServiceProvider.GetRequiredService<ICarRepository>();
         var carEntity = new CarEntity()
         {
-            Id = Id, HorsePower = HorsePower
+            Id = VehicleId, HorsePower = HorsePower
         };
 
         carStateRepository.SaveAsync(carEntity);

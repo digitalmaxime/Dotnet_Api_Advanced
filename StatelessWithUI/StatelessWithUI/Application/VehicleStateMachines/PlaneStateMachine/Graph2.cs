@@ -1,8 +1,8 @@
 using StatelessWithUI.Persistence.Domain.PlaneStates;
 
-namespace StatelessWithUI.VehicleStateMachines.PlaneStateMachine;
+namespace StatelessWithUI.Application.VehicleStateMachines.PlaneStateMachine;
 
-public class Graph2<T> where T : BuildTask
+public class Graph2<T> where T : StateTask
 {
     private readonly Dictionary<T, Node<T>> nodes;
 

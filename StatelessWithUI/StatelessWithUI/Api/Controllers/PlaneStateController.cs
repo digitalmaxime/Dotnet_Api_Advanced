@@ -1,12 +1,12 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using StatelessWithUI.Application.Contracts;
 using StatelessWithUI.Application.Features.PlaneState.Commands;
 using StatelessWithUI.Application.Features.PlaneState.Queries;
 using StatelessWithUI.Application.Services;
-using StatelessWithUI.Persistence.Contracts;
-using StatelessWithUI.VehicleStateMachines.PlaneStateMachine;
+using StatelessWithUI.Application.VehicleStateMachines.PlaneStateMachine;
 
-namespace StatelessWithUI.Controllers;
+namespace StatelessWithUI.Api.Controllers;
 
 [Controller]
 [Route("api/[controller]")]
