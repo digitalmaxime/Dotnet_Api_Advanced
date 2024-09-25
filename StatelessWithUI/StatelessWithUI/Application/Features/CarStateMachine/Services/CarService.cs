@@ -8,12 +8,12 @@ namespace StatelessWithUI.Application.Services;
 
 public class CarService : ICarService
 {
-    private readonly IVehicleFactory _vehicleFactory;
+    private readonly IVehicleStateMachineFactory _vehicleStateMachineFactory;
     private readonly ICarStateRepository _carStateRepository;
 
-    public CarService(IVehicleFactory vehicleFactory, ICarStateRepository carStateRepository)
+    public CarService(IVehicleStateMachineFactory vehicleStateMachineFactory, ICarStateRepository carStateRepository)
     {
-        _vehicleFactory = vehicleFactory;
+        _vehicleStateMachineFactory = vehicleStateMachineFactory;
         _carStateRepository = carStateRepository;
     }
 
@@ -26,7 +26,7 @@ public class CarService : ICarService
     {
         try
         {
-            var stateMachine = _vehicleFactory.GetOrAddVehicleStateMachine(VehicleType.Car, vehicleId);
+            var stateMachine = _vehicleStateMachineFactory.GetOrAddVehicleStateMachine(VehicleType.Car, vehicleId);
             return new CarEntity()
             {
                 Id = stateMachine.Id, 
@@ -43,7 +43,7 @@ public class CarService : ICarService
 
     public string GetCarState(string vehicleId)
     {
-        var stateMachine = _vehicleFactory.GetOrAddVehicleStateMachine(VehicleType.Car, vehicleId);
+        var stateMachine = _vehicleStateMachineFactory.GetOrAddVehicleStateMachine(VehicleType.Car, vehicleId);
         return stateMachine.GetCurrentState;
     }
     
@@ -54,19 +54,19 @@ public class CarService : ICarService
 
     public async Task<IEnumerable<string>> GetPermittedTriggers(string vehicleId)
     {
-        var stateMachine = _vehicleFactory.GetOrAddVehicleStateMachine(VehicleType.Car, vehicleId);
+        var stateMachine = _vehicleStateMachineFactory.GetOrAddVehicleStateMachine(VehicleType.Car, vehicleId);
         return stateMachine.GetPermittedTriggers;
     }
 
     public void GoToNextState(string vehicleId)
     {
-        var stateMachine = _vehicleFactory.GetOrAddVehicleStateMachine(VehicleType.Car, vehicleId);
+        var stateMachine = _vehicleStateMachineFactory.GetOrAddVehicleStateMachine(VehicleType.Car, vehicleId);
         stateMachine.GoToNextState();
     }
 
     public void TakeAction(string vehicleId, string action)
     {
-        var stateMachine = _vehicleFactory.GetOrAddVehicleStateMachine(VehicleType.Car, vehicleId);
+        var stateMachine = _vehicleStateMachineFactory.GetOrAddVehicleStateMachine(VehicleType.Car, vehicleId);
         stateMachine.TakeAction(action);
     }
 }

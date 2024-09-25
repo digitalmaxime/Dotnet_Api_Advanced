@@ -8,12 +8,12 @@ namespace StatelessWithUI.Application.Services;
 
 public class PlaneService : IPlaneService
 {
-    private readonly IVehicleFactory _vehicleFactory;
+    private readonly IVehicleStateMachineFactory _vehicleStateMachineFactory;
     private readonly IPlaneStateRepository _planeStateRepository;
 
-    public PlaneService(IVehicleFactory vehicleFactory, IPlaneStateRepository planeStateRepository)
+    public PlaneService(IVehicleStateMachineFactory vehicleStateMachineFactory, IPlaneStateRepository planeStateRepository)
     {
-        _vehicleFactory = vehicleFactory;
+        _vehicleStateMachineFactory = vehicleStateMachineFactory;
         _planeStateRepository = planeStateRepository;
     }
 
@@ -26,7 +26,7 @@ public class PlaneService : IPlaneService
     {
         try
         {
-            var stateMachine = _vehicleFactory.GetOrAddVehicleStateMachine(VehicleType.Plane, vehicleId);
+            var stateMachine = _vehicleStateMachineFactory.GetOrAddVehicleStateMachine(VehicleType.Plane, vehicleId);
             return new PlaneEntity()
             {
                 Id = stateMachine.Id, 
@@ -43,7 +43,7 @@ public class PlaneService : IPlaneService
 
     public string GetPlaneState(string vehicleId)
     {
-        var stateMachine = _vehicleFactory.GetOrAddVehicleStateMachine(VehicleType.Plane, vehicleId);
+        var stateMachine = _vehicleStateMachineFactory.GetOrAddVehicleStateMachine(VehicleType.Plane, vehicleId);
         return stateMachine.GetCurrentState;
     }
 
@@ -54,19 +54,19 @@ public class PlaneService : IPlaneService
 
     public async Task<IEnumerable<string>> GetPermittedTriggers(string vehicleId)
     {
-        var stateMachine = _vehicleFactory.GetOrAddVehicleStateMachine(VehicleType.Plane, vehicleId);
+        var stateMachine = _vehicleStateMachineFactory.GetOrAddVehicleStateMachine(VehicleType.Plane, vehicleId);
         return stateMachine.GetPermittedTriggers;
     }
 
     public void GoToNextState(string vehicleId)
     {
-        var stateMachine = _vehicleFactory.GetOrAddVehicleStateMachine(VehicleType.Plane, vehicleId);
+        var stateMachine = _vehicleStateMachineFactory.GetOrAddVehicleStateMachine(VehicleType.Plane, vehicleId);
         stateMachine.GoToNextState();
     }
 
     public void TakeAction(string vehicleId, string action)
     {
-        var stateMachine = _vehicleFactory.GetOrAddVehicleStateMachine(VehicleType.Plane, vehicleId);
+        var stateMachine = _vehicleStateMachineFactory.GetOrAddVehicleStateMachine(VehicleType.Plane, vehicleId);
         stateMachine.TakeAction(action);
     }
 }

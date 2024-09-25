@@ -34,8 +34,7 @@ public class PlaneStateMachine : IVehicleStateMachine
     public string GetCurrentState => CurrentState.ToString();
     private readonly StateMachine<PlaneState, PlaneAction> _stateMachine;
     public IEnumerable<string> GetPermittedTriggers => _stateMachine.GetPermittedTriggers().Select(x => x.ToString());
-
-
+    
     private StateMachine<PlaneState, PlaneAction>.TriggerWithParameters<int>? _accelerateWithParam;
     private StateMachine<PlaneState, PlaneAction>.TriggerWithParameters<int>? _decelerateWithParam;
 
@@ -51,6 +50,7 @@ public class PlaneStateMachine : IVehicleStateMachine
                 SaveState();
             }
         );
+        
         InitializeStateMachine(id).GetAwaiter();
         ConfigureStates();
     }
@@ -134,7 +134,7 @@ public class PlaneStateMachine : IVehicleStateMachine
         var planeStateRepository = scope.ServiceProvider.GetRequiredService<IPlaneStateRepository>();
         var plane = new PlaneEntity()
         {
-            Id = Id, Speed = CurrentSpeed, State = CurrentState
+            Id = Id, State = CurrentState, Speed = CurrentSpeed
         };
         
         planeStateRepository.Save(plane);
