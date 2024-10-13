@@ -2,9 +2,10 @@ using Stateless;
 using Stateless.Graph;
 using StatelessWithUI.Persistence.Contracts;
 using StatelessWithUI.Persistence.Domain;
+using StatelessWithUI.VehicleStateMachines;
 using static System.Int32;
 
-namespace StatelessWithUI.VehicleStateMachines;
+namespace StatelessWithUI.Application.Features.CarStateMachine;
 
 public class CarStateMachine : IVehicleStateMachine
 {
@@ -27,7 +28,7 @@ public class CarStateMachine : IVehicleStateMachine
         Drift
     }
 
-    public string Id { get; set; }
+    public string EntityId { get; set; }
     private int CurrentSpeed { get; set; }
     private CarState CurrentState { get; set; }
     public string GetCurrentState => CurrentState.ToString();
@@ -39,9 +40,9 @@ public class CarStateMachine : IVehicleStateMachine
     private StateMachine<CarState, CarAction>.TriggerWithParameters<int>? _decelerateWithParam;
 
 
-    public CarStateMachine(string id, IServiceScopeFactory serviceScopeFactory)
+    public CarStateMachine(string entityId, IServiceScopeFactory serviceScopeFactory)
     {
-        Id = id;
+        EntityId = entityId;
         _serviceScopeFactory = serviceScopeFactory;
 
         _stateMachine = new StateMachine<CarState, CarAction>(
@@ -53,7 +54,7 @@ public class CarStateMachine : IVehicleStateMachine
             }
         );
 
-        InitializeStateMachine(id).GetAwaiter();
+        InitializeStateMachine(entityId).GetAwaiter();
         ConfigureStates();
     }
 
@@ -137,7 +138,7 @@ public class CarStateMachine : IVehicleStateMachine
         var carStateRepository = scope.ServiceProvider.GetRequiredService<ICarStateRepository>();
         var carEntity = new CarEntity()
         {
-            Id = Id, Speed = CurrentSpeed, State = CurrentState
+            Id = EntityId, Speed = CurrentSpeed, State = CurrentState
         };
 
         carStateRepository.Save(carEntity);

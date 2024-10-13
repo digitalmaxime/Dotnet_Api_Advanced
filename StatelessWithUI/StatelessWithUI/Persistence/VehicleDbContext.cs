@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using StatelessWithUI.Application.Features.CarStateMachine;
 using StatelessWithUI.Persistence.Domain;
 using StatelessWithUI.VehicleStateMachines;
 

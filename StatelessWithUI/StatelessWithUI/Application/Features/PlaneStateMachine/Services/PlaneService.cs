@@ -2,9 +2,8 @@ using StatelessWithUI.Persistence.Constants;
 using StatelessWithUI.Persistence.Contracts;
 using StatelessWithUI.Persistence.Domain;
 using StatelessWithUI.VehicleStateMachineFactory;
-using StatelessWithUI.VehicleStateMachines;
 
-namespace StatelessWithUI.Application.Services;
+namespace StatelessWithUI.Application.Features.PlaneStateMachine.Services;
 
 public class PlaneService : IPlaneService
 {
@@ -26,13 +25,26 @@ public class PlaneService : IPlaneService
     {
         try
         {
-            var stateMachine = _vehicleStateMachineFactory.GetOrAddVehicleStateMachine(VehicleType.Plane, vehicleId);
-            return new PlaneEntity()
+            var plane = await _planeStateRepository.GetById(vehicleId);
+            if (plane != null)
             {
-                Id = stateMachine.Id, 
-                State = Enum.Parse<PlaneStateMachine.PlaneState>(stateMachine.GetCurrentState),
-                Speed = 0
+                return plane;
+            }
+
+            var newPlane = new PlaneEntity()
+            {
+                Id = vehicleId, State = PlaneStateMachine.PlaneState.Stopped, Speed = 0
             };
+
+            var success = await _planeStateRepository.Save(newPlane);
+            
+            if (!success)
+            {
+                return null;
+            }
+            
+            await _vehicleStateMachineFactory.GetOrAddVehicleStateMachine(VehicleType.Plane, vehicleId);
+            return newPlane;
         }
         catch (Exception e)
         {
@@ -41,9 +53,9 @@ public class PlaneService : IPlaneService
         }
     }
 
-    public string GetPlaneState(string vehicleId)
+    public async Task<string> GetPlaneState(string vehicleId)
     {
-        var stateMachine = _vehicleStateMachineFactory.GetOrAddVehicleStateMachine(VehicleType.Plane, vehicleId);
+        var stateMachine = await _vehicleStateMachineFactory.GetOrAddVehicleStateMachine(VehicleType.Plane, vehicleId);
         return stateMachine.GetCurrentState;
     }
 
@@ -54,19 +66,19 @@ public class PlaneService : IPlaneService
 
     public async Task<IEnumerable<string>> GetPermittedTriggers(string vehicleId)
     {
-        var stateMachine = _vehicleStateMachineFactory.GetOrAddVehicleStateMachine(VehicleType.Plane, vehicleId);
+        var stateMachine = await _vehicleStateMachineFactory.GetOrAddVehicleStateMachine(VehicleType.Plane, vehicleId);
         return stateMachine.GetPermittedTriggers;
     }
 
-    public void GoToNextState(string vehicleId)
+    public async void GoToNextState(string vehicleId)
     {
-        var stateMachine = _vehicleStateMachineFactory.GetOrAddVehicleStateMachine(VehicleType.Plane, vehicleId);
+        var stateMachine = await _vehicleStateMachineFactory.GetOrAddVehicleStateMachine(VehicleType.Plane, vehicleId);
         stateMachine.GoToNextState();
     }
 
-    public void TakeAction(string vehicleId, string action)
+    public async void TakeAction(string vehicleId, string action)
     {
-        var stateMachine = _vehicleStateMachineFactory.GetOrAddVehicleStateMachine(VehicleType.Plane, vehicleId);
+        var stateMachine = await _vehicleStateMachineFactory.GetOrAddVehicleStateMachine(VehicleType.Plane, vehicleId);
         stateMachine.TakeAction(action);
     }
 }

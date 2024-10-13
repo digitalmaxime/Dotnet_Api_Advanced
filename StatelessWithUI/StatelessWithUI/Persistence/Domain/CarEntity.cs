@@ -1,3 +1,4 @@
+using StatelessWithUI.Application.Features.CarStateMachine;
 using StatelessWithUI.VehicleStateMachines;
 
 namespace StatelessWithUI.Persistence.Domain;

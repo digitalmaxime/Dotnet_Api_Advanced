@@ -3,7 +3,7 @@ using StatelessWithUI.VehicleStateMachines;
 
 namespace StatelessWithUI.VehicleStateMachineFactory;
 
-public interface IVehicleFactory
+public interface IVehicleStateMachineFactory
 {
-    IVehicleStateMachine GetOrAddVehicleStateMachine(VehicleType type, string vehicleId);
+    Task<IVehicleStateMachine> GetOrAddVehicleStateMachine(VehicleType type, string vehicleId);
 }

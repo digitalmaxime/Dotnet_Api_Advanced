@@ -1,5 +1,5 @@
 using MediatR;
-using StatelessWithUI.Application.Services;
+using StatelessWithUI.Application.Features.PlaneStateMachine.Services;
 using StatelessWithUI.Persistence.Domain;
 
 namespace StatelessWithUI.Application.Features.PlaneStateMachine.Queries;

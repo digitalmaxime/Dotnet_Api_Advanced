@@ -1,12 +1,12 @@
 using StatelessWithUI.Persistence.Domain;
 
-namespace StatelessWithUI.Application.Services;
+namespace StatelessWithUI.Application.Features.PlaneStateMachine.Services;
 
 public interface  IPlaneService
 {
     Task<IEnumerable<PlaneEntity>> GetAll();
     Task<EntityWithId?> CreateAsync(string vehicleId);
-    string GetPlaneState(string vehicleId);
+    Task<string> GetPlaneState(string vehicleId);
     Task<PlaneEntity?> GetPlaneEntity(string vehicleId);
     Task<IEnumerable<string>> GetPermittedTriggers(string vehicleId);
     void GoToNextState(string vehicleId);

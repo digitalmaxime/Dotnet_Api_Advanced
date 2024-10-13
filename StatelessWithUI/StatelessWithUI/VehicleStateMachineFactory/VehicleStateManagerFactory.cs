@@ -1,15 +1,18 @@
+using StatelessWithUI.Application.Features.CarStateMachine;
+using StatelessWithUI.Application.Features.PlaneStateMachine;
 using StatelessWithUI.Persistence.Constants;
+using StatelessWithUI.Persistence.Contracts;
 using StatelessWithUI.VehicleStateMachines;
 
 namespace StatelessWithUI.VehicleStateMachineFactory;
 
-public class VehicleFactory : IVehicleFactory
+public class VehicleStateMachineStateMachineFactory : IVehicleStateMachineFactory
 {
     private readonly IServiceScopeFactory _serviceScopeFactory;
     private readonly Dictionary<string, CarStateMachine> _carStateMachineDictionary = new();
     private readonly Dictionary<string, PlaneStateMachine> _planeStateMachineDictionary = new();
 
-    public VehicleFactory(IServiceScopeFactory serviceScopeFactory)
+    public VehicleStateMachineStateMachineFactory(IServiceScopeFactory serviceScopeFactory)
     {
         _serviceScopeFactory = serviceScopeFactory;
     }
@@ -26,24 +29,32 @@ public class VehicleFactory : IVehicleFactory
         return stateMachine!;
     }
 
-    private PlaneStateMachine GetOrAddPlaneStateMachine(string id)
+    private async Task<PlaneStateMachine> GetOrAddPlaneStateMachine(string planeId)
     {
-        var success = _planeStateMachineDictionary.TryGetValue(id, out var stateMachine);
-        if (!success)
+        var success = _planeStateMachineDictionary.TryGetValue(planeId, out var stateMachine);
+
+        if (success) return stateMachine!;
+        
+        using var scope = _serviceScopeFactory.CreateScope();
+        var planeStateRepository = scope.ServiceProvider.GetRequiredService<IPlaneStateRepository>();
+        var plane = await planeStateRepository.GetById(planeId);
+        if (plane == null)
         {
-            stateMachine = new PlaneStateMachine(id, _serviceScopeFactory);
-            _planeStateMachineDictionary.Add(id, stateMachine);
+            throw new ArgumentException($"Plane not found with id: {planeId}");
         }
+            
+        stateMachine = new PlaneStateMachine(plane, _serviceScopeFactory);
+        _planeStateMachineDictionary.Add(planeId, stateMachine);
 
         return stateMachine!;
     }
 
-    public IVehicleStateMachine GetOrAddVehicleStateMachine(VehicleType type, string vehicleId)
+    public async Task<IVehicleStateMachine> GetOrAddVehicleStateMachine(VehicleType type, string vehicleId)
     {
         return type switch
         {
             VehicleType.Car => GetOrAddCarStateMachine(vehicleId),
-            VehicleType.Plane => GetOrAddPlaneStateMachine(vehicleId),
+            VehicleType.Plane => await GetOrAddPlaneStateMachine(vehicleId),
             _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
         };
     }

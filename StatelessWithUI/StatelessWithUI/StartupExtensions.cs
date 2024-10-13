@@ -1,6 +1,7 @@
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
-using StatelessWithUI.Application.Services;
+using StatelessWithUI.Application.Features.CarStateMachine.Services;
+using StatelessWithUI.Application.Features.PlaneStateMachine.Services;
 using StatelessWithUI.Persistence;
 using StatelessWithUI.Persistence.Contracts;
 using StatelessWithUI.Persistence.Repositories;
@@ -26,7 +27,7 @@ public static class StartupExtensions
         builder.Services.AddScoped<IPlaneService, PlaneService>();
         builder.Services.AddScoped<ICarStateRepository, CarStateRepository>();
         builder.Services.AddScoped<IPlaneStateRepository, PlaneStateRepository>();
-        builder.Services.AddSingleton<IVehicleFactory, VehicleFactory>();
+        builder.Services.AddSingleton<IVehicleStateMachineFactory, VehicleStateMachineStateMachineFactory>();
         builder.Services.AddMediatR(cfg =>
             cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
         builder.Services.AddHttpContextAccessor();

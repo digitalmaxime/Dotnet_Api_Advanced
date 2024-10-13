@@ -2,9 +2,8 @@ using StatelessWithUI.Persistence.Constants;
 using StatelessWithUI.Persistence.Contracts;
 using StatelessWithUI.Persistence.Domain;
 using StatelessWithUI.VehicleStateMachineFactory;
-using StatelessWithUI.VehicleStateMachines;
 
-namespace StatelessWithUI.Application.Services;
+namespace StatelessWithUI.Application.Features.CarStateMachine.Services;
 
 public class CarService : ICarService
 {
@@ -26,10 +25,10 @@ public class CarService : ICarService
     {
         try
         {
-            var stateMachine = _vehicleStateMachineFactory.GetOrAddVehicleStateMachine(VehicleType.Car, vehicleId);
+            var stateMachine = await _vehicleStateMachineFactory.GetOrAddVehicleStateMachine(VehicleType.Car, vehicleId);
             return new CarEntity()
             {
-                Id = stateMachine.Id, 
+                Id = stateMachine.EntityId, 
                 State = Enum.Parse<CarStateMachine.CarState>(stateMachine.GetCurrentState),
                 Speed = 0
             };
@@ -41,9 +40,9 @@ public class CarService : ICarService
         }
     }
 
-    public string GetCarState(string vehicleId)
+    public async Task<string> GetCarState(string vehicleId)
     {
-        var stateMachine = _vehicleStateMachineFactory.GetOrAddVehicleStateMachine(VehicleType.Car, vehicleId);
+        var stateMachine = await _vehicleStateMachineFactory.GetOrAddVehicleStateMachine(VehicleType.Car, vehicleId);
         return stateMachine.GetCurrentState;
     }
     
@@ -54,19 +53,19 @@ public class CarService : ICarService
 
     public async Task<IEnumerable<string>> GetPermittedTriggers(string vehicleId)
     {
-        var stateMachine = _vehicleStateMachineFactory.GetOrAddVehicleStateMachine(VehicleType.Car, vehicleId);
+        var stateMachine = await _vehicleStateMachineFactory.GetOrAddVehicleStateMachine(VehicleType.Car, vehicleId);
         return stateMachine.GetPermittedTriggers;
     }
 
-    public void GoToNextState(string vehicleId)
+    public async Task GoToNextState(string vehicleId)
     {
-        var stateMachine = _vehicleStateMachineFactory.GetOrAddVehicleStateMachine(VehicleType.Car, vehicleId);
+        var stateMachine = await _vehicleStateMachineFactory.GetOrAddVehicleStateMachine(VehicleType.Car, vehicleId);
         stateMachine.GoToNextState();
     }
 
-    public void TakeAction(string vehicleId, string action)
+    public async Task TakeAction(string vehicleId, string action)
     {
-        var stateMachine = _vehicleStateMachineFactory.GetOrAddVehicleStateMachine(VehicleType.Car, vehicleId);
+        var stateMachine = await _vehicleStateMachineFactory.GetOrAddVehicleStateMachine(VehicleType.Car, vehicleId);
         stateMachine.TakeAction(action);
     }
 }

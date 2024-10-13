@@ -1,7 +1,7 @@
 export interface Plane {
   id: string;
-  speed: number;
   state: PlaneState;
+  speed: number;
 }
 export enum PlaneState
 {
